@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+<script src="/js/register.bundle.js" type="text/javascript" defer></script>
+<script>
+window.configuration = {
+    csrf: '{{ csrf_token('authenticate') }}',
+    last_username: 'asdf',
+};
+</script>
+{% endblock %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<div id="app" style="height: 100%"></div>
+{% endblock %}

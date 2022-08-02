@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+<style>
+    #app {
+        height: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script src="/js/map.bundle.js" type="text/javascript" defer></script>
+{% endblock %}
+
+{% block title %}Map{% endblock %}
+
+{% block body %}
+<div id="app" style="height: 100%"></div>
+{% endblock %}
