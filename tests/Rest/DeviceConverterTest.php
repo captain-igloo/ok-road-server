@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Rest;
@@ -55,7 +56,7 @@ final class DeviceConverterTest extends TestCase
         $security->method('getUser')
             ->willReturn(new User());
         $deviceConverter = new DeviceConverter(
-            $security, 
+            $security,
             $this->createMock(DeviceRepository::class),
             new CsrfTokenManager(),
         );

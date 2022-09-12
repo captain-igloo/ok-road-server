@@ -1,8 +1,8 @@
-import { Record } from 'immutable';
+import { LatLng } from 'leaflet';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import { DeviceProps } from '../device/types';
+import { Device } from '../device/types';
 
 export interface State {
 
@@ -11,6 +11,8 @@ export interface State {
 export type Dispatch = ThunkDispatch<State, undefined, Action>;
 
 export interface Actions {
+    activateDevice: (device: Device, active: boolean) => void;
     fetchDevices: () => void;
-    fetchLocations: (device: Record<DeviceProps>) => void;
+    fetchLocations: (device: Device) => void;
+    setMarkerPosition: (position: LatLng) => void;
 }

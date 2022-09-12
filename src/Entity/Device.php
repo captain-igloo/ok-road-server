@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -15,19 +16,19 @@ class Device
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'devices')]
     #[ORM\JoinColumn(nullable: false)]
     #[Exclude]
-    private $user;
+    private ?User $user;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $macAddress;
+    private ?string $macAddress;
 
     #[ORM\OneToMany(mappedBy: 'device', targetEntity: Location::class, orphanRemoval: true)]
     #[Exclude]
-    private $locations;
+    private Collection $locations;
 
     public function __construct()
     {

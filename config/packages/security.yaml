@@ -39,6 +39,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/v1/csrf-token, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/speed-limit, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: ROLE_USER }
         - { path: ^/map, roles: ROLE_USER }
 

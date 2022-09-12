@@ -1,40 +1,39 @@
-import { OrderedMap, Record } from 'immutable';
+import { LatLng } from 'leaflet';
 
 export enum DeviceActionType {
+    ACTIVATE_DEVICE = 'device/ACTIVATE_DEVICE',
     FETCH_DEVICES = 'device/FETCH_DEVICES',
+    FETCH_CAMERAS = 'device/FETCH_CAMERAS',
     FETCH_LOCATIONS = 'device/FETCH_LOCATIONS',
+    SET_MARKER_POSITION = 'device/SET_MARKER_POSITION',
+    SET_POLYGONS = 'device/SET_POLYGONS',
 }
 
-export interface LocationProps {
-    // accuracy: number;
+export interface Location {
     id: number;
-    location: any;
-    speed: number;
 }
 
-export const Location = Record<LocationProps>({
-    // accuracty: 0,
-    id: 0,
-    location: undefined,
-    speed: 0,
-});
-
-export interface DeviceProps {
+export interface Camera {
     id: number;
-    locations: OrderedMap<number, Record<LocationProps>>;
+    description: string;
+    location: LatLng;
+}
+
+export interface Device {
+    active: boolean;
+    id: number;
+    locations: {[key: string]: Location};
     macAddress: string;
 }
 
-export const Device = Record<DeviceProps>({
-    id: 0,
-    locations: OrderedMap(),
-    macAddress: '',
-});
-
-export interface DeviceStateProps {
-    devices: OrderedMap<number, Record<DeviceProps>>;
+export interface DeviceState {
+    cameras: {[key: string]: Camera};
+    devices: {[key: string]: Device};
+    polygons: LatLng[][][];
+    speedLimit: {
+        description?: string;
+        polygons: LatLng[][][];
+        position?: LatLng;
+        speedLimit?: number;
+    };
 }
-
-export const DeviceState = Record<DeviceStateProps>({
-    devices: OrderedMap(),
-});

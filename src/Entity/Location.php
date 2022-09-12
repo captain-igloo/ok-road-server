@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -15,24 +16,24 @@ class Location
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\ManyToOne(targetEntity: Device::class, inversedBy: 'locations')]
     #[ORM\JoinColumn(nullable: false)]
     #[Exclude]
-    private $device;
+    private ?Device $device;
 
     #[ORM\Column(type: 'float')]
-    private $accuracy;
+    private ?float $accuracy;
 
     #[ORM\Column(type: 'float')]
-    private $speed;
+    private ?float $speed;
 
     #[ORM\Column(type: 'datetime')]
-    private $time;
+    private ?DateTimeInterface $time;
 
-    #[ORM\Column(type: 'point')]
-    private $location;
+    #[ORM\Column(type: 'Point')]
+    private ?Point $location;
 
     public function getId(): ?int
     {

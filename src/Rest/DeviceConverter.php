@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Rest;
@@ -70,7 +71,7 @@ final class DeviceConverter implements ParamConverterInterface
         $device = new Device();
         $device->setUser($this->getUser());
         if ($macAddress = $request->request->get('mac_address')) {
-            $device->setMacAddress($macAddress);
+            $device->setMacAddress((string) $macAddress);
             $request->attributes->set($configuration->getName(), $device);
             return true;
         }

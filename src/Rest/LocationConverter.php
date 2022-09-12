@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Rest;
@@ -88,7 +89,7 @@ final class LocationConverter implements ParamConverterInterface
                 $location->setDevice($device);
                 $location->setAccuracy((float) $accuracy);
                 $location->setSpeed((float) $speed);
-                $location->setTime(new DateTime($dateTime));
+                $location->setTime(new DateTime((string) $dateTime));
                 $location->setLocation(new Point($longitude, $latitude));
                 $request->attributes->set($configuration->getName(), $location);
                 return true;

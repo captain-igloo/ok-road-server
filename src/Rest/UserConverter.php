@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Rest;
@@ -24,7 +25,7 @@ final class UserConverter implements ParamConverterInterface
             ($password = $request->request->get('password'))
         ) {
             $user = new User();
-            $user->setEmail($email);
+            $user->setEmail((string) $email);
             $user->setPassword($this->passwordHasher->hashPassword($user, $password));
             $request->attributes->set($configuration->getName(), $user);
             return true;

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Security;
@@ -20,7 +21,6 @@ final class LoginFormAuthenticatorTest extends TestCase
         ]);
         $request->setSession($this->createMock(SessionInterface::class));
         $passport = $loginFormAuthenticator->authenticate($request);
-        // print_r($passport->getUser());
         $this->assertTrue(true);
     }
 }
