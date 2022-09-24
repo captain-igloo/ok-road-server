@@ -18,6 +18,6 @@ services:
   php:
     build:
       context: .
-      dockerfile: .docker/php/Dockerfile
+      dockerfile: .docker/php/dev.Dockerfile
     volumes:
       - .:/app
