@@ -1,5 +1,6 @@
 /.ci
 /.env
+/.local
 /node_modules
 /var
 /vendor
