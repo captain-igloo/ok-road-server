@@ -27,7 +27,10 @@ COPY src /app/src
 COPY templates /app/templates
 COPY --from=build /app/vendor /app/vendor
 
-RUN a2dissite 000-default \
+RUN apt update \
+    && apt install -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql \
+    && a2dissite 000-default \
     && a2ensite ok-road-server \
     && a2enmod rewrite \
     && service apache2 restart \
