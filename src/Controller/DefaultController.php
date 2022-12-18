@@ -15,6 +15,13 @@ final class DefaultController extends AbstractController
     {
     }
 
+    #[Route(path: '/')]
+    public function index(): Response
+    {
+        return $this->render('index.html.twig');
+    }
+
+
     #[Route(path: '/map', name: 'app_map')]
     public function map(): Response
     {

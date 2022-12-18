@@ -42,6 +42,7 @@ export default class Login extends React.Component<Props> {
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Check
+                                id="register-remember-me"
                                 label="Remember me"
                                 name="_remember_me"
                                 type="checkbox"

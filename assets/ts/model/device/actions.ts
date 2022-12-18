@@ -65,21 +65,23 @@ export const setMarkerPosition = (position: LatLng) => async (dispatch: Dispatch
     });
     let description;
     let polygon = [];
+    let speedLimit;
     try {
-        const speedLimit = await api.fetchSpeedLimit(position);
-        description = speedLimit.description;
-        polygon = speedLimit.area.rings.map((ring: any) => {
+        const speedLimitInfo = await api.fetchSpeedLimit(position);
+        description = speedLimitInfo.description;
+        polygon = speedLimitInfo.area.rings.map((ring: any) => {
             return ring.map((point: any) => {
                 return new LatLng(point[1], point[0]);
             });
         });
+        speedLimit = speedLimitInfo.speed_limit;
     } catch (e) {
     }
     dispatch({
         payload: {
             description,
             polygons: [polygon],
-            // speedLimit
+            speedLimit,
         },
         type: DeviceActionType.SET_POLYGONS,
     });

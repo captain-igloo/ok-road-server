@@ -1,19 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-<script src="/js/login.bundle.js" type="text/javascript" defer></script>
+<!-- <script src="/js/login.bundle.js" type="text/javascript" defer></script> -->
 <script>
 window.configuration = {
     csrf: '{{ csrf_token('authenticate') }}',
-    last_username: '{{ last_username }}',
+    // last_username: '{{ last_username }}',
 };
 </script>
+
 {% endblock %}
 
-{% block title %}Log In{% endblock %}
+{% block stylesheets %}
+<link href="/css/register.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}OK Road - Log In{% endblock %}
 
 {% block body %}
-<div id="app" style="height: 100%"></div>
+<div class="inner-container">
+    <h1 class="text-secondary">Please sign in</h1>
+{% if error %}
+    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+    <form method="POST" class="">
+        <div class="mb-3">
+            <label class="form-label" for="email">Email address</label>
+            <input autocomplete="email" name="email" placeholder="Enter email" required="" type="email" id="email" class="form-control" value="sdf@gmail.com">
+            <small class="text-muted form-text">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="password">Password</label>
+            <input autocomplete="current-password" name="password" placeholder="Password" type="password" id="password" class="form-control">
+        </div>
+        <div class="mb-3">
+            <div class="form-check">
+                <input name="_remember_me" type="checkbox" id="register-remember-me" class="form-check-input">
+                <label title="" for="register-remember-me" class="form-check-label">Remember me</label>
+            </div>
+        </div>
+        <input name="_csrf_token" type="hidden" value="{{ csrf_token('authenticate') }}">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<!-- <div id="app" style="height: 100%"></div> -->
 <!--<form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

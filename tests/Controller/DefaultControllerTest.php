@@ -24,4 +24,10 @@ final class DefaultControllerTest extends WebTestCase
         $this->client->request('GET', '/map');
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
+
+    public function testIndex(): void
+    {
+        $this->client->request('GET', '/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
 }

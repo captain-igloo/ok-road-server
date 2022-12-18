@@ -24,7 +24,9 @@ class Map extends React.PureComponent<Props> {
                     <h2>Devices</h2>
                     { this.getDevices() }
                     <h2>Speed Limit</h2>
-                    { device.speedLimit.description } 
+                    { device.speedLimit.description }
+                    <br />
+                    { device.speedLimit.speedLimit }
                 </div>
                 <MapContainer center={[-40, 174]} zoom={8}>
                     <TileLayer
@@ -37,7 +39,6 @@ class Map extends React.PureComponent<Props> {
                         draggable
                         eventHandlers={{
                             dragend: (e) => {
-                                // console.log('drag end', e.target.getLatLng());
                                 actions.setMarkerPosition(e.target.getLatLng());
                             }
                         }}
