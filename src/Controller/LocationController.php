@@ -6,8 +6,10 @@ namespace App\Controller;
 
 use App\Entity\Device;
 use App\Entity\Location;
+use App\Entity\Log;
 use App\Repository\LocationRepository;
 use App\Repository\DeviceRepository;
+use App\Repository\LogRepository;
 use App\Repository\SpeedLimitRepository;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
@@ -25,6 +27,7 @@ final class LocationController extends AbstractFOSRestController
     public function __construct(
         private LocationRepository $locationRepository,
         private SpeedLimitRepository $speedLimitRepository,
+        private LogRepository $logRepository,
     ) {
     }
 
@@ -61,6 +64,11 @@ final class LocationController extends AbstractFOSRestController
     #[Route(path: '/api/v1/speed-limit', methods: ['GET'])]
     public function getSpeedLimit(Point $point): Response
     {
+        $log = new Log();
+        $log->setInsertDatetime(new \Datetime());
+        $log->setLocation($point);
+        $this->logRepository->save($log, true);
+
         if ($speedLimit = $this->speedLimitRepository->findByPoint($point)) {
             return $this->handleView($this->view($speedLimit, 200));
         }

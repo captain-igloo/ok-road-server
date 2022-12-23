@@ -1,4 +1,4 @@
-import { DivIcon, LatLng } from 'leaflet';
+import { DivIcon } from 'leaflet';
 import * as React from 'react';
 import { Form } from 'react-bootstrap';
 import { MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';

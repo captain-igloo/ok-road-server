@@ -32,10 +32,18 @@ CREATE TABLE speed_limit (
     id serial NOT NULL PRIMARY KEY,
     speed_limit integer NOT NULL,
     description character varying NOT NULL,
-    area geometry(MultiPolygon, 4326) NOT NULL,
-    area_simplified geometry(MultiPolygon, 4326) NOT NULL
+    area geometry(Polygon, 4326) NOT NULL,
+    area_simplified geometry(Polygon, 4326) NOT NULL
 );
 
 CREATE INDEX speed_limit_area_idx on speed_limit using gist(area);
 
 update speed_limit set area_simplified = st_simplify(area, 0.001);
+
+CREATE TABLE log (
+    id serial NOT NULL PRIMARY KEY,
+    insert_datetime timestamp with time zone,
+    location geometry(Point, 4326) NOT NULL
+);
+
+juYh37n36behyTW6I9bbV
