@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Repository;
 
 use App\Entity\SpeedLimit;
@@ -11,11 +9,6 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 
 /**
  * @extends ServiceEntityRepository<SpeedLimit>
- *
- * @method SpeedLimit|null find($id, $lockMode = null, $lockVersion = null)
- * @method SpeedLimit|null findOneBy(array $criteria, array $orderBy = null)
- * @method SpeedLimit[]    findAll()
- * @method SpeedLimit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class SpeedLimitRepository extends ServiceEntityRepository
 {
@@ -26,11 +19,35 @@ class SpeedLimitRepository extends ServiceEntityRepository
 
     public function findByPoint(Point $point): ?SpeedLimit
     {
+        $geomFromText = "ST_GeomFromText('POINT(" . $point->getX() . ' ' . $point->getY() . ")', 4326)";
         return $this->createQueryBuilder('s')
-            ->andWhere("ST_Intersects(s.area, ST_GeomFromText('POINT("
-                . $point->getX() . ' ' . $point->getY() . ")', 4326)) = 't'")
-            ->setMaxResults(1)
+            ->andWhere('ST_Intersects(s.area, ' . $geomFromText . ") = 't'")
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    //    /**
+    //     * @return SpeedLimit[] Returns an array of SpeedLimit objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?SpeedLimit
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

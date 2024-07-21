@@ -1,15 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Entity;
 
 use App\Repository\SpeedLimitRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
-use JMS\Serializer\Annotation\SerializedName;
-use JMS\Serializer\Annotation\VirtualProperty;
-use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
+use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
 
 #[ORM\Entity(repositoryClass: SpeedLimitRepository::class)]
 class SpeedLimit
@@ -25,13 +21,9 @@ class SpeedLimit
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'Polygon')]
     #[Exclude]
-    private ?Polygon $area = null;
-
-    #[ORM\Column(type: 'Polygon')]
-    #[SerializedName('area')]
-    private ?Polygon $areaSimplified = null;
+    #[ORM\Column(type: 'MultiPolygon')]
+    private ?MultiPolygon $area = null;
 
     public function getId(): ?int
     {
@@ -43,7 +35,7 @@ class SpeedLimit
         return $this->speedLimit;
     }
 
-    public function setSpeedLimit(int $speedLimit): self
+    public function setSpeedLimit(int $speedLimit): static
     {
         $this->speedLimit = $speedLimit;
 
@@ -55,33 +47,21 @@ class SpeedLimit
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getArea(): ?Polygon
+    public function getArea(): ?MultiPolygon
     {
         return $this->area;
     }
 
-    public function setArea(Polygon $area): self
+    public function setArea(MultiPolygon $area): static
     {
         $this->area = $area;
-
-        return $this;
-    }
-
-    public function getAreaSimplified(): ?Polygon
-    {
-        return $this->areaSimplified;
-    }
-
-    public function setAreaSimplified(Polygon $areaSimplified): self
-    {
-        $this->areaSimplified = $areaSimplified;
 
         return $this;
     }

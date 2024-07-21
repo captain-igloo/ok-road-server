@@ -6,26 +6,23 @@ module.exports = {
     mode,
     entry: {
         login: './assets/ts/login.tsx',
-        map: './assets/ts/map.tsx',
-        register: './assets/ts/register.tsx',
+        app: './assets/ts/index.tsx',
     },
     output: {
-        filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'public/js'),
+        filename: '[name].bundle.js',
     },
     resolve: {
-        extensions: ['.js', '.ts', '.tsx'],
+        extensions: ['.tsx', '.ts', '.js'],
     },
     module: {
         rules: [{
-            test: /\.tsx?$/,
-            exclude: /node_modules/,
-            use: {
-              loader: 'ts-loader',
-            },
-        },{
             test: /\.css$/,
             use: ['style-loader', 'css-loader'],
+        }, {
+            test: /\.(ts|tsx)$/,
+            exclude: /node_modules/,
+            use: 'babel-loader',
         }],
     },
 };

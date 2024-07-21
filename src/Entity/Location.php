@@ -1,13 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Entity;
 
 use App\Repository\LocationRepository;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\VirtualProperty;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
@@ -15,25 +16,29 @@ class Location
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Device::class, inversedBy: 'locations')]
-    #[ORM\JoinColumn(nullable: false)]
     #[Exclude]
-    private ?Device $device;
+    #[ORM\ManyToOne(inversedBy: 'locations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Device $device = null;
 
-    #[ORM\Column(type: 'float')]
-    private ?float $accuracy;
+    #[ORM\ManyToOne]
+    private ?SpeedLimit $speedLimit = null;
 
-    #[ORM\Column(type: 'float')]
-    private ?float $speed;
-
-    #[ORM\Column(type: 'datetime')]
-    private ?DateTimeInterface $time;
+    #[Exclude]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $timestamp = null;
 
     #[ORM\Column(type: 'Point')]
-    private ?Point $location;
+    private ?Point $location = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $accuracy = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $speed = null;
 
     public function getId(): ?int
     {
@@ -45,47 +50,42 @@ class Location
         return $this->device;
     }
 
-    public function setDevice(?Device $device): self
+    public function setDevice(?Device $device): static
     {
         $this->device = $device;
 
         return $this;
     }
 
-    public function getAccuracy(): ?float
+    public function getSpeedLimit(): ?SpeedLimit
     {
-        return $this->accuracy;
+        return $this->speedLimit;
     }
 
-    public function setAccuracy(float $accuracy): self
+    public function setSpeedLimit(?SpeedLimit $speedLimit): static
     {
-        $this->accuracy = $accuracy;
+        $this->speedLimit = $speedLimit;
 
         return $this;
     }
 
-    public function getSpeed(): ?float
+    public function getTimestamp(): ?DateTimeInterface
     {
-        return $this->speed;
+        return $this->timestamp;
     }
 
-    public function setSpeed(float $speed): self
+    public function setTimestamp(DateTimeInterface $timestamp): static
     {
-        $this->speed = $speed;
+        $this->timestamp = $timestamp;
 
         return $this;
     }
 
-    public function getTime(): ?DateTimeInterface
+    #[SerializedName('timestamp')]
+    #[VirtualProperty]
+    public function getBlah(): int
     {
-        return $this->time;
-    }
-
-    public function setTime(DateTimeInterface $time): self
-    {
-        $this->time = $time;
-
-        return $this;
+        return $this->getTimestamp()?->getTimestamp();
     }
 
     public function getLocation(): ?Point
@@ -93,9 +93,33 @@ class Location
         return $this->location;
     }
 
-    public function setLocation(Point $location): self
+    public function setLocation(Point $location): static
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getAccuracy(): ?int
+    {
+        return $this->accuracy;
+    }
+
+    public function setAccuracy(?int $accuracy): static
+    {
+        $this->accuracy = $accuracy;
+
+        return $this;
+    }
+
+    public function getSpeed(): ?int
+    {
+        return $this->speed;
+    }
+
+    public function setSpeed(?int $speed): static
+    {
+        $this->speed = $speed;
 
         return $this;
     }

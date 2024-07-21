@@ -1,10 +1,18 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
-import { createRoot } from 'react-dom/client';
+import * as ReactDOM from 'react-dom/client';
 
-import Login from './components/Login';
+import Login from './Login';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
-const app = document.getElementById('app');
+const element = document.getElementById('login');
 
-if (app) {
-    createRoot(app).render(<Login />);
+if (element) {
+    const root = ReactDOM.createRoot(element);
+    root.render(
+        <Provider store={store}>
+          <Login />
+        </Provider>,
+      );
 }

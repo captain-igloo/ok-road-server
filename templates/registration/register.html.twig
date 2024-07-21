@@ -1,25 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}OK Road - Register{% endblock %}
-
 {% block stylesheets %}
-<link href="/css/register.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/okroad.css" />     
+<link rel="stylesheet" href="bootstrap.min.css" />
+{% endblock %}
+
+{% block title %}Register{% endblock %}
+
+{% block javascripts %}
+<script>
+var token = '{{ field_value(registrationForm._token) }}';
+
+</script>
+<!-- <script src="/js/register.bundle.js" defer></script> -->
 {% endblock %}
 
 {% block body %}
-<div class="inner-container">
-    <h1 class="text-secondary">Register</h1>
+    <div class="header">
+        <div class="logo">
+            <a href="/">
+                <img src="/img/ok.svg" width="40px" height="40px">
+            </a>
+            &nbsp; OK Road New Zealand
+        </div>
+    </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email, {
-            label: 'Email address'
-        }) }}
-        {{ form_row(registrationForm.plainPassword, {
+    <div class="card" style="width: 30rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="card-header">Register</div>
+        <div class="card-body">
+            {{ form_start(registrationForm, { 'attr': { 'novalidate': 'novalidate' }}) }}
+            {{ form_row(registrationForm.username) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.fullName) }}
+            {{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+
+    <!-- <div id="register" style="height: 100%"></div> -->
+    
+    <!-- <h1>Register</h1>
+
+     form_errors(registrationForm) 
+
+     form_start(registrationForm) 
+         form_row(registrationForm.username)
+         form_row(registrationForm.email) 
+        form_row(registrationForm.fullName) 
+         form_row(registrationForm.plainPassword, {
             label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn btn-primary">Register</button>
-    {{ form_end(registrationForm) }}
-</div>
+        })    
+        <button type="submit" class="btn">Register</button>
+    form_end(registrationForm) -->
 {% endblock %}

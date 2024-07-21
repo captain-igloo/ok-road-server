@@ -1,23 +1,37 @@
-version: "3"
+version: "3.7"
 
 services:
-  postgres:
-    image: postgis/postgis:13-3.2
-    environment:
-      POSTGRES_PASSWORD: speedo
-    volumes:
-      - .local/volumes/postgres:/var/lib/postgresql/data
-  nginx:
-    build:
-      context: .
-      dockerfile: .docker/nginx/Dockerfile
-    ports:
-      - 8080:80
-    volumes:
-      - .:/app
   php:
     build:
       context: .
-      dockerfile: .docker/php/dev.Dockerfile
+      dockerfile: .docker/php/Dockerfile
     volumes:
       - .:/app
+
+  nginx:
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile      
+    volumes:
+      - .:/app
+    ports:
+      - 8080:80
+
+  postgres:
+    build:
+      context: .
+      dockerfile: .docker/postgres/Dockerfile
+    volumes:
+      - .local/volumes/postgres:/var/lib/postgresql/data
+      - .:/app
+    environment:
+      POSTGRES_PASSWORD: topsecret
+
+  mosquitto:
+    image: eclipse-mosquitto
+    volumes:
+      - .docker/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - .docker/mosquitto/passwd:/etc/mosquitto/passwd
+    ports:
+      - "1883:1883"
+      - "9001:9001"

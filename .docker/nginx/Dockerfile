@@ -1,8 +1,3 @@
-FROM nginx:1.23
+FROM nginx:1.25
 
-RUN rm /etc/nginx/conf.d/default.conf
-COPY .docker/nginx/ok-road-server.conf /etc/nginx/conf.d/
-
-WORKDIR /app
-
-COPY public /app/public
+COPY .docker/nginx/nginx.conf /etc/nginx/conf.d/

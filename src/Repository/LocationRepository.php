@@ -1,21 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Repository;
 
+use App\Entity\Device;
 use App\Entity\Location;
 use App\Entity\User;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Location>
- *
- * @method Location|null find($id, $lockMode = null, $lockVersion = null)
- * @method Location|null findOneBy(array $criteria, array $orderBy = null)
- * @method Location[]    findAll()
- * @method Location[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class LocationRepository extends ServiceEntityRepository
 {
@@ -24,60 +19,42 @@ class LocationRepository extends ServiceEntityRepository
         parent::__construct($registry, Location::class);
     }
 
-    public function findDeviceLocation(User $user, int $deviceId, int $locationId): ?Location
+
+    public function findLocations(Device $device, DateTimeInterface $from, DateTimeInterface $to): array
     {
         return $this->createQueryBuilder('l')
-            ->join('l.device', 'd')
-            ->andWhere('l.id = :locationId')
-            ->setParameter('locationId', $locationId)
-            ->andWhere('d.id = :deviceId')
-            ->setParameter('deviceId', $deviceId)
-            ->andWhere('d.user = :user')
-            ->setParameter('user', $user)
+            ->andWhere('l.device = :device')
+            ->setParameter('device', $device)
+            ->andWhere('l.timestamp >= :from')
+            ->setParameter('from', $from)
+            ->andWhere('l.timestamp <= :to')
+            ->setParameter('to', $to)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
-    public function add(Location $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+    //    /**
+    //     * @return Location[] Returns an array of Location objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('l')
+    //            ->andWhere('l.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('l.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(Location $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-//    /**
-//     * @return Location[] Returns an array of Location objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Location
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Location
+    //    {
+    //        return $this->createQueryBuilder('l')
+    //            ->andWhere('l.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

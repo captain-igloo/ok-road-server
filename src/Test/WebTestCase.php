@@ -7,8 +7,8 @@ namespace App\Test;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
@@ -16,7 +16,7 @@ abstract class WebTestCase extends BaseWebTestCase
 {
     protected ?KernelBrowser $client = null;
 
-    private ?ContainerAwareLoader $fixtureLoader = null;
+    private ?Loader $fixtureLoader = null;
 
     private ?ORMExecutor $fixtureExecutor = null;
 
@@ -38,10 +38,10 @@ abstract class WebTestCase extends BaseWebTestCase
         $this->getFixtureExecutor()->execute($this->getFixtureLoader()->getFixtures());
     }
 
-    private function getFixtureLoader(): ContainerAwareLoader
+    private function getFixtureLoader(): Loader
     {
         if (!$this->fixtureLoader) {
-            $this->fixtureLoader = new ContainerAwareLoader(self::$kernel->getContainer());
+            $this->fixtureLoader = new Loader(self::$kernel->getContainer());
         }
         return $this->fixtureLoader;
     }

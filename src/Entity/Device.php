@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Entity;
 
 use App\Repository\DeviceRepository;
@@ -15,19 +13,25 @@ class Device
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'devices')]
+    #[Exclude]
+    #[ORM\ManyToOne(inversedBy: 'devices')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Exclude]
-    private ?User $user;
+    private ?User $user = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $macAddress;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'device', targetEntity: Location::class, orphanRemoval: true)]
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    /**
+     * @var Collection<int, Location>
+     */
     #[Exclude]
+    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'device')]
     private Collection $locations;
 
     public function __construct()
@@ -45,21 +49,33 @@ class Device
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getMacAddress(): ?string
+    public function getName(): ?string
     {
-        return $this->macAddress;
+        return $this->name;
     }
 
-    public function setMacAddress(string $macAddress): self
+    public function setName(string $name): static
     {
-        $this->macAddress = $macAddress;
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
@@ -72,17 +88,17 @@ class Device
         return $this->locations;
     }
 
-    public function addLocation(Location $location): self
+    public function addLocation(Location $location): static
     {
         if (!$this->locations->contains($location)) {
-            $this->locations[] = $location;
+            $this->locations->add($location);
             $location->setDevice($this);
         }
 
         return $this;
     }
 
-    public function removeLocation(Location $location): self
+    public function removeLocation(Location $location): static
     {
         if ($this->locations->removeElement($location)) {
             // set the owning side to null (unless already changed)

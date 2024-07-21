@@ -1,0 +1,60 @@
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    border-bottom: 1px solid #CCC;
+    flex-grow: 0;
+    height: 50px;
+    padding: 5px;
+    width: 100%;
+}
+
+.leaflet-container {
+    height: 100%;
+    flex-grow: 1;
+}
+
+.logo {
+    flex-grow: 1;
+}
+
+.main-container {
+    height: 100%;
+}
+
+.main-container--row {
+    height: 100%;
+}
+
+.left-container {
+    padding: 1px !important;
+}
+
+.map {
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.right-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1px !important;
+}
+
+.chart-container {
+    flex-grow: 0;
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 1px;
+}
