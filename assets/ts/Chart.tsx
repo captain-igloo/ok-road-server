@@ -48,17 +48,19 @@ export default function Chart() {
         const diff = features[keys[keys.length - 1]].timestamp - features[keys[0]].timestamp;
         const first = features[keys[0]].timestamp;
         const a = diff / 59;
-        keys.forEach((key) => {
-            const timestamp = features[key].timestamp;
-            const index = Math.floor((timestamp - first) / a);
-            values[index]++;
-        });
+        if (a > 0) {
+            keys.forEach((key) => {
+                const timestamp = features[key].timestamp;
+                const index = Math.floor((timestamp - first) / a);
+                values[index]++;
+            });
 
-        for (let i = first; i <= features[keys[keys.length - 1]].timestamp; i += a) {
-            labels.push(moment(new Date(i * 1000)).format('h:mm a'));
+            for (let i = first; i <= features[keys[keys.length - 1]].timestamp; i += a) {
+                labels.push(moment(new Date(i * 1000)).format('h:mm a'));
+            }
         }
     }
-    
+
     return (
         <div className="chart-container">
             <Bar options={options} data={{
