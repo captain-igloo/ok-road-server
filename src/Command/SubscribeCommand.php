@@ -45,15 +45,15 @@ class SubscribeCommand extends Command
                 'username' => 'colin',
             ]);
             if (!$user) {
-                $logger->error('Failed to find user');
+                $this->logger->error('Failed to find user');
                 return;
             }
             if (!($device = $this->getDevice($user, $matchedWildcards[1]))) {
-                $logger->error('Failed to find device: ' . $matchedWildcards[1]);
+                $this->logger->error('Failed to find device: ' . $matchedWildcards[1]);
                 return;
             }
             if (($json = json_decode($message, true)) === null) {
-                $logger->error('Failed to decode: ' . $message);
+                $this->logger->error('Failed to decode: ' . $message);
                 return;
             }
             if (
@@ -64,7 +64,7 @@ class SubscribeCommand extends Command
                 || !array_key_exists('lon', $json)
                 || !is_numeric($json['lon'])
             ) {
-                $logger->error('Invalid json: ' . $message);
+                $this->logger->error('Invalid json: ' . $message);
                 return;
             }
             try {
@@ -83,7 +83,7 @@ class SubscribeCommand extends Command
                 $this->entityManager->persist($location);
                 $this->entityManager->flush();
             } catch (Exception $e) {
-                $logger->error($e->getMessage());
+                $this->logger->error($e->getMessage());
             }
 
         }, 0);
