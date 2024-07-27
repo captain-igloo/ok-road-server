@@ -36,11 +36,21 @@ export default function Map(props: Props) {
 
     const features = useSelector((state: RootState) => state.okRoad.features);
     const markers = Object.keys(features).map((featureId) => {
+        const feature = features[featureId];
+        let image = 'gray.svg';
+        if (feature.speedLimit !== undefined) {
+            if (feature.velocity > feature.speedLimit) {
+                image = 'red.svg';
+            } else {
+                image = 'green.svg';
+            }
+        }
+
         return (
             <Marker
                 icon={new Icon({
                     iconSize: [20, 20],
-                    iconUrl: '/img/green.svg',
+                    iconUrl: `/img/${image}`,
                 })}
                 key={featureId}
                 position={[features[featureId].coordinates[1], features[featureId].coordinates[0]]}
@@ -49,7 +59,7 @@ export default function Map(props: Props) {
                     <p>
                         <strong>Date:</strong>
                         {' '}
-                        {formatDate(new Date(parseInt(featureId, 10) * 1000))}
+                        {formatDate(new Date(features[featureId].timestamp * 1000))}
                     </p>
                     <p>
                         <strong>Speed:</strong>

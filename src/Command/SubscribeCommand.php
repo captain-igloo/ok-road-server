@@ -12,8 +12,10 @@ use App\Repository\SpeedLimitRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use PhpMqtt\Client\MqttClient;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,6 +29,7 @@ class SubscribeCommand extends Command
         private DeviceRepository $deviceRepository,
         private SpeedLimitRepository $speedLimitRepository,
         private UserRepository $userRepository,
+        private LoggerInterface $logger,
     ) {
         parent::__construct();
     }
@@ -41,18 +44,30 @@ class SubscribeCommand extends Command
             $user = $this->userRepository->findOneBy([
                 'username' => 'colin',
             ]);
+            if (!$user) {
+                $logger->error('Failed to find user');
+                return;
+            }
+            if (!($device = $this->getDevice($user, $matchedWildcards[1]))) {
+                $logger->error('Failed to find device: ' . $matchedWildcards[1]);
+                return;
+            }
+            if (($json = json_decode($message, true)) === null) {
+                $logger->error('Failed to decode: ' . $message);
+                return;
+            }
             if (
-                $user
-                && ($device = $this->getDevice($user, $matchedWildcards[1]))
-                && ($json = json_decode($message, true)) !== null
-                && is_array($json)
-                && array_key_exists('_type', $json)
-                && $json['_type'] === 'location'
-                && array_key_exists('lat', $json)
-                && is_numeric($json['lat'])
-                && array_key_exists('lon', $json)
-                && is_numeric($json['lon'])
+                !is_array($json)
+                || !array_key_exists('_type', $json)
+                || !array_key_exists('lat', $json)
+                || !is_numeric($json['lat'])
+                || !array_key_exists('lon', $json)
+                || !is_numeric($json['lon'])
             ) {
+                $logger->error('Invalid json: ' . $message);
+                return;
+            }
+            try {
                 $point = new Point($json['lon'], $json['lat'], 4326);
                 $location = new Location();
                 $location->setDevice($device);
@@ -67,7 +82,10 @@ class SubscribeCommand extends Command
                 }
                 $this->entityManager->persist($location);
                 $this->entityManager->flush();
+            } catch (Exception $e) {
+                $logger->error($e->getMessage());
             }
+
         }, 0);
 
         $mqtt->loop(true);
