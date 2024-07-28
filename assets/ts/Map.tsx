@@ -37,13 +37,29 @@ export default function Map(props: Props) {
     const features = useSelector((state: RootState) => state.okRoad.features);
     const markers = Object.keys(features).map((featureId) => {
         const feature = features[featureId];
+        let speedLimit;
         let image = 'gray.svg';
         if (feature.speedLimit !== undefined) {
-            if (feature.velocity > feature.speedLimit) {
+            if (feature.velocity > feature.speedLimit.speedLimit) {
                 image = 'red.svg';
             } else {
                 image = 'green.svg';
             }
+            speedLimit = (
+                <>
+                    <p>
+                        <strong>Speed Limit:</strong>
+                        {' '}
+                        {feature.speedLimit.speedLimit}
+                        km/h
+                    </p>
+                    <p>
+                        <strong>Speed Limit Area:</strong>
+                        {' '}
+                        {feature.speedLimit.description}
+                    </p>
+                </>
+            );
         }
 
         return (
@@ -67,6 +83,7 @@ export default function Map(props: Props) {
                         {features[featureId].velocity}
                         km/h
                     </p>
+                    {speedLimit}
                 </Popup>
             </Marker>
         );

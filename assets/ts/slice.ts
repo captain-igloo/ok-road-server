@@ -8,7 +8,10 @@ import { AppDispatch, RootState } from './store';
 export interface Feature {
     coordinates: number[];
     id: number;
-    speedLimit?: number;
+    speedLimit?: {
+        description: string;
+        speedLimit: number;
+    };
     timestamp: number;
     velocity: number;
 };
@@ -73,6 +76,7 @@ export const fetchLocations = createAsyncThunk<{
     };
     speed?: number;
     speed_limit?: {
+        description: string;
         speed_limit: number;
     };
     timestamp: number;
@@ -127,10 +131,17 @@ export const okRoadSlice = createSlice({
                 } else {
                     bounds.extend(point);
                 }
+                let speedLimit;
+                if (feature.speed_limit) {
+                    speedLimit = {
+                        description: feature.speed_limit.description,
+                        speedLimit: feature.speed_limit.speed_limit,
+                    };
+                }
                 state.features[feature.id] = {
                     coordinates: [feature.location.x, feature.location.y],
                     id: feature.id,
-                    speedLimit: feature.speed_limit?.speed_limit, 
+                    speedLimit,
                     timestamp: feature.timestamp,
                     velocity: feature.speed || 0,
                 };
