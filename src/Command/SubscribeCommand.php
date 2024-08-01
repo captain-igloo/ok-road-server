@@ -42,7 +42,7 @@ class SubscribeCommand extends Command
         $mqtt->subscribe('owntracks/+/+', function ($topic, $message, $retained, $matchedWildcards) {
             $username = $matchedWildcards[0];
             $user = $this->userRepository->findOneBy([
-                'username' => 'colin',
+                'username' => $username,
             ]);
             if (!$user) {
                 $this->logger->error('Failed to find user');
@@ -71,7 +71,7 @@ class SubscribeCommand extends Command
                 $point = new Point($json['lon'], $json['lat'], 4326);
                 $location = new Location();
                 $location->setDevice($device);
-                $location->setSpeedLimit($this->speedLimitRepository->findByPoint($point));
+                $location->setSpeedLimit($this->getSpeedLimit($point));
                 $location->setTimestamp(new DateTime(date('Y-m-d H:i:s', $json['tst'])));
                 $location->setLocation($point);
                 if (array_key_exists('acc', $json)) {
@@ -91,6 +91,19 @@ class SubscribeCommand extends Command
         $mqtt->loop(true);
 
         return 0;
+    }
+
+    private function getSpeedLimit(Point $point): ?SpeedLimit
+    {
+        try {
+            return $this->speedLimitRepository->findByPoint($point);
+        } catch (Exception $e) {
+            // probably speed limit polygons overlap
+            $this->logger->error('Failed to find speed limit at: ' . $point->getX() . ', ' . $point->getY(), [
+                'exception' => $e,
+            ]);
+        }
+        return null;
     }
 
     private function getDevice(User $user, string $deviceName): Device
