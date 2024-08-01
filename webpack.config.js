@@ -5,7 +5,6 @@ const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development
 module.exports = {
     mode,
     entry: {
-        login: './assets/ts/login.tsx',
         app: './assets/ts/index.tsx',
     },
     output: {

@@ -39,11 +39,14 @@ export default function Map(props: Props) {
         const feature = features[featureId];
         let speedLimit;
         let image = 'gray.svg';
+        let zIndexOffset = 1;
         if (feature.speedLimit !== undefined) {
             if (feature.velocity > feature.speedLimit.speedLimit) {
                 image = 'red.svg';
+                zIndexOffset = 3;
             } else {
                 image = 'green.svg';
+                zIndexOffset = 2;
             }
             speedLimit = (
                 <>
@@ -70,6 +73,7 @@ export default function Map(props: Props) {
                 })}
                 key={featureId}
                 position={[features[featureId].coordinates[1], features[featureId].coordinates[0]]}
+                zIndexOffset={zIndexOffset}
             >
                 <Popup>
                     <p>

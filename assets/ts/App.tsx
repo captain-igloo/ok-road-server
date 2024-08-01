@@ -8,29 +8,13 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Chart from './Chart';
+import Devices from './Devices';
 import Header from './Header';
 import Map from './Map';
 import { setFromDate, setShowRecent, setToDate } from './slice';
 import { AppDispatch, RootState } from './store';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
-
-function Devices() {
-    const devices = useSelector((state: RootState) => state.okRoad.devices);
-
-    const options = devices.map((device) => {
-        return <option key={device.id} value={device.id}>{device.description}</option>;
-    });
-
-    return (
-        <Form.Group className="mb-3">
-            <Form.Label>Device:</Form.Label>
-            <Form.Select>
-                {options}
-            </Form.Select>
-        </Form.Group>
-    );
-}
 
 export default function App() {
     const bounds = useSelector((state: RootState) => state.okRoad.bounds);

@@ -81,18 +81,19 @@ export const fetchLocations = createAsyncThunk<{
     };
     timestamp: number;
 }[], void, {state: RootState}>(
-    'adf',
+    'okroad/fetchLocationsStatus',
     async (_, { getState }) => {
         let fromDate: number;
         let toDate: number;
         if (getState().okRoad.showRecent) {
-            fromDate = Date.now() - (60 * 60 * 24 * 1000) - (60 * 60 * 12 * 1000);
-            toDate = Date.now() - (60 * 60 * 12 * 1000);
+            fromDate = Date.now() - (60 * 60 * 24 * 1000);
+            toDate = Date.now();
         } else {
             fromDate = getState().okRoad.fromDate;
             toDate = getState().okRoad.toDate;
         }
-        const response = await fetch(`/api/locations?device=a14&from=${moment(new Date(fromDate)).format('Y-MM-DDTHH:mm')}&to=${moment(new Date(toDate)).format('Y-MM-DDTHH:mm')}`);
+
+        const response = await fetch(`/api/locations?device=a14&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`);
         if (!response.ok) {
             throw new Error('Failed to fetch');
         }

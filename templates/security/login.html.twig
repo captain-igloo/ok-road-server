@@ -2,9 +2,8 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" href="/css/okroad.css" />     
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
 {% endblock %}
-
-{% block title %}Log in!{% endblock %}
 
 {% block javascripts %}
 <script>
@@ -13,45 +12,37 @@ var token = '{{ csrf_token('authenticate') }}';
 var error = '{{ error.messageKey|trans(error.messageData, 'security') }}';
 {% endif %}
 </script>
-<script src="/js/login.bundle.js" defer></script>
 {% endblock %}
 
 {% block body %}
-    <div id="login" style="height: 100%" ></div>
-    <!-- <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Username</label>
-        <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}"
-        >
-
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
-
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" name="_remember_me"> Remember me
-                </label>
-            </div>
-        #}
-
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form> -->
+    <div class="header">
+        <div class="logo">
+            <a href="/">
+                <img src="/img/ok.svg" width="40px" height="40px">
+            </a>
+            &nbsp; OK Road New Zealand
+        </div>
+    </div>
+    <div class="card" style="width: 30rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="card-header">Log In</div>
+        <div class="card-body">
+            <form method="post">
+{% if error %}
+                <div class="alert alert-danger">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+{% endif %}
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input name="_username" required="" type="text" value="{{ last_username }}" class="form-control" autocomplete="username">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input name="_password" required="" type="password" class="form-control" autocomplete="current-password">
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
