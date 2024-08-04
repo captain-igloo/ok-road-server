@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Entity\Device;
 use App\Entity\Location;
+use App\Entity\SpeedLimit;
 use App\Entity\User;
 use App\Repository\DeviceRepository;
 use App\Repository\SpeedLimitRepository;
@@ -14,6 +15,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use PhpMqtt\Client\ConnectionSettings;
 use PhpMqtt\Client\MqttClient;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -37,7 +39,11 @@ class SubscribeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $mqtt = new MqttClient('mosquitto', 1883, 'test-subscriber');
-        $mqtt->connect();
+
+        $connectionSettings = (new ConnectionSettings())
+            ->setReconnectAutomatically(true);
+
+        $mqtt->connect($connectionSettings);
 
         $mqtt->subscribe('owntracks/+/+', function ($topic, $message, $retained, $matchedWildcards) {
             $username = $matchedWildcards[0];
@@ -71,7 +77,8 @@ class SubscribeCommand extends Command
                 $point = new Point($json['lon'], $json['lat'], 4326);
                 $location = new Location();
                 $location->setDevice($device);
-                $location->setSpeedLimit($this->getSpeedLimit($point));
+                $location->setSpeedLimit($this->speedLimitRepository->findByPoint($point));
+                // $location->setSpeedLimit($this->getSpeedLimit($point));
                 $location->setTimestamp(new DateTime(date('Y-m-d H:i:s', $json['tst'])));
                 $location->setLocation($point);
                 if (array_key_exists('acc', $json)) {
