@@ -27,6 +27,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SubscribeCommand extends Command
 {
     public function __construct(
+        private string $username,
+        private string $password,
         private EntityManagerInterface $entityManager,
         private DeviceRepository $deviceRepository,
         private SpeedLimitRepository $speedLimitRepository,
@@ -38,9 +40,11 @@ class SubscribeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $mqtt = new MqttClient('mosquitto', 1883, 'test-subscriber');
+        $mqtt = new MqttClient('mosquitto', 1883);
 
         $connectionSettings = (new ConnectionSettings())
+            ->setUsername($this->username)
+            ->setPassword($this->password)
             ->setReconnectAutomatically(true);
 
         $mqtt->connect($connectionSettings);
@@ -92,7 +96,6 @@ class SubscribeCommand extends Command
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
             }
-
         }, 0);
 
         $mqtt->loop(true);

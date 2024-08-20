@@ -3,16 +3,16 @@ import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Chart from './Chart';
 import Devices from './Devices';
-import Header from './Header';
 import Map from './Map';
-import { setFromDate, setShowRecent, setToDate } from './slice';
-import { AppDispatch, RootState } from './store';
+import Header from '../Header';
+import { setFromDate, setShowRecent, setToDate } from '../slice';
+import { AppDispatch, RootState } from '../store';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 
@@ -21,12 +21,13 @@ export default function App() {
     const fromDate = useSelector((state: RootState) => state.okRoad.fromDate);
     const showRecent = useSelector((state: RootState) => state.okRoad.showRecent);
     const toDate = useSelector((state: RootState) => state.okRoad.toDate);
+    const user = useSelector((state: RootState) => state.okRoad.user);
     
     const dispatch = useAppDispatch();
 
     return (
         <>
-            <Header />
+            <Header user={user} />
             <Container className="main-container" fluid>
                 <Row className="main-container--row">
                     <Col className="left-container" xs={3}>
@@ -81,6 +82,6 @@ export default function App() {
                     </Col>
                 </Row>
             </Container>
-        </>        
+        </>
     );
 }

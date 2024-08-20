@@ -16,6 +16,21 @@ final class DefaultController extends AbstractController
     {
     }
 
+    #[Route('/')]
+    public function index(#[CurrentUser] ?User $user): Response
+    {
+        $configuration = [];
+        if ($user !== null) {
+            $configuration['user'] = [
+                'fullName' => $user->getFullName(),
+                'username' => $user->getUsername(),
+            ];
+        }
+        return $this->render('index.html.twig', [
+            'configuration' => $configuration,
+        ]);
+    }
+
     #[Route('/map')]
     public function map(#[CurrentUser] User $user): Response
     {

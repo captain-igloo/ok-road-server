@@ -1,28 +1,18 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
 
-import App from './App';
-import { fetchDevices, fetchLocations, setUser } from './slice';
-import { store } from './store';
+import Header from './Header';
 
 const element = document.getElementById('app');
 if (element) {
+    const dataParams = element.getAttribute('data-params');
+    let configuration;
+    if (dataParams) {
+        configuration = JSON.parse(dataParams);
+    }
+
     const root = ReactDOM.createRoot(element);
     root.render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
+        <Header user={configuration.user} />,
     );
-
-    store.dispatch(fetchDevices());
-    store.dispatch(fetchLocations());
-    setInterval(() => {
-        store.dispatch(fetchLocations());
-    }, 300000);
-    const dataParams = element.getAttribute('data-params');
-    if (dataParams) {
-        const user = JSON.parse(dataParams);
-        store.dispatch(setUser(user));
-    }
 }

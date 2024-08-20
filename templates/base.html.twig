@@ -4,12 +4,8 @@
         <meta charset="UTF-8">
         <title>{% block title %}OK Road{% endblock %}</title>
         <link rel="icon" href="/favicon.ico">
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+        {% block stylesheets %}{% endblock %}
+        {% block javascripts %}{% endblock %}
     </head>
     <body style="height: 100%">
         {% block body %}{% endblock %}

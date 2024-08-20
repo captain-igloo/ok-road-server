@@ -12,37 +12,10 @@ var token = '{{ csrf_token('authenticate') }}';
 var error = '{{ error.messageKey|trans(error.messageData, 'security') }}';
 {% endif %}
 </script>
+<script src="/js/shared.bundle.js" defer></script>
+<script src="/js/login.bundle.js" defer></script>
 {% endblock %}
 
 {% block body %}
-    <div class="header">
-        <div class="logo">
-            <a href="/">
-                <img src="/img/ok.svg" width="40px" height="40px">
-            </a>
-            &nbsp; OK Road New Zealand
-        </div>
-    </div>
-    <div class="card" style="width: 30rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        <div class="card-header">Log In</div>
-        <div class="card-body">
-            <form method="post">
-{% if error %}
-                <div class="alert alert-danger">
-                    {{ error.messageKey|trans(error.messageData, 'security') }}
-                </div>
-{% endif %}
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input name="_username" required="" type="text" value="{{ last_username }}" class="form-control" autocomplete="username">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input name="_password" required="" type="password" class="form-control" autocomplete="current-password">
-                </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </div>
+<div id="login" />
 {% endblock %}

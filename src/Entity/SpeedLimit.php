@@ -10,6 +10,7 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
 #[ORM\Entity(repositoryClass: SpeedLimitRepository::class)]
 class SpeedLimit
 {
+    #[Exclude]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

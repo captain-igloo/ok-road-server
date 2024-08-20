@@ -18,7 +18,7 @@ final class ApiControllerTest extends WebTestCase
             '/api/locations?device=my-device&from=2024-07-16 00:00:00&to=2024-07-17 00:00:00',
         );
         $this->assertEquals(
-            '[{"timestamp":1721088000,"id":1,"location":{"srid":4326,"x":174,"y":-40},"accuracy":100,"speed":100}]',
+            '[{"timestamp":1721088000,"location":{"x":174,"y":-40},"id":1,"accuracy":100,"speed":100}]',
             $this->client->getResponse()->getContent(),
         );
     }

@@ -1,15 +1,49 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+    faGlobe,
+    faRightFromBracket,
+    faRightToBracket,
+    faUser,
+    faUserPlus,
+} from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useSelector } from 'react-redux';
 
-import { RootState } from './store';
+interface Props {
+    user?: {
+        fullName: string;
+    };
+}
 
-function UserMenu() {
-    const user = useSelector((state: RootState) => state.okRoad.user);
-    if (user.fullName) {
+function UserMenu(props: Props) {
+    const { user } = props;
+
+    if (user === undefined) {
         return (
+            <ButtonGroup>
+                <Button href="/register" variant="outline-dark">
+                    <FontAwesomeIcon icon={faUserPlus} />
+                    &nbsp;
+                    Register
+                </Button>
+                <Button href="/login" variant="outline-dark">
+                    <FontAwesomeIcon icon={faRightToBracket} />
+                    &nbsp;
+                    Sign in
+                </Button>
+            </ButtonGroup>
+        );
+    }
+
+    return (
+        <>
+            <Button href="/map" variant="outline-dark">
+                <FontAwesomeIcon icon={faGlobe} />
+                &nbsp;
+                Map
+            </Button>
             <Dropdown>
                 <Dropdown.Toggle variant="outline">
                     <FontAwesomeIcon icon={faUser} />
@@ -24,12 +58,13 @@ function UserMenu() {
                     </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-        );
-    }
-    return null;
+        </>
+    );
 }
 
-export default function Header() {
+export default function Header(props: Props) {
+    const { user } = props;
+
     return (
         <div className="header">
             <div className="logo">
@@ -39,7 +74,7 @@ export default function Header() {
                 &nbsp;
                 OK Road New Zealand
             </div>
-            <UserMenu />
+            <UserMenu user={user} />
         </div>
     );
 }

@@ -5,7 +5,26 @@ const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development
 module.exports = {
     mode,
     entry: {
-        app: './assets/ts/index.tsx',
+        shared: [
+            '@fortawesome/free-solid-svg-icons',
+            '@fortawesome/react-fontawesome',
+            'bootstrap',
+            'react',
+            'react-bootstrap',
+            'react-dom',
+        ],
+        index: {
+            import: './assets/ts/index.tsx',
+            dependOn: 'shared',
+        },
+        login: {
+            import: './assets/ts/login.tsx',
+            dependOn: 'shared',
+        },
+        map: {
+            import: './assets/ts/map.tsx',
+            dependOn: 'shared',
+        },
     },
     output: {
         path: path.resolve(__dirname, 'public/js'),

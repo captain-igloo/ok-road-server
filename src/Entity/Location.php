@@ -31,6 +31,7 @@ class Location
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $timestamp = null;
 
+    #[Exclude]
     #[ORM\Column(type: 'Point')]
     private ?Point $location = null;
 
@@ -83,7 +84,7 @@ class Location
 
     #[SerializedName('timestamp')]
     #[VirtualProperty]
-    public function getBlah(): int
+    public function serializeTimestamp(): ?int
     {
         return $this->getTimestamp()?->getTimestamp();
     }
@@ -98,6 +99,17 @@ class Location
         $this->location = $location;
 
         return $this;
+    }
+
+    #[SerializedName('location')]
+    #[VirtualProperty]
+    public function serializeLocation(): ?Point
+    {
+        $location = $this->getLocation();
+        if ($location) {
+            return new Point($location->getX(), $location->getY());
+        }
+        return $location;
     }
 
     public function getAccuracy(): ?int

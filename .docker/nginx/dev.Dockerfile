@@ -1,6 +1,3 @@
 FROM nginx:1.25
 
 COPY .docker/nginx/nginx.conf /etc/nginx/conf.d/
-COPY public /app/public
-
-RUN rm /etc/nginx/conf.d/default.conf
