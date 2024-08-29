@@ -25,6 +25,10 @@ module.exports = {
             import: './assets/ts/map.tsx',
             dependOn: 'shared',
         },
+        register: {
+            import: './assets/ts/register.tsx',
+            dependOn: 'shared',
+        }
     },
     output: {
         path: path.resolve(__dirname, 'public/js'),

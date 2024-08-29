@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Form\JsonSerializer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +17,16 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class RegistrationController extends AbstractController
 {
+    public function __construct(
+        private UserPasswordHasherInterface $userPasswordHasher,
+        private EntityManagerInterface $entityManager,
+        private JsonSerializer $jsonSerializer,
+    ) {
+    }
+
     #[Route('/register', name: 'app_register')]
-    public function register(
-        Request $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager,
-        #[CurrentUser] ?User $user,
-    ): Response {
+    public function register(Request $request, #[CurrentUser] ?User $user): Response
+    {
         if ($user !== null) {
             return $this->redirectToRoute('app_default_map');
         }
@@ -34,22 +38,21 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
-                $userPasswordHasher->hashPassword(
+                $this->userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_default_map');
         }
-
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
+            'form' => $this->jsonSerializer->serialize($form),
         ]);
     }
 }

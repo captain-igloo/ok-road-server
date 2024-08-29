@@ -8,48 +8,10 @@
 {% block title %}Register{% endblock %}
 
 {% block javascripts %}
-<script>
-var token = '{{ field_value(registrationForm._token) }}';
-</script>
-
+<script src="/js/shared.bundle.js" defer></script>
+<script src="/js/register.bundle.js" defer></script>
 {% endblock %}
 
 {% block body %}
-    <div class="header">
-        <div class="logo">
-            <a href="/">
-                <img src="/img/ok.svg" width="40px" height="40px">
-            </a>
-            &nbsp; OK Road New Zealand
-        </div>
-    </div>
-
-    <div class="card" style="width: 30rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        <div class="card-header">Register</div>
-        <div class="card-body">
-            {{ form_start(registrationForm, { 'attr': { 'novalidate': 'novalidate' }}) }}
-            {{ form_row(registrationForm.username) }}
-            {{ form_row(registrationForm.email) }}
-            {{ form_row(registrationForm.fullName) }}
-            {{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}
-            <button type="submit" class="btn btn-primary">Submit</button>
-            {{ form_end(registrationForm) }}
-        </div>
-    </div>
-
-    <!-- <div id="register" style="height: 100%"></div> -->
-    
-    <!-- <h1>Register</h1>
-
-     form_errors(registrationForm) 
-
-     form_start(registrationForm) 
-         form_row(registrationForm.username)
-         form_row(registrationForm.email) 
-        form_row(registrationForm.fullName) 
-         form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        })    
-        <button type="submit" class="btn">Register</button>
-    form_end(registrationForm) -->
+    <div id="register" data-params="{{ form | json_encode }}"></div>
 {% endblock %}

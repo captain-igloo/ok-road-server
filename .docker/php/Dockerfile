@@ -4,19 +4,10 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 COPY . /app
 
-WORKDIR /app
-
-ENV NVM_DIR=/root/.nvm
-
 RUN apt update \
     && apt install unzip \
-    && composer install --no-dev \
-    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash \
-    && . "$NVM_DIR/nvm.sh" \
-    && nvm install v20 \
-    && nvm use v20 \
-    && npm ci \
-    && npm run build
+    && cd /app \
+    && composer install --no-dev
 
 FROM php:8.3-fpm
 

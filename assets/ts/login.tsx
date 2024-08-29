@@ -19,7 +19,7 @@ if (element) {
 
     root.render(
         <>
-            <Header />
+            <Header showSignIn={false} />
             <Card
                 style={{
                     width: '30rem',

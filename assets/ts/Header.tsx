@@ -12,27 +12,43 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 interface Props {
+    showRegister?: boolean;
+    showSignIn?: boolean;
     user?: {
         fullName: string;
     };
 }
 
 function UserMenu(props: Props) {
-    const { user } = props;
+    const { showRegister, showSignIn, user } = props;
 
     if (user === undefined) {
-        return (
-            <ButtonGroup>
+        let registerButton;
+        if (showRegister !== false) {
+            registerButton = (
                 <Button href="/register" variant="outline-dark">
                     <FontAwesomeIcon icon={faUserPlus} />
                     &nbsp;
                     Register
                 </Button>
+            );
+        }
+
+        let signInButton;
+        if (showSignIn !== false) {
+            signInButton = (
                 <Button href="/login" variant="outline-dark">
                     <FontAwesomeIcon icon={faRightToBracket} />
                     &nbsp;
                     Sign in
                 </Button>
+            );
+        }
+
+        return (
+            <ButtonGroup>
+                {registerButton}
+                {signInButton}
             </ButtonGroup>
         );
     }
@@ -63,7 +79,7 @@ function UserMenu(props: Props) {
 }
 
 export default function Header(props: Props) {
-    const { user } = props;
+    const { user, showRegister, showSignIn } = props;
 
     return (
         <div className="header">
@@ -74,7 +90,7 @@ export default function Header(props: Props) {
                 &nbsp;
                 OK Road New Zealand
             </div>
-            <UserMenu user={user} />
+            <UserMenu showRegister={showRegister} showSignIn={showSignIn} user={user} />
         </div>
     );
 }
