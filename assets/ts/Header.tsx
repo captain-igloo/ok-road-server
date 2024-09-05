@@ -12,6 +12,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 interface Props {
+    showMap?: boolean;
     showRegister?: boolean;
     showSignIn?: boolean;
     user?: {
@@ -20,13 +21,18 @@ interface Props {
 }
 
 function UserMenu(props: Props) {
-    const { showRegister, showSignIn, user } = props;
+    const {
+        showMap,
+        showRegister,
+        showSignIn,
+        user,
+    } = props;
 
     if (user === undefined) {
         let registerButton;
         if (showRegister !== false) {
             registerButton = (
-                <Button href="/register" variant="outline-dark">
+                <Button href="/register" variant="outline">
                     <FontAwesomeIcon icon={faUserPlus} />
                     &nbsp;
                     Register
@@ -37,7 +43,7 @@ function UserMenu(props: Props) {
         let signInButton;
         if (showSignIn !== false) {
             signInButton = (
-                <Button href="/login" variant="outline-dark">
+                <Button href="/login" variant="outline">
                     <FontAwesomeIcon icon={faRightToBracket} />
                     &nbsp;
                     Sign in
@@ -53,13 +59,20 @@ function UserMenu(props: Props) {
         );
     }
 
-    return (
-        <>
-            <Button href="/map" variant="outline-dark">
+    let mapButton;
+    if (showMap !== false) {
+        mapButton = (
+            <Button href="/map" variant="outline">
                 <FontAwesomeIcon icon={faGlobe} />
                 &nbsp;
                 Map
             </Button>
+        );
+    }
+
+    return (
+        <>
+            {mapButton}
             <Dropdown>
                 <Dropdown.Toggle variant="outline">
                     <FontAwesomeIcon icon={faUser} />
@@ -79,7 +92,12 @@ function UserMenu(props: Props) {
 }
 
 export default function Header(props: Props) {
-    const { user, showRegister, showSignIn } = props;
+    const {
+        showMap,
+        showRegister,
+        showSignIn,
+        user,
+    } = props;
 
     return (
         <div className="header">
@@ -90,7 +108,7 @@ export default function Header(props: Props) {
                 &nbsp;
                 OK Road New Zealand
             </div>
-            <UserMenu showRegister={showRegister} showSignIn={showSignIn} user={user} />
+            <UserMenu showMap={showMap} showRegister={showRegister} showSignIn={showSignIn} user={user} />
         </div>
     );
 }

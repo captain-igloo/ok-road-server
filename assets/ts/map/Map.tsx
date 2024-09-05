@@ -10,7 +10,7 @@ import {
 } from 'react-leaflet';
 import { useSelector } from 'react-redux';
 
-import { RootState } from './store';
+import { RootState } from '../store';
 
 interface Props {
     bounds?: [[number, number], [number, number]];

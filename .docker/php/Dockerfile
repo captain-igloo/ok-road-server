@@ -20,7 +20,6 @@ COPY src /app/src
 COPY templates /app/templates
 
 COPY --from=build /app/vendor /app/vendor
-COPY --from=build /app/public/js /app/public/js
 
 RUN mkdir -p /app/var/cache \
     && chown www-data: /app/var/cache \

@@ -7,28 +7,28 @@ namespace App\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-final class JsonSerializer
+final class FormNormalizer
 {
     public function __construct(private CsrfTokenManagerInterface $csrfTokenManager)
     {
     }
 
-    public function serialize(FormInterface $form): array
+    public function normalize(FormInterface $form, string $tokenId): array
     {
-        $serialized = [
+        $normalized = [
             'fields' => [],
-            'token' => $this->csrfTokenManager->getToken('registration_form')->getValue(),
+            'token' => $this->csrfTokenManager->getToken($tokenId)->getValue(),
         ];
 
         if (count($form->getErrors()) > 0) {
-            $serialized['errors'] = [];
+            $normalized['errors'] = [];
             foreach ($form->getErrors() as $e) {
-                $serialized['errors'][] = $e->getMessage();
+                $normalized['errors'][] = $e->getMessage();
             }
         }
         
         foreach ($form as $k => $v) {
-            $serialized['fields'][$k] = [
+            $normalized['fields'][$k] = [
                 'value' => $v->getData(),
             ];
             if (count($v->getErrors()) > 0) {
@@ -36,10 +36,10 @@ final class JsonSerializer
                 foreach ($v->getErrors() as $e) {
                     $errors[] = $e->getMessage();
                 }
-                $serialized['fields'][$k]['errors'] = $errors;
+                $normalized['fields'][$k]['errors'] = $errors;
             }
         }
 
-        return $serialized;
+        return $normalized;
     }
 }

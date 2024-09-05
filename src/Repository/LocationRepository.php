@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Device;
 use App\Entity\Location;
+use App\Entity\SpeedLimit;
 use App\Entity\User;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -26,13 +27,14 @@ class LocationRepository extends ServiceEntityRepository
     public function findLocations(Device $device, DateTimeInterface $from, DateTimeInterface $to): array
     {
         return $this->createQueryBuilder('l')
+            ->leftJoin('l.speedLimit', 's')
             ->andWhere('l.device = :device')
             ->setParameter('device', $device)
             ->andWhere('l.timestamp >= :from')
             ->setParameter('from', $from)
             ->andWhere('l.timestamp <= :to')
             ->setParameter('to', $to)
-            ->orderBy('l.timestamp', 'DESC')
+            ->orderBy('l.speed - COALESCE(s.speedLimit, 0)', 'DESC')
             ->setMaxResults(self::MAX_RESULTS)
             ->getQuery()
             ->getResult();

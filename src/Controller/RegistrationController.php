@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use App\Form\JsonSerializer;
+use App\Form\FormNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class RegistrationController extends AbstractController
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
-        private JsonSerializer $jsonSerializer,
+        private FormNormalizer $formNormalizer,
     ) {
     }
 
@@ -51,8 +51,9 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('app_default_map');
         }
+
         return $this->render('registration/register.html.twig', [
-            'form' => $this->jsonSerializer->serialize($form),
+            'form' => $this->formNormalizer->normalize($form, 'registration_form'),
         ]);
     }
 }
