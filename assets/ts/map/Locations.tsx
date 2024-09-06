@@ -40,8 +40,8 @@ export default function Locations() {
             <Card.Body style={{ padding: 0 }}>
                 <Table bordered hover size="sm" striped style={{ marginBottom: '0' }}>
                     <tbody>
-                        {Object.keys(locations).slice(0, 5).map((id) => (
-                            <Location key={id} location={locations[id]} />
+                        {locations.slice(0, 5).map((location) => (
+                            <Location key={location.id} location={location} />
                         ))}
                     </tbody>
                 </Table>

@@ -35,8 +35,7 @@ export default function Map(props: Props) {
     const { bounds } = props;
 
     const features = useSelector((state: RootState) => state.okRoad.features);
-    const markers = Object.keys(features).map((featureId) => {
-        const feature = features[featureId];
+    const markers = features.map((feature) => {
         let speedLimit;
         let image = 'gray.svg';
         let zIndexOffset = 1;
@@ -71,20 +70,20 @@ export default function Map(props: Props) {
                     iconSize: [20, 20],
                     iconUrl: `/img/${image}`,
                 })}
-                key={featureId}
-                position={[features[featureId].coordinates[1], features[featureId].coordinates[0]]}
+                key={feature.id}
+                position={[feature.coordinates[1], feature.coordinates[0]]}
                 zIndexOffset={zIndexOffset}
             >
                 <Popup>
                     <p>
                         <strong>Date:</strong>
                         {' '}
-                        {formatDate(new Date(features[featureId].timestamp * 1000))}
+                        {formatDate(new Date(feature.timestamp * 1000))}
                     </p>
                     <p>
                         <strong>Speed:</strong>
                         {' '}
-                        {features[featureId].velocity}
+                        {feature.velocity}
                         km/h
                     </p>
                     {speedLimit}

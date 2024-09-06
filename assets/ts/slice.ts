@@ -25,7 +25,7 @@ export interface Device {
 export interface OkRoadState {
     bounds?: [[number, number], [number, number]];
     devices: Device[];
-    features: {[key: string]: Feature};
+    features: Feature[];
     fromDate: number;
     selectedDevice?: number;
     showRecent: boolean;
@@ -40,7 +40,7 @@ export interface OkRoadState {
 const initialState: OkRoadState = {
     bounds: undefined,
     devices: [],
-    features: {},
+    features: [],
     fromDate: Date.now() - (60 * 60 * 24 * 1000),
     selectedDevice: undefined,
     showRecent: true,
@@ -124,7 +124,7 @@ export const okRoadSlice = createSlice({
         });
         builder.addCase(fetchLocations.fulfilled, (state, action) => {
             let bounds: LatLngBounds | undefined;
-            state.features = {};
+            state.features = [];
             action.payload.forEach((feature) => {
                 const point = new LatLng(feature.location.y, feature.location.x);
                 if (!bounds) {
@@ -139,13 +139,13 @@ export const okRoadSlice = createSlice({
                         speedLimit: feature.speed_limit.speed_limit,
                     };
                 }
-                state.features[feature.id] = {
+                state.features.push({
                     coordinates: [feature.location.x, feature.location.y],
                     id: feature.id,
                     speedLimit,
                     timestamp: feature.timestamp,
                     velocity: feature.speed || 0,
-                };
+                });
             });
             if (bounds) {
                 state.bounds = [
