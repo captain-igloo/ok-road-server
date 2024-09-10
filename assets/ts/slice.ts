@@ -27,6 +27,7 @@ export interface OkRoadState {
     devices: Device[];
     features: Feature[];
     fromDate: number;
+    highlightedLocation?: number;
     selectedDevice?: number;
     showRecent: boolean;
     toDate: number;
@@ -42,6 +43,7 @@ const initialState: OkRoadState = {
     devices: [],
     features: [],
     fromDate: Date.now() - (60 * 60 * 24 * 1000),
+    highlightedLocation: undefined,
     selectedDevice: undefined,
     showRecent: true,
     toDate: Date.now(),
@@ -105,6 +107,9 @@ export const okRoadSlice = createSlice({
     name: 'okRoad',
     initialState,
     reducers: {
+        highlightLocation: (state, action: PayloadAction<number | undefined>) => {
+            state.highlightedLocation = action.payload;
+        },
         setFromDate: (state, action: PayloadAction<number>) => {
             state.fromDate = action.payload;  
         },
@@ -172,6 +177,6 @@ export const setShowRecent = (showRecent: boolean) => (dispatch: AppDispatch) =>
     dispatch(fetchLocations());  
 };
 
-export const { setUser } = okRoadSlice.actions;
+export const { highlightLocation, setUser } = okRoadSlice.actions;
 
 export default okRoadSlice.reducer;

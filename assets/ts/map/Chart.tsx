@@ -14,7 +14,7 @@ import * as React from 'react';
 import { Bar } from "react-chartjs-2";
 import { useSelector } from 'react-redux';
 
-import { RootState } from './store';
+import { RootState } from '../store';
 
 ChartJS.register(
     BarElement,
@@ -35,29 +35,28 @@ export const options = {
       },
     },
     responsive: true,
-  };
+};
+
+const bucketCount = 60;
 
 export default function Chart() {
     const features = useSelector((state: RootState) => state.okRoad.features);
+    const fromDate = useSelector((state: RootState) => state.okRoad.fromDate);
+    const toDate = useSelector((state: RootState) => state.okRoad.toDate);
 
-    const keys = Object.keys(features);
-    const values = Array(60).fill(0);
+    const values = Array(bucketCount).fill(0);
     const labels = [];
+    const bucketSize = (toDate - fromDate) / bucketCount;
 
-    if (keys.length > 0) {
-        const diff = features[keys[keys.length - 1]].timestamp - features[keys[0]].timestamp;
-        const first = features[keys[0]].timestamp;
-        const a = diff / 59;
-        if (a > 0) {
-            keys.forEach((key) => {
-                const timestamp = features[key].timestamp;
-                const index = Math.floor((timestamp - first) / a);
+    if (bucketSize > 0) {
+        features.forEach((feature) => {
+            const index = Math.floor(((feature.timestamp * 1000) - fromDate) / bucketSize);
+            if (index >= 0 && index < bucketCount) {
                 values[index]++;
-            });
-
-            for (let i = first; i <= features[keys[keys.length - 1]].timestamp; i += a) {
-                labels.push(moment(new Date(i * 1000)).format('h:mm a'));
             }
+        });
+        for (let t = fromDate; t < toDate; t += bucketSize) {
+            labels.push(moment(new Date(t)).format('h:mm a'));
         }
     }
 

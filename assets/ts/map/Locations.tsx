@@ -2,9 +2,13 @@ import * as moment from 'moment';
 import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../store';
+import SpeedLimitImage from '../misc/SpeedLimitImage';
+import { highlightLocation } from '../slice';
+import { AppDispatch, RootState } from '../store';
+
+const useAppDispatch: () => AppDispatch = useDispatch;
 
 function Location(props: any) {
     let image = 'gray.svg';
@@ -16,8 +20,17 @@ function Location(props: any) {
         }
     }
 
+    const dispatch = useAppDispatch();
+
     return (
-        <tr>
+        <tr
+            onMouseOut={() => {
+                dispatch(highlightLocation());
+            }}
+            onMouseOver={() => {
+                dispatch(highlightLocation(props.index));
+            }}
+        >
             <td>
                 <img height={20} src={`/img/${image}`} width={20} />
             </td>
@@ -25,7 +38,11 @@ function Location(props: any) {
                 {moment(new Date(props.location.timestamp * 1000)).format('MMM D, HH:mm')}
             </td>
             <td>
-                Speed: {props.location.velocity} km/h
+                <SpeedLimitImage speedLimit={props.location.speedLimit.speedLimit} />
+                {' '}
+                {props.location.velocity}
+                {' '}
+                km/h
             </td>
         </tr>
     );
@@ -40,8 +57,8 @@ export default function Locations() {
             <Card.Body style={{ padding: 0 }}>
                 <Table bordered hover size="sm" striped style={{ marginBottom: '0' }}>
                     <tbody>
-                        {locations.slice(0, 5).map((location) => (
-                            <Location key={location.id} location={location} />
+                        {locations.slice(0, 5).map((location, index) => (
+                            <Location index={index} key={location.id} location={location} />
                         ))}
                     </tbody>
                 </Table>

@@ -35,17 +35,17 @@ export default function Map(props: Props) {
     const { bounds } = props;
 
     const features = useSelector((state: RootState) => state.okRoad.features);
-    const markers = features.map((feature) => {
+
+    const markers = [];
+    for (let i = features.length - 1; i >= 0; i--) {
+        const feature = features[i];
         let speedLimit;
         let image = 'gray.svg';
-        let zIndexOffset = 1;
         if (feature.speedLimit !== undefined) {
             if (feature.velocity > feature.speedLimit.speedLimit) {
                 image = 'red.svg';
-                zIndexOffset = 3;
             } else {
                 image = 'green.svg';
-                zIndexOffset = 2;
             }
             speedLimit = (
                 <>
@@ -64,7 +64,7 @@ export default function Map(props: Props) {
             );
         }
 
-        return (
+        markers.push(
             <Marker
                 icon={new Icon({
                     iconSize: [20, 20],
@@ -72,7 +72,6 @@ export default function Map(props: Props) {
                 })}
                 key={feature.id}
                 position={[feature.coordinates[1], feature.coordinates[0]]}
-                zIndexOffset={zIndexOffset}
             >
                 <Popup>
                     <p>
@@ -90,7 +89,26 @@ export default function Map(props: Props) {
                 </Popup>
             </Marker>
         );
-    });
+    }
+
+    const highlightedLocation = useSelector((state: RootState) => state.okRoad.highlightedLocation);
+
+    if (highlightedLocation !== undefined && highlightedLocation in features) {
+        const feature = features[highlightedLocation];
+        markers.push(
+            <Marker
+                icon={new Icon({
+                    iconSize: [20, 20],
+                    iconUrl: `/img/blue.svg`,
+                })}
+                key="highlighted-location"
+                position={[feature.coordinates[1], feature.coordinates[0]]}
+                zIndexOffset={1000}
+            />
+        );
+    }
+
+
 
     return (
         <MapContainer center={[-41, 174]} className="map" zoom={5} scrollWheelZoom={false}>

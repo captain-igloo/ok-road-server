@@ -23,7 +23,7 @@ export default function Register(props: Props) {
 
     const handleSubmit = (event: React.FormEvent) => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
+        if ((form as any).checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
             setValidated(true);
