@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Location;
 use App\Entity\User;
 use App\Repository\DeviceRepository;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -19,6 +20,7 @@ final class ApiController extends AbstractFOSRestController
     {
     }
 
+    /** @param Location[] $locations */
     #[Route('/api/locations')]
     public function fetchLocations(array $locations): Response
     {
@@ -28,8 +30,6 @@ final class ApiController extends AbstractFOSRestController
     #[Route('/api/devices')]
     public function fetchDevices(#[CurrentUser] User $user): Response
     {
-        return $this->handleView($this->view($this->deviceRepository->findBy([
-            'user' => $user,
-        ]), 200));
+        return $this->handleView($this->view($this->deviceRepository->findByUser($user)));
     }
 }

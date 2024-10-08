@@ -1,9 +1,9 @@
 <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
   <style>
     text {
-      font: bold 8px sans-serif;
+      font: bold {{ fontSize }}px sans-serif;
     }
   </style>
   <circle cx="10" cy="10" r="8" stroke="red" stroke-width="2" fill="white" />
-  <text x="3.5" y="12.5">100</text>
+  <text x="{{ x }}" y="{{ y }}">{{ speedLimit }}</text>
 </svg>

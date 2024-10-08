@@ -14,13 +14,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RegistrationController extends AbstractController
 {
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
-        private FormNormalizer $formNormalizer,
+        private NormalizerInterface $normalizer,
     ) {
     }
 
@@ -53,7 +54,7 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'form' => $this->formNormalizer->normalize($form, 'registration_form'),
+            'form' => $this->normalizer->normalize($form),
         ]);
     }
 }

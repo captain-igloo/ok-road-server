@@ -18,16 +18,34 @@ class AppFixtures extends Fixture
     {
         $this->initSequences($manager);
 
-        $user = new User();
-        $user->setUsername('test');
-        $user->setEmail('test@example.com');
-        $user->setFullName('Test User');
-        $user->setPassword('secret');
-        $user->setRoles([]);
-        $manager->persist($user);
+        $user1 = new User();
+        $user1->setUsername('test1');
+        $user1->setEmail('test1@example.com');
+        $user1->setFullName('Test User1');
+        $user1->setPassword('secret');
+        $user1->setRoles([]);
+
+        $user2 = new User();
+        $user2->setUsername('test2');
+        $user2->setEmail('test2@example.com');
+        $user2->setFullName('Test User2');
+        $user2->setPassword('secret');
+        $user2->setRoles([]);
+
+        $user3 = new User();
+        $user3->setUsername('test3');
+        $user3->setEmail('test3@example.com');
+        $user3->setFullName('Test User3');
+        $user3->setPassword('secret');
+        $user3->setRoles([]);
+
+        $user1->addFriend($user2);
+        $manager->persist($user1);
+        $manager->persist($user2);
+        $manager->persist($user3);
 
         $device = new Device();
-        $device->setUser($user);
+        $device->setUser($user1);
         $device->setName('my-device');
         $device->setDescription('My Device');
         $manager->persist($device);
@@ -38,10 +56,6 @@ class AppFixtures extends Fixture
         $location->setLocation(new Point(174, -40));
         $location->setAccuracy(100);
         $location->setSpeed(100);
-        /* $location->setAccuracy(99);
-        $location->setSpeed(99);
-        $location->setTime(new DateTime('2022-07-31 00:00:00'));
-        $location->setLocation(new Point(174, -40)); */
         $manager->persist($location);
 
         $manager->flush();

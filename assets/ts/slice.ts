@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { LatLng, LatLngBounds } from 'leaflet';
-import * as moment from 'moment';
 
 import { AppDispatch, RootState } from './store';
 

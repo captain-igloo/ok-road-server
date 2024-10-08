@@ -1,9 +1,0 @@
-<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    text {
-      font: bold 10px sans-serif;
-    }
-  </style>
-  <circle cx="10" cy="10" r="8" stroke="red" stroke-width="2" fill="white" />
-  <text x="4.5" y="13.5">30</text>
-</svg>

@@ -28,7 +28,7 @@ final class ApiControllerTest extends WebTestCase
         $this->client->loginUser(static::getContainer()->get(UserRepository::class)->find(1));
         $this->client->request('GET', '/api/devices');
         $this->assertEquals(
-            '[{"id":1,"name":"my-device","description":"My Device"}]',
+            '[{"username":"test1","id":1,"name":"my-device","description":"My Device"}]',
             $this->client->getResponse()->getContent(),
         );
     }

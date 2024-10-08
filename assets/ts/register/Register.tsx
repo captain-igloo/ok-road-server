@@ -12,7 +12,7 @@ interface Props {
         errors?: string[];
         fields: {[key: string]: {
             errors?: string[];
-            value: string;
+            value?: string;
         }};
         token: string;
     };
@@ -59,27 +59,27 @@ export default function Register(props: Props) {
                         {errors}
                         <FormGroup
                             defaultErrorMessage="Please choose a username."
-                            defaultValue={props.form.fields.username.value}
+                            defaultValue={props.form.fields.username?.value}
                             description="Username"
-                            errors={props.form.fields.username.errors}
+                            errors={props.form.fields.username?.errors}
                             name="username"
                             type="text"
                             validated={validated}
                         />
                         <FormGroup
                             defaultErrorMessage="Please enter your email address."
-                            defaultValue={props.form.fields.email.value}
+                            defaultValue={props.form.fields.email?.value}
                             description="Email"
-                            errors={props.form.fields.email.errors}
+                            errors={props.form.fields.email?.errors}
                             name="email"
                             type="text"
                             validated={validated}
                         />
                         <FormGroup
                             defaultErrorMessage="Please enter your full name."
-                            defaultValue={props.form.fields.fullName.value}
+                            defaultValue={props.form.fields.fullName?.value}
                             description="Name"
-                            errors={props.form.fields.fullName.errors}
+                            errors={props.form.fields.fullName?.errors}
                             name="fullName"
                             type="text"
                             validated={validated}
@@ -88,7 +88,7 @@ export default function Register(props: Props) {
                             autoComplete="new-password"
                             defaultErrorMessage="Please choose a password."
                             description="Password"
-                            errors={props.form.fields.plainPassword.errors}
+                            errors={props.form.fields.plainPassword?.errors}
                             name="plainPassword"
                             type="password"
                             validated={validated}

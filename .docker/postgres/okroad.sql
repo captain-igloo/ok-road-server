@@ -33,3 +33,9 @@ CREATE TABLE location (
     accuracy integer,
     speed integer
 );
+
+CREATE TABLE friend (
+    user_id integer NOT NULL REFERENCES "user"(id),
+    friend_id integer NOT NULL REFERENCES "user"(id)
+);
+ALTER TABLE friend ADD PRIMARY KEY (user_id, friend_id);

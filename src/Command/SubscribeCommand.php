@@ -118,7 +118,7 @@ class SubscribeCommand extends Command
 
     private function getDevice(User $user, string $deviceName): Device
     {
-        $device = $this->deviceRepository->findByUser($user, $deviceName);
+        $device = $this->deviceRepository->findByName($user, $deviceName);
         if ($device) {
             return $device;
         }

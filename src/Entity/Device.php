@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 #[ORM\Entity(repositoryClass: DeviceRepository::class)]
 class Device
@@ -54,6 +55,12 @@ class Device
         $this->user = $user;
 
         return $this;
+    }
+
+    #[VirtualProperty]
+    public function getUsername(): ?string
+    {
+        return $this->user?->getUsername();
     }
 
     public function getName(): ?string

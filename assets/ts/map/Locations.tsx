@@ -5,12 +5,12 @@ import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SpeedLimitImage from '../misc/SpeedLimitImage';
-import { highlightLocation } from '../slice';
+import { Feature, highlightLocation } from '../slice';
 import { AppDispatch, RootState } from '../store';
 
 const useAppDispatch: () => AppDispatch = useDispatch;
 
-function Location(props: any) {
+function Location(props: {index: number; location: Feature}) {
     let image = 'gray.svg';
     if (props.location.speedLimit !== undefined) {
         if (props.location.velocity > props.location.speedLimit.speedLimit) {
@@ -38,7 +38,7 @@ function Location(props: any) {
                 {moment(new Date(props.location.timestamp * 1000)).format('MMM D, HH:mm')}
             </td>
             <td>
-                <SpeedLimitImage speedLimit={props.location.speedLimit.speedLimit} />
+                <SpeedLimitImage speedLimit={props.location.speedLimit?.speedLimit} />
                 {' '}
                 {props.location.velocity}
                 {' '}
@@ -57,7 +57,7 @@ export default function Locations() {
             <Card.Body style={{ padding: 0 }}>
                 <Table bordered hover size="sm" striped style={{ marginBottom: '0' }}>
                     <tbody>
-                        {locations.slice(0, 5).map((location, index) => (
+                        {locations.slice(0, 10).map((location, index) => (
                             <Location index={index} key={location.id} location={location} />
                         ))}
                     </tbody>

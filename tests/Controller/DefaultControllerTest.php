@@ -9,6 +9,13 @@ use App\Test\WebTestCase;
 
 final class DefaultControllerTest extends WebTestCase
 {
+    public function testIndex(): void
+    {
+        $this->client->loginUser(static::getContainer()->get(UserRepository::class)->find(1));
+        $this->client->request('GET', '/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testMap(): void
     {
         $this->client->loginUser(static::getContainer()->get(UserRepository::class)->find(1));

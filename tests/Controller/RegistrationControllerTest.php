@@ -16,7 +16,7 @@ final class RegistrationControllerTest extends WebTestCase
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAsdf(): void
+    public function testRegister(): void
     {
         $this->client->request('GET', '/register');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());

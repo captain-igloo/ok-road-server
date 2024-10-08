@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -33,24 +34,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var list<string> The user roles
      */
+    #[Exclude]
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
+    #[Exclude]
     #[ORM\Column]
     private ?string $password = null;
 
     /**
      * @var Collection<int, Device>
      */
+    #[Exclude]
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'user')]
     private Collection $devices;
+
+    /**
+     * @var Collection<int, self>
+     */
+    #[Exclude]
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'friend')]
+    #[ORM\JoinColumn(name: 'friend_id')]
+    private Collection $friends;
+
+    /**
+     * @var Collection<int, self>
+     */
+    #[Exclude]
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'friends')]
+    private Collection $users;
 
     public function __construct()
     {
         $this->devices = new ArrayCollection();
+        $this->friends = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,6 +199,57 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($device->getUser() === $this) {
                 $device->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getFriends(): Collection
+    {
+        return $this->friends;
+    }
+
+    public function addFriend(self $friend): static
+    {
+        if (!$this->friends->contains($friend)) {
+            $this->friends->add($friend);
+        }
+
+        return $this;
+    }
+
+    public function removeFriend(self $friend): static
+    {
+        $this->friends->removeElement($friend);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(self $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addFriend($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(self $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeFriend($this);
         }
 
         return $this;

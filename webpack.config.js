@@ -8,10 +8,13 @@ module.exports = {
         shared: [
             '@fortawesome/free-solid-svg-icons',
             '@fortawesome/react-fontawesome',
+            '@reduxjs/toolkit',
             'bootstrap',
+            'leaflet',
             'react',
             'react-bootstrap',
             'react-dom',
+            'react-redux',
         ],
         index: {
             import: './assets/ts/index.tsx',

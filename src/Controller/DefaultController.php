@@ -41,4 +41,27 @@ final class DefaultController extends AbstractController
             ],
         ]);
     }
+
+    #[Route('/img/{speedLimit}.svg')]
+    public function speedLimitSvg(int $speedLimit): Response
+    {
+        if ($speedLimit >= 100) {
+            $fontSize = 8;
+            $x = 3.5;
+            $y = 12.5;
+        } else {
+            $fontSize = 10;
+            $x = 4.5;
+            $y = 13.5;
+        }
+
+        $response = new Response($this->renderView('speedLimit.svg.twig', [
+            'fontSize' => $fontSize,
+            'speedLimit' => $speedLimit,
+            'x' => $x,
+            'y' => $y,
+        ]));
+        $response->headers->set('Content-Type', 'image/svg+xml');
+        return $response;
+    }
 }
