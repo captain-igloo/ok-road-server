@@ -40,8 +40,9 @@ class DeviceRepository extends ServiceEntityRepository
                     AND (d.user_id = :userId OR d.user_id = f.friend_id)',
                 $rsm
             );
+        $query->setParameter('name', $name);
         $query->setParameter('userId', $user->getId());
-        return $query->getResult();
+        return $query->getOneOrNullResult();
     }
 
     public function findByUser(User $user)
