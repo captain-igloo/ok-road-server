@@ -34,7 +34,7 @@ class LocationRepository extends ServiceEntityRepository
             ->setParameter('from', $from)
             ->andWhere('l.timestamp <= :to')
             ->setParameter('to', $to)
-            ->orderBy('l.speed - COALESCE(s.speedLimit, 0)', 'DESC')
+            ->orderBy('l.speed - COALESCE(s.speedLimit, 100)', 'DESC')
             ->setMaxResults(self::MAX_RESULTS)
             ->getQuery()
             ->getResult();

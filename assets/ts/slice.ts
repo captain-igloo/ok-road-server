@@ -93,12 +93,15 @@ export const fetchLocations = createAsyncThunk<{
             fromDate = getState().okRoad.fromDate;
             toDate = getState().okRoad.toDate;
         }
-
-        const response = await fetch(`/api/locations?device=a14&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch');
+        const selectedDevice = getState().okRoad.selectedDevice;
+        if (selectedDevice) {
+            const response = await fetch(`/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch');
+            }
+            return await response.json();
         }
-        return await response.json();
+        return [];
     },
 );
 
@@ -108,6 +111,9 @@ export const okRoadSlice = createSlice({
     reducers: {
         highlightLocation: (state, action: PayloadAction<number | undefined>) => {
             state.highlightedLocation = action.payload;
+        },
+        selectDevice: (state, action: PayloadAction<number>) => {
+            state.selectedDevice = action.payload;
         },
         setFromDate: (state, action: PayloadAction<number>) => {
             state.fromDate = action.payload;  
@@ -125,6 +131,9 @@ export const okRoadSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchDevices.fulfilled, (state, action) => {
             state.devices = action.payload;
+            if (action.payload.length > 0) {
+                state.selectedDevice = action.payload[0].id;
+            }
         });
         builder.addCase(fetchLocations.fulfilled, (state, action) => {
             let bounds: LatLngBounds | undefined;
@@ -176,6 +185,6 @@ export const setShowRecent = (showRecent: boolean) => (dispatch: AppDispatch) =>
     dispatch(fetchLocations());  
 };
 
-export const { highlightLocation, setUser } = okRoadSlice.actions;
+export const { highlightLocation, selectDevice, setUser } = okRoadSlice.actions;
 
 export default okRoadSlice.reducer;

@@ -32,8 +32,8 @@ final class LocationsResolver implements ValueResolverInterface
         if ($argument->getName() === 'locations') {
             if (
                 ($user = $this->security->getUser())
-                && ($deviceName = $request->query->get('device'))
-                && ($device = $this->getDevice($user, $deviceName))
+                && ($deviceId = (int) $request->query->get('device'))
+                && ($device = $this->deviceRepository->findById($user, $deviceId))
                 && $request->query->has('from')
                 && ($from = new DateTime($request->query->get('from')))
                 && $request->query->has('to')
@@ -44,13 +44,5 @@ final class LocationsResolver implements ValueResolverInterface
             throw new BadRequestHttpException();
         }
         return [];
-    }
-
-    private function getDevice(User $user, string $deviceName): ?Device
-    {
-        return $this->deviceRepository->findOneBy([
-            'name' => $deviceName,
-            'user' => $user,
-        ]);
     }
 }

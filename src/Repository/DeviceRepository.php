@@ -20,6 +20,31 @@ class DeviceRepository extends ServiceEntityRepository
         parent::__construct($registry, Device::class);
     }
 
+    public function findById(User $user, int $deviceId)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(Device::class, 'd');
+
+        $query = $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT
+                    d.*
+                FROM
+                    device AS d
+                LEFT JOIN
+                    friend AS f
+                ON
+                    d.user_id = f.friend_id
+                WHERE
+                    d.id = :deviceId
+                    AND (d.user_id = :userId OR d.user_id = f.friend_id)',
+                $rsm
+            );
+        $query->setParameter('deviceId', $deviceId);
+        $query->setParameter('userId', $user->getId());
+        return $query->getOneOrNullResult();
+    }
+
     public function findByName(User $user, string $name)
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());

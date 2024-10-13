@@ -21,7 +21,7 @@ final class LocationsResolverTest extends TestCase
     public function testResolve(): void
     {
         $deviceRepository = $this->createMock(DeviceRepository::class);
-        $deviceRepository->method('findOneBy')
+        $deviceRepository->method('findById')
             ->willReturn(new Device());
         $locationRepository = $this->createMock(LocationRepository::class);
         $location = new Location();
@@ -30,7 +30,7 @@ final class LocationsResolverTest extends TestCase
         $locationsResolver = new LocationsResolver($this->getSecurity(), $deviceRepository, $locationRepository);
         $argumentMetadata = new ArgumentMetadata('locations', null, false, false, null);
         $request = new Request([
-            'device' => 'my-device',
+            'device' => 1,
             'from' => '2024-07-15 00:00:00',
             'to' => '2024-07-16 00:00:00',
         ]);

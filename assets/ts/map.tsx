@@ -14,12 +14,9 @@ if (element) {
         <App />
       </Provider>,
     );
-
-    store.dispatch(fetchDevices());
-    store.dispatch(fetchLocations());
-    setInterval(() => {
+    store.dispatch(fetchDevices()).then(() => {
         store.dispatch(fetchLocations());
-    }, 300000);
+    });
     const dataParams = element.getAttribute('data-params');
     if (dataParams) {
         const user = JSON.parse(dataParams);
