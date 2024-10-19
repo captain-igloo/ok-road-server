@@ -15,7 +15,7 @@ final class FriendsControllerTest extends WebTestCase
         $this->client->request('GET', '/api/friends');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals(
-            '[{"id":2,"username":"test2","email":"test2@example.com","full_name":"Test User2"}]',
+            '[{"id":2,"username":"test2","full_name":"Test User2"}]',
             $this->client->getResponse()->getContent(),
         );
     }
@@ -26,7 +26,7 @@ final class FriendsControllerTest extends WebTestCase
         $this->client->request('GET', '/api/friends/2');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals(
-            '{"id":2,"username":"test2","email":"test2@example.com","full_name":"Test User2"}',
+            '{"id":2,"username":"test2","full_name":"Test User2"}',
             $this->client->getResponse()->getContent(),
         );
     }

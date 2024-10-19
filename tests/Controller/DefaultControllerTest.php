@@ -28,7 +28,10 @@ final class DefaultControllerTest extends WebTestCase
         $this->client->loginUser(static::getContainer()->get(UserRepository::class)->find(1));
         $this->client->request('GET', '/img/50.svg');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/50.svg'), $this->client->getResponse()->getContent());
+        $this->assertEquals(
+            file_get_contents(__DIR__ . '/fixtures/50.svg'),
+            $this->client->getResponse()->getContent(),
+        );
     }
 
     public function test100Svg(): void
@@ -36,6 +39,9 @@ final class DefaultControllerTest extends WebTestCase
         $this->client->loginUser(static::getContainer()->get(UserRepository::class)->find(1));
         $this->client->request('GET', '/img/100.svg');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/100.svg'), $this->client->getResponse()->getContent());
+        $this->assertEquals(
+            file_get_contents(__DIR__ . '/fixtures/100.svg'),
+            $this->client->getResponse()->getContent(),
+        );
     }
 }

@@ -22,11 +22,11 @@ export default function App() {
             <Header showMap={false} user={user} />
             <Container className="main-container" fluid>
                 <Row className="main-container--row">
-                    <Col className="left-container" xs={3}>
+                    <Col className="left-container" md={6} sm={12} xl={4}>
                         <Search />
                         <Locations />
                     </Col>
-                    <Col className="right-container" xs={9}>
+                    <Col className="right-container" md={6} sm={12} xl={8}>
                         <Map bounds={bounds} />
                         <Chart />
                     </Col>
