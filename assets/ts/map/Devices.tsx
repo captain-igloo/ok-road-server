@@ -4,17 +4,24 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectDevice } from '../slice';
 import { AppDispatch, RootState } from '../store';
+import { selectDevice } from './slice';
 
 const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default function Devices() {
     const devices = useSelector((state: RootState) => state.okRoad.devices);
     const selectedDevice = useSelector((state: RootState) => state.okRoad.selectedDevice);
+    const user = useSelector((state: RootState) => state.okRoad.user);
 
     const options = devices.map((device) => {
-        return <option key={device.id} value={device.id}>{device.description}</option>;
+        const username = user.username !== device.username ? `${device.username} - ` : '';
+        const description = `${username}${device.description}`;
+        return (
+            <option key={device.id} value={device.id}>
+                {description}
+            </option>
+        );
     });
     const dispatch = useAppDispatch();
 

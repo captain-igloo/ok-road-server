@@ -108,8 +108,6 @@ export default function Map(props: Props) {
         );
     }
 
-
-
     return (
         <MapContainer center={[-41, 174]} className="map" zoom={5} scrollWheelZoom={false}>
             <TileLayer

@@ -5,8 +5,8 @@ import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SpeedLimitImage from '../misc/SpeedLimitImage';
-import { Feature, highlightLocation } from '../slice';
 import { AppDispatch, RootState } from '../store';
+import { Feature, highlightLocation } from './slice';
 
 const useAppDispatch: () => AppDispatch = useDispatch;
 

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import friendsReducer from './friends/slice';
-import okRoadReducer from './slice';
+import okRoadReducer from './map/slice';
 
 export const store = configureStore({
     reducer: {

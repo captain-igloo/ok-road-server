@@ -39,6 +39,14 @@ html, body {
     padding: 1px !important;
 }
 
+.login-container, .register-container {
+    left: 50%;
+    position: absolute !important;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 20rem;
+}
+
 .map {
     border: 1px solid gray;
     border-radius: 5px;

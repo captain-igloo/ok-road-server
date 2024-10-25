@@ -12,7 +12,7 @@ if (element) {
         const root = ReactDOM.createRoot(element);
         root.render(
             <Provider store={store}>
-                <Register form={JSON.parse(dataParams)} />);
+                <Register form={JSON.parse(dataParams)} />
             </Provider>
         );
     }

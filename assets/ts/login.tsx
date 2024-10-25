@@ -7,28 +7,27 @@ import * as ReactDOM from 'react-dom/client';
 
 import Header from './Header';
 
+declare global {
+    interface Window {
+        error: string;
+        token: string;
+    }
+}
+
 const element = document.getElementById('login');
 
 if (element) {
     const root = ReactDOM.createRoot(element);
 
     let alert;
-    if ((window as any).error) {
-        alert = <Alert variant="danger">{(window as any).error}</Alert>;
+    if (window.error) {
+        alert = <Alert variant="danger">{window.error}</Alert>;
     }
 
     root.render(
         <>
             <Header showSignIn={false} />
-            <Card
-                style={{
-                    width: '30rem',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                }}
-            >
+            <Card className="login-container">
                 <Card.Header>Sign In</Card.Header>
                 <Card.Body>
                     {alert}
@@ -41,7 +40,7 @@ if (element) {
                             <Form.Label>Password</Form.Label>
                             <Form.Control name="_password" required type="password" />
                         </Form.Group>
-                        <input name="_csrf_token" type="hidden" value={(window as any).token} />
+                        <input name="_csrf_token" type="hidden" value={window.token} />
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>

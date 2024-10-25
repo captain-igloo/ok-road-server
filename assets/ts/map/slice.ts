@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { LatLng, LatLngBounds } from 'leaflet';
 
-import { AppDispatch, RootState } from './store';
+import { AppDispatch, RootState } from '../store';
 
 export interface Feature {
     coordinates: number[];
@@ -19,6 +19,12 @@ export interface Device {
     description: string;
     id: number;
     name: string;
+    username: string;
+}
+
+export interface User {
+    fullName: string;
+    username: string;
 }
 
 export interface OkRoadState {
@@ -30,10 +36,7 @@ export interface OkRoadState {
     selectedDevice?: number;
     showRecent: boolean;
     toDate: number;
-    user: {
-        fullName: string;
-        username: string;
-    }
+    user: User;
     value: number;
 }
 
@@ -53,11 +56,7 @@ const initialState: OkRoadState = {
     value: 0,
 }
 
-export const fetchDevices = createAsyncThunk<{
-    description: string;
-    id: number;
-    name: string;
-}[], void, {state: RootState}>(
+export const fetchDevices = createAsyncThunk<Device[], void, {state: RootState}>(
     'okroad/fetchDevicesStatus',
     async () => {
         const url = '/api/devices';
@@ -124,8 +123,8 @@ export const okRoadSlice = createSlice({
         setToDate: (state, action: PayloadAction<number>) => {
             state.toDate = action.payload;
         },
-        setUser: (state, action: PayloadAction<{fullName: string}>) => {
-            state.user.fullName = action.payload.fullName;
+        setUser: (state, action: PayloadAction<User>) => {
+            state.user = action.payload;
         },
     },
     extraReducers: (builder) => {

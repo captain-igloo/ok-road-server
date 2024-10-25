@@ -11,6 +11,7 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -46,6 +47,13 @@ final class FriendsController extends AbstractFOSRestController
                 'username' => $params['username'],
             ]);
             if ($otherUser !== null) {
+                if ($currentUser->getFriends()->contains($otherUser)) {
+                    throw new ConflictHttpException();
+                }
+                if ($otherUser === $currentUser) {
+                    throw new BadRequestHttpException();
+                }
+
                 $currentUser->addFriend($otherUser);
                 $this->entityManager->persist($currentUser);
                 $this->entityManager->flush();

@@ -23,31 +23,21 @@ export default function Register(props: Props) {
 
     const handleSubmit = (event: React.FormEvent) => {
         const form = event.currentTarget;
-        if ((form as any).checkValidity() === false) {
+        if (form instanceof HTMLFormElement && form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
             setValidated(true);
         }
     };
 
-    const errors = props.form.errors?.map((error) => {
-        return (
-            <Alert variant="danger">{error}</Alert>
-        );
-    });
+    const errors = props.form.errors?.map(error => (
+        <Alert key={error} variant="danger">{error}</Alert>
+    ));
 
     return (
         <>
             <Header showRegister={false} />
-            <Card
-                style={{
-                    width: '30rem',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                }}
-            >
+            <Card className="register-container">
                 <Card.Header>Register</Card.Header>
                 <Card.Body>
                     <Form

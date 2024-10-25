@@ -6,9 +6,9 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Devices from './Devices';
-import { setFromDate, setToDate } from '../slice';
 import { AppDispatch, RootState } from '../store';
+import Devices from './Devices';
+import { setFromDate, setToDate } from './slice';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 

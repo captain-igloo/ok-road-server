@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import App from './map/App';
-import { fetchDevices, fetchLocations, setUser } from './slice';
+import { fetchDevices, fetchLocations, setUser } from './map/slice';
 import { store } from './store';
 
 const element = document.getElementById('app');
