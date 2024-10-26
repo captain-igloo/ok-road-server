@@ -40,8 +40,10 @@ function UserMenu(props: Props) {
             registerButton = (
                 <Button href="/register" variant="outline">
                     <FontAwesomeIcon icon={faUserPlus} />
-                    &nbsp;
-                    Register
+                    <span className="display-small">
+                        &nbsp;
+                        Register
+                    </span>
                 </Button>
             );
         }
@@ -51,8 +53,10 @@ function UserMenu(props: Props) {
             signInButton = (
                 <Button href="/login" variant="outline">
                     <FontAwesomeIcon icon={faRightToBracket} />
-                    &nbsp;
-                    Sign in
+                    <span className="display-small">
+                        &nbsp;
+                        Sign in
+                    </span>
                 </Button>
             );
         }
@@ -70,8 +74,10 @@ function UserMenu(props: Props) {
         mapButton = (
             <Button href="/map" variant="outline">
                 <FontAwesomeIcon icon={faGlobe} />
-                &nbsp;
-                Map
+                <span className="display-small">
+                    &nbsp;
+                    Map
+                </span>
             </Button>
         );
     }
@@ -84,8 +90,10 @@ function UserMenu(props: Props) {
             <Dropdown>
                 <Dropdown.Toggle variant="outline">
                     <FontAwesomeIcon icon={faUser} />
-                    &nbsp;
-                    {user.fullName}
+                    <span className="display-small">
+                        &nbsp;
+                        {user.fullName}
+                    </span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item onClick={() => { dispatch(showFriends(true)); }}>

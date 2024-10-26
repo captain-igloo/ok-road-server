@@ -47,7 +47,7 @@ const initialState: OkRoadState = {
     fromDate: Date.now() - (60 * 60 * 24 * 1000),
     highlightedLocation: undefined,
     selectedDevice: undefined,
-    showRecent: true,
+    showRecent: false,
     toDate: Date.now(),
     user: {
         fullName: '',

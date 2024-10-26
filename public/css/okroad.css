@@ -66,3 +66,13 @@ html, body {
     border-radius: 5px;
     margin: 1px;
 }
+
+.display-small {
+    display: none;
+}
+
+@media (min-width: 576px) {
+    .display-small {
+        display: initial;
+    }
+}

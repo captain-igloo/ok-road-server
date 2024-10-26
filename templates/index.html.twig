@@ -12,16 +12,4 @@
 
 {% block body %}
 <div id="app" data-params="{{ configuration | json_encode() }}"></div>
-<div style="padding: 1rem">
-    <h1>Monitor Young Drivers</h1>
-    <p>
-        Install an app on their device and keep track of:
-        <ul>
-            <li>Where they are</li>
-            <li>How fast they are driving</li>
-            <li>Their speed in relation to the speed limit</li>
-        </ul>
-    </p>
-    <div class="bd-callout bd-callout-warning">Speed limit data is only available in New Zealand.</div>
-</div>
 {% endblock %}
