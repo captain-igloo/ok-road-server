@@ -21,27 +21,25 @@ export default function Friends() {
     const [username, setUsername] = React.useState('');
     const dispatch = useAppDispatch();
 
-    const friendsRows = friends.map((f) => {
-        return (
-            <tr key={f.id}>
-                <td>{f.username}</td>
-                <td>{f.full_name}</td>
-                <td style={{ width: '1px', whiteSpace: 'nowrap' }}>
-                    <Button
-                        onClick={() => {
-                            dispatch(deleteFriend(f.id));
-                        }}
-                        size="sm"
-                        variant="outline-secondary"
-                    >
-                        <FontAwesomeIcon icon={faXmark} />
-                        &nbsp;
-                        Delete
-                    </Button>
-                </td>
-            </tr>
-        );
-    });
+    const friendsRows = friends.map((friend) => (
+        <tr key={friend.id}>
+            <td>{friend.username}</td>
+            <td>{friend.full_name}</td>
+            <td style={{ width: '1px', whiteSpace: 'nowrap' }}>
+                <Button
+                    onClick={() => {
+                        dispatch(deleteFriend(friend.id));
+                    }}
+                    size="sm"
+                    variant="outline-secondary"
+                >
+                    <FontAwesomeIcon icon={faXmark} />
+                    &nbsp;
+                    Delete
+                </Button>
+            </td>
+        </tr>
+    ));
 
     const handleSubmit = () => {
         dispatch(addFriend(username));
@@ -76,7 +74,8 @@ export default function Friends() {
                             </Form.Control.Feedback>
                         )}
                         <Form.Text className="text-muted">
-                            Enter the username of the person you want to share your location data with.
+                            Enter the username of the person you want to share your location data
+                            with.
                         </Form.Text>
                     </Form.Group>
                 </Form>

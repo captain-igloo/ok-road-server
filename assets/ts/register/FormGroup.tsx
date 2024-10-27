@@ -13,47 +13,56 @@ interface Props {
 }
 
 export default function FormGroup(props: Props) {
-    const [value, setValue] = React.useState(props.defaultValue || '');
+    const {
+        autoComplete,
+        defaultErrorMessage,
+        defaultValue,
+        description,
+        // errors,
+        name,
+        validated,
+        type,
+    } = props;
+
+    const [value, setValue] = React.useState(defaultValue || '');
 
     let errors;
     let invalid;
     let valid;
     if (props.errors && props.errors.length > 0) {
-        errors = props.errors.map((message, index) => {
-            return (
-                <Form.Control.Feedback key={index} type="invalid">
-                    {message}
-                </Form.Control.Feedback>
-            );
-        });
+        errors = props.errors.map((message, index) => (
+            <Form.Control.Feedback key={index} type="invalid">
+                {message}
+            </Form.Control.Feedback>
+        ));
         invalid = true;
     } else if (value === '' && props.validated) {
         errors = (
             <Form.Control.Feedback type="invalid">
-                {props.defaultErrorMessage}
+                {defaultErrorMessage}
             </Form.Control.Feedback>
         );
         invalid = true;
-    } else if (props.validated) {
+    } else if (validated) {
         valid = true;
     }
 
-    const id = `registration_form_${props.name}`;
+    const id = `registration_form_${name}`;
 
     return (
         <Form.Group className="mb-3">
-            <Form.Label htmlFor={id}>{props.description}</Form.Label>
+            <Form.Label htmlFor={id}>{description}</Form.Label>
             <Form.Control
-                autoComplete={props.autoComplete}
+                autoComplete={autoComplete}
                 id={id}
                 isInvalid={invalid}
                 isValid={valid}
-                name={`registration_form[${props.name}]`}
+                name={`registration_form[${name}]`}
                 onChange={(e) => {
                     setValue(e.target.value);
                 }}
                 required
-                type={props.type}
+                type={type}
                 value={value}
             />
             {errors}

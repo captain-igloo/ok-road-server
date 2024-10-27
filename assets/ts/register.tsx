@@ -13,7 +13,7 @@ if (element) {
         root.render(
             <Provider store={store}>
                 <Register form={JSON.parse(dataParams)} />
-            </Provider>
+            </Provider>,
         );
     }
 }

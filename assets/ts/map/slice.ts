@@ -13,7 +13,7 @@ export interface Feature {
     };
     timestamp: number;
     velocity: number;
-};
+}
 
 export interface Device {
     description: string;
@@ -54,9 +54,9 @@ const initialState: OkRoadState = {
         username: '',
     },
     value: 0,
-}
+};
 
-export const fetchDevices = createAsyncThunk<Device[], void, {state: RootState}>(
+export const fetchDevices = createAsyncThunk<Device[], void, { state: RootState }>(
     'okroad/fetchDevicesStatus',
     async () => {
         const url = '/api/devices';
@@ -64,7 +64,7 @@ export const fetchDevices = createAsyncThunk<Device[], void, {state: RootState}>
         if (!response.ok) {
             throw new Error(`Failed to fetch: ${url}`);
         }
-        return await response.json();
+        return response.json();
     },
 );
 
@@ -80,7 +80,7 @@ export const fetchLocations = createAsyncThunk<{
         speed_limit: number;
     };
     timestamp: number;
-}[], void, {state: RootState}>(
+}[], void, { state: RootState }>(
     'okroad/fetchLocationsStatus',
     async (_, { getState }) => {
         let fromDate: number;
@@ -98,7 +98,7 @@ export const fetchLocations = createAsyncThunk<{
             if (!response.ok) {
                 throw new Error('Failed to fetch');
             }
-            return await response.json();
+            return response.json();
         }
         return [];
     },
@@ -115,7 +115,7 @@ export const okRoadSlice = createSlice({
             state.selectedDevice = action.payload;
         },
         setFromDate: (state, action: PayloadAction<number>) => {
-            state.fromDate = action.payload;  
+            state.fromDate = action.payload;
         },
         setShowRecent: (state, action: PayloadAction<boolean>) => {
             state.showRecent = action.payload;
@@ -176,12 +176,12 @@ export const setFromDate = (fromDate: number) => (dispatch: AppDispatch) => {
 
 export const setToDate = (toDate: number) => (dispatch: AppDispatch) => {
     dispatch(okRoadSlice.actions.setToDate(toDate));
-    dispatch(fetchLocations());  
+    dispatch(fetchLocations());
 };
 
 export const setShowRecent = (showRecent: boolean) => (dispatch: AppDispatch) => {
     dispatch(okRoadSlice.actions.setShowRecent(showRecent));
-    dispatch(fetchLocations());  
+    dispatch(fetchLocations());
 };
 
 export const { highlightLocation, selectDevice, setUser } = okRoadSlice.actions;

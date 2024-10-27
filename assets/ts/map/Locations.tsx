@@ -10,37 +10,47 @@ import { Feature, highlightLocation } from './slice';
 
 const useAppDispatch: () => AppDispatch = useDispatch;
 
-function Location(props: {index: number; location: Feature}) {
+function Location(props: { index: number; location: Feature }) {
+    const { index, location } = props;
+
     let image = 'gray.svg';
-    if (props.location.speedLimit !== undefined) {
-        if (props.location.velocity > props.location.speedLimit.speedLimit) {
+    let alt = 'No speed limit data';
+    if (location.speedLimit !== undefined) {
+        if (location.velocity > location.speedLimit.speedLimit) {
             image = 'red.svg';
+            alt = 'Above speed limit';
         } else {
             image = 'green.svg';
+            alt = 'Within speed limit';
         }
     }
 
     const dispatch = useAppDispatch();
 
+    const onMouseOver = React.useCallback(() => {
+        dispatch(highlightLocation(index));
+    }, [index]);
+    const onMouseOut = React.useCallback(() => {
+        dispatch(highlightLocation());
+    }, []);
+
     return (
         <tr
-            onMouseOut={() => {
-                dispatch(highlightLocation());
-            }}
-            onMouseOver={() => {
-                dispatch(highlightLocation(props.index));
-            }}
+            onBlur={onMouseOut}
+            onFocus={onMouseOver}
+            onMouseOut={onMouseOut}
+            onMouseOver={onMouseOver}
         >
             <td>
-                <img height={20} src={`/img/${image}`} width={20} />
+                <img alt={alt} height={20} src={`/img/${image}`} width={20} />
             </td>
             <td>
-                {moment(new Date(props.location.timestamp * 1000)).format('MMM D, HH:mm')}
+                {moment(new Date(location.timestamp * 1000)).format('MMM D, HH:mm')}
             </td>
             <td>
-                <SpeedLimitImage speedLimit={props.location.speedLimit?.speedLimit} />
+                <SpeedLimitImage speedLimit={location.speedLimit?.speedLimit} />
                 {' '}
-                {props.location.velocity}
+                {location.velocity}
                 {' '}
                 km/h
             </td>

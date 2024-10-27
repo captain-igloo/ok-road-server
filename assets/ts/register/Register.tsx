@@ -10,27 +10,29 @@ import FormGroup from './FormGroup';
 interface Props {
     form: {
         errors?: string[];
-        fields: {[key: string]: {
+        fields: { [key: string]: {
             errors?: string[];
             value?: string;
-        }};
+        } };
         token: string;
     };
 }
 
 export default function Register(props: Props) {
+    const { form } = props;
+
     const [validated, setValidated] = React.useState(false);
 
     const handleSubmit = (event: React.FormEvent) => {
-        const form = event.currentTarget;
-        if (form instanceof HTMLFormElement && form.checkValidity() === false) {
+        const formToSubmit = event.currentTarget;
+        if (formToSubmit instanceof HTMLFormElement && formToSubmit.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
             setValidated(true);
         }
     };
 
-    const errors = props.form.errors?.map(error => (
+    const errors = form.errors?.map((error) => (
         <Alert key={error} variant="danger">{error}</Alert>
     ));
 
@@ -49,27 +51,27 @@ export default function Register(props: Props) {
                         {errors}
                         <FormGroup
                             defaultErrorMessage="Please choose a username."
-                            defaultValue={props.form.fields.username?.value}
+                            defaultValue={form.fields.username?.value}
                             description="Username"
-                            errors={props.form.fields.username?.errors}
+                            errors={form.fields.username?.errors}
                             name="username"
                             type="text"
                             validated={validated}
                         />
                         <FormGroup
                             defaultErrorMessage="Please enter your email address."
-                            defaultValue={props.form.fields.email?.value}
+                            defaultValue={form.fields.email?.value}
                             description="Email"
-                            errors={props.form.fields.email?.errors}
+                            errors={form.fields.email?.errors}
                             name="email"
                             type="text"
                             validated={validated}
                         />
                         <FormGroup
                             defaultErrorMessage="Please enter your full name."
-                            defaultValue={props.form.fields.fullName?.value}
+                            defaultValue={form.fields.fullName?.value}
                             description="Name"
-                            errors={props.form.fields.fullName?.errors}
+                            errors={form.fields.fullName?.errors}
                             name="fullName"
                             type="text"
                             validated={validated}
@@ -78,12 +80,12 @@ export default function Register(props: Props) {
                             autoComplete="new-password"
                             defaultErrorMessage="Please choose a password."
                             description="Password"
-                            errors={props.form.fields.plainPassword?.errors}
+                            errors={form.fields.plainPassword?.errors}
                             name="plainPassword"
                             type="password"
                             validated={validated}
                         />
-                        <input name="registration_form[_token]" type="hidden" value={props.form.token} />
+                        <input name="registration_form[_token]" type="hidden" value={form.token} />
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>

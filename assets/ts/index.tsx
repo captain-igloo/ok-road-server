@@ -33,11 +33,24 @@ if (element) {
                 </Alert>
                 <h2>Getting Started</h2>
                 <ol>
-                    <li>Click <a href="/register">here</a> to register with OK Road.  Remember your username and password because you will need it in step 3.</li>
-                    <li>Install <a href="https://owntracks.org">Owntracks</a> on the device you wish to monitor.</li>
+                    <li>
+                        Click
+                        {' '}
+                        <a href="/register">here</a>
+                        {' '}
+                        to register with OK Road.  Remember your username and password because you
+                        will need it in step 3.
+                    </li>
+                    <li>
+                        Install
+                        {' '}
+                        <a href="https://owntracks.org">Owntracks</a>
+                        {' '}
+                        on the device you wish to monitor.
+                    </li>
                     <li>Configure Owntracks to publish to OK Road.</li>
                 </ol>
             </Container>
-        </Provider>
+        </Provider>,
     );
 }

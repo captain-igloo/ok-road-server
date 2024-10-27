@@ -22,7 +22,7 @@ const initialState: FriendsState = {
     show: false,
 };
 
-export const addFriend = createAsyncThunk<Friend, string, {state: RootState}>(
+export const addFriend = createAsyncThunk<Friend, string, { state: RootState }>(
     'friends/addFriendStatus',
     async (username: string, { dispatch }) => {
         const url = '/api/friends';
@@ -46,11 +46,11 @@ export const addFriend = createAsyncThunk<Friend, string, {state: RootState}>(
         }
         dispatch(friendsSlice.actions.setAddFriendError());
         dispatch(fetchFriends());
-        return await response.json();
+        return response.json();
     },
 );
 
-export const fetchFriends = createAsyncThunk<Friend[], void, {state: RootState}>(
+export const fetchFriends = createAsyncThunk<Friend[], void, { state: RootState }>(
     'friends/fetchFriendsStatus',
     async () => {
         const url = '/api/friends';
@@ -58,11 +58,11 @@ export const fetchFriends = createAsyncThunk<Friend[], void, {state: RootState}>
         if (!response.ok) {
             throw new Error(`Failed to fetch: ${url}`);
         }
-        return await response.json();
+        return response.json();
     },
 );
 
-export const deleteFriend = createAsyncThunk<void, number, {state: RootState}>(
+export const deleteFriend = createAsyncThunk<void, number, { state: RootState }>(
     'friends/deleteFriendStatus',
     async (id: number, { dispatch }) => {
         const url = `/api/friends/${id}`;

@@ -27,9 +27,7 @@ function FitBounds(props: Props) {
     return null;
 }
 
-const formatDate = (date: Date) => {
-    return moment(date).format('MMM Do YYYY h:mm:ss a');
-};
+const formatDate = (date: Date) => moment(date).format('MMM Do YYYY h:mm:ss a');
 
 export default function Map(props: Props) {
     const { bounds } = props;
@@ -37,7 +35,7 @@ export default function Map(props: Props) {
     const features = useSelector((state: RootState) => state.okRoad.features);
 
     const markers = [];
-    for (let i = features.length - 1; i >= 0; i--) {
+    for (let i = features.length - 1; i >= 0; i -= 1) {
         const feature = features[i];
         let speedLimit;
         let image = 'gray.svg';
@@ -87,7 +85,7 @@ export default function Map(props: Props) {
                     </p>
                     {speedLimit}
                 </Popup>
-            </Marker>
+            </Marker>,
         );
     }
 
@@ -99,12 +97,12 @@ export default function Map(props: Props) {
             <Marker
                 icon={new Icon({
                     iconSize: [20, 20],
-                    iconUrl: `/img/blue.svg`,
+                    iconUrl: '/img/blue.svg',
                 })}
                 key="highlighted-location"
                 position={[feature.coordinates[1], feature.coordinates[0]]}
                 zIndexOffset={1000}
-            />
+            />,
         );
     }
 
@@ -112,6 +110,7 @@ export default function Map(props: Props) {
         <MapContainer center={[-41, 174]} className="map" zoom={5} scrollWheelZoom={false}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                className="gray"
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {markers}

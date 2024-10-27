@@ -15,7 +15,6 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export default function Search() {
     const fromDate = useSelector((state: RootState) => state.okRoad.fromDate);
     const toDate = useSelector((state: RootState) => state.okRoad.toDate);
-    
     const dispatch = useAppDispatch();
 
     return (

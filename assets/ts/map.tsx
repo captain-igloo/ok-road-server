@@ -10,9 +10,9 @@ const element = document.getElementById('app');
 if (element) {
     const root = ReactDOM.createRoot(element);
     root.render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
+        <Provider store={store}>
+            <App />
+        </Provider>,
     );
     store.dispatch(fetchDevices()).then(() => {
         store.dispatch(fetchLocations());

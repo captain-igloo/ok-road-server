@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import * as moment from 'moment';
 import * as React from 'react';
-import { Bar } from "react-chartjs-2";
+import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '../store';
@@ -30,9 +30,9 @@ ChartJS.register(
 export const options = {
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
+        legend: {
+            display: false,
+        },
     },
     responsive: true,
 };
@@ -52,7 +52,7 @@ export default function Chart() {
         features.forEach((feature) => {
             const index = Math.floor(((feature.timestamp * 1000) - fromDate) / bucketSize);
             if (index >= 0 && index < bucketCount) {
-                values[index]++;
+                values[index] += 1;
             }
         });
         for (let t = fromDate; t < toDate; t += bucketSize) {
@@ -62,13 +62,16 @@ export default function Chart() {
 
     return (
         <div className="chart-container">
-            <Bar options={options} data={{
-                labels,
-                datasets: [{
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    data: values,
-                }],
-            }} />
+            <Bar
+                options={options}
+                data={{
+                    labels,
+                    datasets: [{
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        data: values,
+                    }],
+                }}
+            />
         </div>
     );
 }
