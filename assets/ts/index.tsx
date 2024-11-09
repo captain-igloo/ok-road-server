@@ -50,6 +50,7 @@ if (element) {
                     </li>
                     <li>Configure Owntracks to publish to OK Road.</li>
                 </ol>
+                <img src="/img/okroad.png" />
             </Container>
         </Provider>,
     );
