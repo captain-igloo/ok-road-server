@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import Header from './Header';
+import Important from './Important';
 import { store } from './store';
 
 const element = document.getElementById('app');
@@ -28,9 +28,9 @@ if (element) {
                     <li>How fast they are driving</li>
                     <li>Their speed in relation to the speed limit</li>
                 </ul>
-                <Alert variant="warning">
-                    Speed limit data is only available in New Zealand.
-                </Alert>
+                <Important>
+                    Speed limit data is currently only available in New Zealand.
+                </Important>
                 <h2>Getting Started</h2>
                 <ol>
                     <li>
@@ -50,7 +50,7 @@ if (element) {
                     </li>
                     <li>Configure Owntracks to publish to OK Road.</li>
                 </ol>
-                <img src="/img/okroad.png" />
+                <img alt="Screenshot" src="/img/okroad.png" />
             </Container>
         </Provider>,
     );

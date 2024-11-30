@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { LatLng, LatLngBounds } from 'leaflet';
 
-import { AppDispatch, RootState } from '../store';
+import type { AppDispatch, RootState } from '../store';
 
 export interface Feature {
     coordinates: number[];
@@ -57,7 +57,7 @@ const initialState: OkRoadState = {
 };
 
 export const fetchDevices = createAsyncThunk<Device[], void, { state: RootState }>(
-    'okroad/fetchDevicesStatus',
+    'map/fetchDevicesStatus',
     async () => {
         const url = '/api/devices';
         const response = await fetch(url);
@@ -81,7 +81,7 @@ export const fetchLocations = createAsyncThunk<{
     };
     timestamp: number;
 }[], void, { state: RootState }>(
-    'okroad/fetchLocationsStatus',
+    'map/fetchLocationsStatus',
     async (_, { getState }) => {
         let fromDate: number;
         let toDate: number;
@@ -92,7 +92,7 @@ export const fetchLocations = createAsyncThunk<{
             fromDate = getState().okRoad.fromDate;
             toDate = getState().okRoad.toDate;
         }
-        const selectedDevice = getState().okRoad.selectedDevice;
+        const { selectedDevice } = getState().okRoad;
         if (selectedDevice) {
             const response = await fetch(`/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`);
             if (!response.ok) {
@@ -104,8 +104,8 @@ export const fetchLocations = createAsyncThunk<{
     },
 );
 
-export const okRoadSlice = createSlice({
-    name: 'okRoad',
+export const mapSlice = createSlice({
+    name: 'map',
     initialState,
     reducers: {
         highlightLocation: (state, action: PayloadAction<number | undefined>) => {
@@ -170,20 +170,20 @@ export const okRoadSlice = createSlice({
 });
 
 export const setFromDate = (fromDate: number) => (dispatch: AppDispatch) => {
-    dispatch(okRoadSlice.actions.setFromDate(fromDate));
+    dispatch(mapSlice.actions.setFromDate(fromDate));
     dispatch(fetchLocations());
 };
 
 export const setToDate = (toDate: number) => (dispatch: AppDispatch) => {
-    dispatch(okRoadSlice.actions.setToDate(toDate));
+    dispatch(mapSlice.actions.setToDate(toDate));
     dispatch(fetchLocations());
 };
 
 export const setShowRecent = (showRecent: boolean) => (dispatch: AppDispatch) => {
-    dispatch(okRoadSlice.actions.setShowRecent(showRecent));
+    dispatch(mapSlice.actions.setShowRecent(showRecent));
     dispatch(fetchLocations());
 };
 
-export const { highlightLocation, selectDevice, setUser } = okRoadSlice.actions;
+export const { highlightLocation, selectDevice, setUser } = mapSlice.actions;
 
-export default okRoadSlice.reducer;
+export default mapSlice.reducer;

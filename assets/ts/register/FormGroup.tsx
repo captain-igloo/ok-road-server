@@ -18,7 +18,7 @@ export default function FormGroup(props: Props) {
         defaultErrorMessage,
         defaultValue,
         description,
-        // errors,
+        errors,
         name,
         validated,
         type,
@@ -26,18 +26,18 @@ export default function FormGroup(props: Props) {
 
     const [value, setValue] = React.useState(defaultValue || '');
 
-    let errors;
+    let feedback;
     let invalid;
     let valid;
-    if (props.errors && props.errors.length > 0) {
-        errors = props.errors.map((message, index) => (
+    if (errors && errors.length > 0) {
+        feedback = errors.map((message, index) => (
             <Form.Control.Feedback key={index} type="invalid">
                 {message}
             </Form.Control.Feedback>
         ));
         invalid = true;
-    } else if (value === '' && props.validated) {
-        errors = (
+    } else if (value === '' && validated) {
+        feedback = (
             <Form.Control.Feedback type="invalid">
                 {defaultErrorMessage}
             </Form.Control.Feedback>
@@ -65,7 +65,7 @@ export default function FormGroup(props: Props) {
                 type={type}
                 value={value}
             />
-            {errors}
+            {feedback}
         </Form.Group>
     );
 }

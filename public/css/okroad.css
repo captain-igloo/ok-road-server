@@ -75,6 +75,20 @@ html, body {
     filter: grayscale(100%);
 }
 
+.alert__important {
+    border-left: 0.25em solid #8250DF;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+}
+
+.alert__important--title {
+    color: #8250DF;
+}
+
+.alert__important--body {
+    margin-bottom: 0;
+}
+
 @media (min-width: 576px) {
     .display-small {
         display: initial;

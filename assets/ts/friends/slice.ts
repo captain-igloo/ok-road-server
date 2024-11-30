@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { AppDispatch, RootState } from '../store';
+import type { AppDispatch, RootState } from '../store';
 
 interface Friend {
     email: string;
@@ -21,6 +21,36 @@ const initialState: FriendsState = {
     friends: [],
     show: false,
 };
+
+export const friendsSlice = createSlice({
+    name: 'friends',
+    initialState,
+    reducers: {
+        setAddFriendError: (state, action: PayloadAction<string | undefined>) => {
+            state.add_friend_error = action.payload;
+        },
+        showFriends: (state, action: PayloadAction<boolean>) => {
+            state.show = action.payload;
+        },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchFriends.fulfilled, (state, action) => {
+            state.friends = action.payload;
+        });
+    },
+});
+
+export const fetchFriends = createAsyncThunk<Friend[], void, { state: RootState }>(
+    'friends/fetchFriendsStatus',
+    async () => {
+        const url = '/api/friends';
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch: ${url}`);
+        }
+        return response.json();
+    },
+);
 
 export const addFriend = createAsyncThunk<Friend, string, { state: RootState }>(
     'friends/addFriendStatus',
@@ -50,18 +80,6 @@ export const addFriend = createAsyncThunk<Friend, string, { state: RootState }>(
     },
 );
 
-export const fetchFriends = createAsyncThunk<Friend[], void, { state: RootState }>(
-    'friends/fetchFriendsStatus',
-    async () => {
-        const url = '/api/friends';
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch: ${url}`);
-        }
-        return response.json();
-    },
-);
-
 export const deleteFriend = createAsyncThunk<void, number, { state: RootState }>(
     'friends/deleteFriendStatus',
     async (id: number, { dispatch }) => {
@@ -75,24 +93,6 @@ export const deleteFriend = createAsyncThunk<void, number, { state: RootState }>
         dispatch(fetchFriends());
     },
 );
-
-export const friendsSlice = createSlice({
-    name: 'friends',
-    initialState,
-    reducers: {
-        setAddFriendError: (state, action: PayloadAction<string | undefined>) => {
-            state.add_friend_error = action.payload;
-        },
-        showFriends: (state, action: PayloadAction<boolean>) => {
-            state.show = action.payload;
-        },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(fetchFriends.fulfilled, (state, action) => {
-            state.friends = action.payload;
-        });
-    },
-});
 
 export const showFriends = (show: boolean) => (dispatch: AppDispatch) => {
     dispatch(friendsSlice.actions.showFriends(show));

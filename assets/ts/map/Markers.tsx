@@ -52,52 +52,37 @@ export default function Markers() {
             );
         }
 
-        let popup = (
-            <Popup>
-                <p>
-                    <strong>Date:</strong>
-                    {' '}
-                    {formatDate(new Date(feature.timestamp * 1000))}
-                </p>
-                <p>
-                    <strong>Speed:</strong>
-                    {' '}
-                    {feature.velocity}
-                    km/h
-                </p>
-                {speedLimit}
-            </Popup>
-        );
-
         const markerProps: any = {};
         if (mostRecent === undefined || mostRecent.index !== i) {
             markerProps.icon = new Icon({
                 iconSize: [20, 20],
                 iconUrl: `/img/${image}`,
             });
-            /* marker = (
-                <Marker
-                    icon={new Icon({
-                        iconSize: [20, 20],
-                        iconUrl: `/img/${image}`,
-                    })}
-                    key={feature.id}
-                    position={[feature.coordinates[1], feature.coordinates[0]]}
-                >
-                    {popup}
-                </Marker>
-            ); */
-        } 
+        }
         markers.push(
             <Marker
                 {...markerProps}
                 key={feature.id}
                 position={[feature.coordinates[1], feature.coordinates[0]]}
             >
-                {popup}
-            </Marker>
+                <Popup>
+                    <p>
+                        <strong>Date:</strong>
+                        {' '}
+                        {formatDate(new Date(feature.timestamp * 1000))}
+                    </p>
+                    <p>
+                        <strong>Speed:</strong>
+                        {' '}
+                        {feature.velocity}
+                        km/h
+                    </p>
+                    {speedLimit}
+                </Popup>
+            </Marker>,
         );
     }
+
     return (
         <>
             {markers}
