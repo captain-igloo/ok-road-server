@@ -25,6 +25,8 @@ RUN mkdir -p /app/var/cache \
     && chown www-data: /app/var/cache \
     && mkdir -p /app/var/log \
     && chown www-data: /app/var/log \
+    && mkdir -p /app/var/sessions \
+    && chown www-data: /app/var/sessions \
     && apt update \
     && apt install -y libpq-dev \
     && docker-php-ext-install opcache pdo pdo_pgsql \
