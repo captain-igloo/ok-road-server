@@ -1,35 +1,31 @@
+import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons/faArrowRotateRight';
 import { Icon } from 'leaflet';
 import * as React from 'react';
 import {
     MapContainer,
     Marker,
     TileLayer,
-    useMap,
 } from 'react-leaflet';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../store';
+import { AppDispatch, RootState } from '../store';
+import Button from './Button';
+import FitBounds from './FitBounds';
 import Markers from './Markers';
+import { fetchLocations } from './slice';
 
 interface Props {
     bounds?: [[number, number], [number, number]];
 }
 
-function FitBounds(props: Props) {
-    const { bounds } = props;
-    const map = useMap();
-    React.useEffect(() => {
-        if (bounds) {
-            map.fitBounds(bounds);
-        }
-    }, [bounds]);
-    return null;
-}
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default function Map(props: Props) {
     const { bounds } = props;
 
+    const dispatch = useAppDispatch();
     const features = useSelector((state: RootState) => state.okRoad.features);
+    const refreshInProgress = useSelector((state: RootState) => state.okRoad.refreshInProgress);
 
     let highlightedMarker;
 
@@ -60,6 +56,13 @@ export default function Map(props: Props) {
             <Markers />
             {highlightedMarker}
             <FitBounds bounds={bounds} />
+            <Button
+                className={refreshInProgress ? 'spin' : ''}
+                icon={faArrowRotateRight}
+                onClick={() => {
+                    dispatch(fetchLocations());
+                }}
+            />
         </MapContainer>
     );
 }

@@ -27,12 +27,14 @@ export interface User {
     username: string;
 }
 
-export interface OkRoadState {
+export interface MapState {
     bounds?: [[number, number], [number, number]];
     devices: Device[];
     features: Feature[];
     fromDate: number;
     highlightedLocation?: number;
+    notifications: string[];
+    refreshInProgress: boolean;
     selectedDevice?: number;
     showRecent: boolean;
     toDate: number;
@@ -40,12 +42,14 @@ export interface OkRoadState {
     value: number;
 }
 
-const initialState: OkRoadState = {
+const initialState: MapState = {
     bounds: undefined,
     devices: [],
     features: [],
     fromDate: Date.now() - (60 * 60 * 24 * 1000),
     highlightedLocation: undefined,
+    notifications: [],
+    refreshInProgress: false,
     selectedDevice: undefined,
     showRecent: false,
     toDate: Date.now(),
@@ -82,7 +86,7 @@ export const fetchLocations = createAsyncThunk<{
     timestamp: number;
 }[], void, { state: RootState }>(
     'map/fetchLocationsStatus',
-    async (_, { getState }) => {
+    async (_, { dispatch, getState }) => {
         let fromDate: number;
         let toDate: number;
         if (getState().okRoad.showRecent) {
@@ -94,7 +98,9 @@ export const fetchLocations = createAsyncThunk<{
         }
         const { selectedDevice } = getState().okRoad;
         if (selectedDevice) {
+            dispatch(mapSlice.actions.setRefreshInProgress(true));
             const response = await fetch(`/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`);
+            dispatch(mapSlice.actions.setRefreshInProgress(false));
             if (!response.ok) {
                 throw new Error('Failed to fetch');
             }
@@ -108,8 +114,17 @@ export const mapSlice = createSlice({
     name: 'map',
     initialState,
     reducers: {
+        addNotification: (state, action: PayloadAction<string>) => {
+            state.notifications.push(action.payload);
+        },
         highlightLocation: (state, action: PayloadAction<number | undefined>) => {
             state.highlightedLocation = action.payload;
+        },
+        setRefreshInProgress: (state, action: PayloadAction<boolean>) => {
+            state.refreshInProgress = action.payload;
+        },
+        removeNotification: (state) => {
+            state.notifications.shift();
         },
         selectDevice: (state, action: PayloadAction<number>) => {
             state.selectedDevice = action.payload;
@@ -168,6 +183,13 @@ export const mapSlice = createSlice({
         });
     },
 });
+
+export const addNotification = (notification: string) => (dispatch: AppDispatch) => {
+    dispatch(mapSlice.actions.addNotification(notification));
+    setTimeout(() => {
+        dispatch(mapSlice.actions.removeNotification());
+    }, 3000);
+};
 
 export const setFromDate = (fromDate: number) => (dispatch: AppDispatch) => {
     dispatch(mapSlice.actions.setFromDate(fromDate));

@@ -89,6 +89,19 @@ html, body {
     margin-bottom: 0;
 }
 
+.spin {
+    animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
 @media (min-width: 576px) {
     .display-small {
         display: initial;
