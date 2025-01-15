@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LocationRepository extends ServiceEntityRepository
 {
-    private const int MAX_RESULTS = 1000;
+    public const int MAX_RESULTS = 1000;
 
     public function __construct(ManagerRegistry $registry)
     {

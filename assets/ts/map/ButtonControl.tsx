@@ -24,7 +24,6 @@ export default class ButtonControl extends Control {
 
     public constructor(options: ButtonControlOptions) {
         super(options);
-        
         this.onClick = options.onClick;
         this.icon = options.icon;
         this.className = options.className;
@@ -57,7 +56,6 @@ export default class ButtonControl extends Control {
     }
 
     public onAdd() {
-        // this.div = DomUtil.create('div');
         this.createPortal();
         return this.getDiv();
     }

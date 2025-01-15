@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\SpeedLimit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 
@@ -19,35 +20,22 @@ class SpeedLimitRepository extends ServiceEntityRepository
 
     public function findByPoint(Point $point): ?SpeedLimit
     {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(SpeedLimit::class, 's');
+
         $geomFromText = "ST_GeomFromText('POINT(" . $point->getX() . ' ' . $point->getY() . ")', 4326)";
-        return $this->createQueryBuilder('s')
-            ->andWhere('ST_Intersects(s.area, ' . $geomFromText . ") = 't'")
-            ->getQuery()
+
+        // don't select speed_limit.area, it's not needed and will chew up memory if the polygon has a lot of vertices.
+        return $this->getEntityManager()
+            ->createNativeQuery(
+                'SELECT
+                    id, speed_limit, description
+                FROM
+                    speed_limit AS s
+                WHERE
+                    ST_Intersects(s.area, ' . $geomFromText . ')',
+                $rsm,
+            )
             ->getOneOrNullResult();
     }
-
-    //    /**
-    //     * @return SpeedLimit[] Returns an array of SpeedLimit objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?SpeedLimit
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

@@ -33,7 +33,9 @@ export interface MapState {
     features: Feature[];
     fromDate: number;
     highlightedLocation?: number;
-    notifications: string[];
+    maxResults: number;
+    notificationCount: number;
+    notifications: { [key: string]: string };
     refreshInProgress: boolean;
     selectedDevice?: number;
     showRecent: boolean;
@@ -48,7 +50,9 @@ const initialState: MapState = {
     features: [],
     fromDate: Date.now() - (60 * 60 * 24 * 1000),
     highlightedLocation: undefined,
-    notifications: [],
+    maxResults: 0,
+    notificationCount: 0,
+    notifications: {},
     refreshInProgress: false,
     selectedDevice: undefined,
     showRecent: false,
@@ -60,13 +64,19 @@ const initialState: MapState = {
     value: 0,
 };
 
-export const fetchDevices = createAsyncThunk<Device[], void, { state: RootState }>(
+export const fetchDevices = createAsyncThunk<
+Device[],
+void,
+{
+    dispatch: AppDispatch;
+    state: RootState;
+}>(
     'map/fetchDevicesStatus',
-    async () => {
+    async (_, { dispatch }) => {
         const url = '/api/devices';
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`Failed to fetch: ${url}`);
+            dispatch(addNotification('Failed to fetch devices'));
         }
         return response.json();
     },
@@ -84,7 +94,7 @@ export const fetchLocations = createAsyncThunk<{
         speed_limit: number;
     };
     timestamp: number;
-}[], void, { state: RootState }>(
+}[], void, { dispatch: AppDispatch; state: RootState }>(
     'map/fetchLocationsStatus',
     async (_, { dispatch, getState }) => {
         let fromDate: number;
@@ -102,9 +112,13 @@ export const fetchLocations = createAsyncThunk<{
             const response = await fetch(`/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`);
             dispatch(mapSlice.actions.setRefreshInProgress(false));
             if (!response.ok) {
-                throw new Error('Failed to fetch');
+                dispatch(addNotification('Failed to fetch locations'));
             }
-            return response.json();
+            const features = await response.json();
+            if (features.length >= getState().okRoad.maxResults) {
+                dispatch(addNotification(`Results have been limited to ${getState().okRoad.maxResults}`));
+            }
+            return features;
         }
         return [];
     },
@@ -115,16 +129,23 @@ export const mapSlice = createSlice({
     initialState,
     reducers: {
         addNotification: (state, action: PayloadAction<string>) => {
-            state.notifications.push(action.payload);
+            state.notificationCount += 1;
+            state.notifications[state.notificationCount] = action.payload;
         },
         highlightLocation: (state, action: PayloadAction<number | undefined>) => {
             state.highlightedLocation = action.payload;
         },
+        setMaxResults: (state, action: PayloadAction<number>) => {
+            state.maxResults = action.payload;
+        },
         setRefreshInProgress: (state, action: PayloadAction<boolean>) => {
             state.refreshInProgress = action.payload;
         },
-        removeNotification: (state) => {
-            state.notifications.shift();
+        removeNotification: (state, action: PayloadAction<number | undefined>) => {
+            const notificationId = action.payload === undefined
+                ? Object.keys(state.notifications)[0]
+                : action.payload;
+            delete state.notifications[notificationId];
         },
         selectDevice: (state, action: PayloadAction<number>) => {
             state.selectedDevice = action.payload;
@@ -206,6 +227,12 @@ export const setShowRecent = (showRecent: boolean) => (dispatch: AppDispatch) =>
     dispatch(fetchLocations());
 };
 
-export const { highlightLocation, selectDevice, setUser } = mapSlice.actions;
+export const {
+    highlightLocation,
+    removeNotification,
+    selectDevice,
+    setMaxResults,
+    setUser,
+} = mapSlice.actions;
 
 export default mapSlice.reducer;

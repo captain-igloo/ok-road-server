@@ -81,8 +81,8 @@ class SubscribeCommand extends Command
                 $point = new Point($json['lon'], $json['lat'], 4326);
                 $location = new Location();
                 $location->setDevice($device);
-                $location->setSpeedLimit($this->speedLimitRepository->findByPoint($point));
-                // $location->setSpeedLimit($this->getSpeedLimit($point));
+                // $location->setSpeedLimit($this->speedLimitRepository->findByPoint($point));
+                $location->setSpeedLimit($this->getSpeedLimit($point));
                 $location->setTimestamp(new DateTime(date('Y-m-d H:i:s', $json['tst'])));
                 $location->setLocation($point);
                 if (array_key_exists('acc', $json)) {

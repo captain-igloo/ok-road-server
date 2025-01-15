@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Chart from './Chart';
 import Locations from './Locations';
 import Map from './Map';
+import { removeNotification } from './slice';
 import Search from './Search';
 import Header from '../Header';
 import { AppDispatch, RootState } from '../store';
@@ -19,14 +20,21 @@ export default function App() {
     const bounds = useSelector((state: RootState) => state.okRoad.bounds);
     const user = useSelector((state: RootState) => state.okRoad.user);
     const notifications = useSelector((state: RootState) => state.okRoad.notifications);
+    const dispatch = useAppDispatch();
 
     let toastContainer;
-    if (notifications.length > 0) {
+    if (Object.keys(notifications).length > 0) {
         toastContainer = (
             <ToastContainer className="p-3" position="top-end">
-                {notifications.map((notification, index) => {
+                {Object.keys(notifications).map((notificationId) => {
+                    const notification = notifications[notificationId];
                     return (
-                        <Toast key={index}>
+                        <Toast
+                            key={notificationId}
+                            onClose={() => {
+                                dispatch(removeNotification(parseInt(notificationId, 10)));
+                            }}
+                        >
                             <Toast.Header>
                                 <strong className="me-auto">{notification}</strong>
                             </Toast.Header>
