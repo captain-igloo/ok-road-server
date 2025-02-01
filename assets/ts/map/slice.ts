@@ -227,10 +227,14 @@ export const setShowRecent = (showRecent: boolean) => (dispatch: AppDispatch) =>
     dispatch(fetchLocations());
 };
 
+export const selectDevice = (deviceId: number) => (dispatch: AppDispatch) => {
+    dispatch(mapSlice.actions.selectDevice(deviceId));
+    dispatch(fetchLocations());
+};
+
 export const {
     highlightLocation,
     removeNotification,
-    selectDevice,
     setMaxResults,
     setUser,
 } = mapSlice.actions;
