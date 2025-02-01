@@ -31,13 +31,18 @@ class DeviceRepository extends ServiceEntityRepository
                     d.*
                 FROM
                     device AS d
-                LEFT JOIN
+                WHERE
+                    d.id = :deviceId AND d.user_id = :userId
+                UNION SELECT
+                    d.*
+                FROM
+                    device AS d
+                INNER JOIN
                     friend AS f
                 ON
                     d.user_id = f.friend_id
                 WHERE
-                    d.id = :deviceId
-                    AND (d.user_id = :userId OR d.user_id = f.friend_id)',
+                    d.id = :deviceId AND f.user_id = :userId',
                 $rsm
             );
         $query->setParameter('deviceId', $deviceId);
@@ -56,13 +61,8 @@ class DeviceRepository extends ServiceEntityRepository
                     d.*
                 FROM
                     device AS d
-                LEFT JOIN
-                    friend AS f
-                ON
-                    d.user_id = f.friend_id
                 WHERE
-                    d.name = :name
-                    AND (d.user_id = :userId OR d.user_id = f.friend_id)',
+                    d.name = :name AND d.user_id = :userId',
                 $rsm
             );
         $query->setParameter('name', $name);
@@ -81,12 +81,18 @@ class DeviceRepository extends ServiceEntityRepository
                     d.*
                 FROM
                     device AS d
-                LEFT JOIN
+                WHERE
+                    d.user_id = :userId
+                UNION SELECT
+                    d.*
+                FROM
+                    device AS d
+                INNER JOIN
                     friend AS f
                 ON
                     d.user_id = f.friend_id
                 WHERE
-                    d.user_id = :userId OR d.user_id = f.friend_id',
+                    f.user_id = :userId',
                 $rsm
             );
         $query->setParameter('userId', $user->getId());

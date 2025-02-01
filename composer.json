@@ -46,6 +46,7 @@
         "twig/twig": "^2.12|^3.0",
 
         "friendsofsymfony/rest-bundle": "^3.7",
+        "halaxa/json-machine": "^1.2",
         "jms/serializer-bundle": "*",        
         "longitude-one/doctrine-spatial": "^5.0",
         "php-mqtt/client": "^2.1"
