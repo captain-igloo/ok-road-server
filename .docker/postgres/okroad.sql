@@ -27,7 +27,7 @@ CREATE INDEX speed_limit_area_idx ON speed_limit USING gist(area);
 CREATE TABLE location (
     id serial NOT NULL PRIMARY KEY,
     device_id integer NOT NULL REFERENCES device(id),
-    speed_limit_id integer,
+    speed_limit_id integer REFERENCES speed_limit(id),
     timestamp timestamp NOT NULL,
     location Geometry(Point, 4326) NOT NULL,
     accuracy integer,

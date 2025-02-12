@@ -33,6 +33,7 @@ export interface MapState {
     features: Feature[];
     fromDate: number;
     highlightedLocation?: number;
+    last24Hours: boolean;
     maxResults: number;
     notificationCount: number;
     notifications: { [key: string]: string };
@@ -50,6 +51,7 @@ const initialState: MapState = {
     features: [],
     fromDate: Date.now() - (60 * 60 * 24 * 1000),
     highlightedLocation: undefined,
+    last24Hours: true,
     maxResults: 0,
     notificationCount: 0,
     notifications: {},
@@ -153,6 +155,9 @@ export const mapSlice = createSlice({
         setFromDate: (state, action: PayloadAction<number>) => {
             state.fromDate = action.payload;
         },
+        setLast24Hours: (state, action: PayloadAction<boolean>) => {
+            state.last24Hours = action.payload;
+        },
         setShowRecent: (state, action: PayloadAction<boolean>) => {
             state.showRecent = action.payload;
         },
@@ -212,6 +217,18 @@ export const addNotification = (notification: string) => (dispatch: AppDispatch)
     }, 3000);
 };
 
+let refreshTimeout: NodeJS.Timeout;
+
+export const scheduleRefresh = () => (dispatch: AppDispatch) => {
+    clearTimeout(refreshTimeout);
+    refreshTimeout = setTimeout(() => {
+        dispatch(mapSlice.actions.setFromDate(Date.now() - (60 * 60 * 24 * 1000)));
+        dispatch(mapSlice.actions.setToDate(Date.now()));
+        dispatch(fetchLocations());
+        dispatch(scheduleRefresh());
+    }, 300000);
+};
+
 export const setFromDate = (fromDate: number) => (dispatch: AppDispatch) => {
     dispatch(mapSlice.actions.setFromDate(fromDate));
     dispatch(fetchLocations());
@@ -230,6 +247,15 @@ export const setShowRecent = (showRecent: boolean) => (dispatch: AppDispatch) =>
 export const selectDevice = (deviceId: number) => (dispatch: AppDispatch) => {
     dispatch(mapSlice.actions.selectDevice(deviceId));
     dispatch(fetchLocations());
+};
+
+export const setLast24Hours = (last24Hours: boolean) => (dispatch: AppDispatch) => {
+    dispatch(mapSlice.actions.setLast24Hours(last24Hours));
+    if (last24Hours) {
+        dispatch(scheduleRefresh());
+    } else {
+        clearTimeout(refreshTimeout);
+    }
 };
 
 export const {

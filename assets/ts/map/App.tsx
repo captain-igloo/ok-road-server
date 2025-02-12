@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Chart from './Chart';
 import Locations from './Locations';
 import Map from './Map';
-import { removeNotification } from './slice';
+import { removeNotification, scheduleRefresh } from './slice';
 import Search from './Search';
 import Header from '../Header';
 import { AppDispatch, RootState } from '../store';
@@ -20,7 +20,12 @@ export default function App() {
     const bounds = useSelector((state: RootState) => state.okRoad.bounds);
     const user = useSelector((state: RootState) => state.okRoad.user);
     const notifications = useSelector((state: RootState) => state.okRoad.notifications);
+    const last24Hours = useSelector((state: RootState) => state.okRoad.last24Hours);
     const dispatch = useAppDispatch();
+
+    if (last24Hours) {
+        dispatch(scheduleRefresh());
+    }
 
     let toastContainer;
     if (Object.keys(notifications).length > 0) {

@@ -9,7 +9,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';

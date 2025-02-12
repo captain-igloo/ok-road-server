@@ -1,5 +1,5 @@
 import { Icon } from 'leaflet';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import { useSelector } from 'react-redux';
