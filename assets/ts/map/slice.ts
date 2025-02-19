@@ -7,6 +7,7 @@ import type { AppDispatch, RootState } from '../store';
 export interface Feature {
     coordinates: number[];
     id: number;
+    insertTimestamp: number;
     speedLimit?: {
         description: string;
         speedLimit: number;
@@ -86,6 +87,7 @@ void,
 
 export const fetchLocations = createAsyncThunk<{
     id: number;
+    insert_timestamp: number;
     location: {
         x: number;
         y: number;
@@ -111,7 +113,9 @@ export const fetchLocations = createAsyncThunk<{
         const { selectedDevice } = getState().okRoad;
         if (selectedDevice) {
             dispatch(mapSlice.actions.setRefreshInProgress(true));
-            const response = await fetch(`/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`);
+            const response = await fetch(`/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`, {
+                redirect: 'manual',
+            });
             dispatch(mapSlice.actions.setRefreshInProgress(false));
             if (!response.ok) {
                 dispatch(addNotification('Failed to fetch locations'));
@@ -195,6 +199,7 @@ export const mapSlice = createSlice({
                 state.features.push({
                     coordinates: [feature.location.x, feature.location.y],
                     id: feature.id,
+                    insertTimestamp: feature.insert_timestamp,
                     speedLimit,
                     timestamp: feature.timestamp,
                     velocity: feature.speed || 0,

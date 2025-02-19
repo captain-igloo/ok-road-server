@@ -29,6 +29,7 @@ CREATE TABLE location (
     device_id integer NOT NULL REFERENCES device(id),
     speed_limit_id integer REFERENCES speed_limit(id),
     timestamp timestamp NOT NULL,
+    insert_timestamp timestamp NOT NULL,
     location Geometry(Point, 4326) NOT NULL,
     accuracy integer,
     speed integer

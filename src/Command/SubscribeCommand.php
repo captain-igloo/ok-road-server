@@ -84,6 +84,7 @@ class SubscribeCommand extends Command
                 // $location->setSpeedLimit($this->speedLimitRepository->findByPoint($point));
                 $location->setSpeedLimit($this->getSpeedLimit($point));
                 $location->setTimestamp(new DateTime(date('Y-m-d H:i:s', $json['tst'])));
+                $location->setInsertTimestamp(new DateTime());
                 $location->setLocation($point);
                 if (array_key_exists('acc', $json)) {
                     $location->setAccuracy($json['acc']);

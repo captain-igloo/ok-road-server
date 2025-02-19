@@ -32,6 +32,10 @@ class Location
     private ?DateTimeInterface $timestamp = null;
 
     #[Exclude]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $insertTimestamp = null;
+
+    #[Exclude]
     #[ORM\Column(type: 'Point')]
     private ?Point $location = null;
 
@@ -87,6 +91,25 @@ class Location
     public function serializeTimestamp(): ?int
     {
         return $this->getTimestamp()?->getTimestamp();
+    }
+
+    public function getInsertTimestamp(): ?DateTimeInterface
+    {
+        return $this->insertTimestamp;
+    }
+
+    public function setInsertTimestamp(DateTimeInterface $insertTimestamp): static
+    {
+        $this->insertTimestamp = $insertTimestamp;
+
+        return $this;
+    }
+
+    #[SerializedName('insert_timestamp')]
+    #[VirtualProperty]
+    public function serializeInsertTimestamp(): ?int
+    {
+        return $this->getInsertTimestamp()?->getTimestamp();
     }
 
     public function getLocation(): ?Point

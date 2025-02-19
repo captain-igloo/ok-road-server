@@ -72,6 +72,11 @@ export default function Markers() {
                         {formatDate(new Date(feature.timestamp * 1000))}
                     </p>
                     <p>
+                        <strong>Message received:</strong>
+                        {' '}
+                        {formatDate(new Date(feature.insertTimestamp * 1000))}
+                    </p>
+                    <p>
                         <strong>Speed:</strong>
                         {' '}
                         {feature.velocity}
