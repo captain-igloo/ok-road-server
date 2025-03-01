@@ -53,6 +53,7 @@ class AppFixtures extends Fixture
         $location = new Location();
         $location->setDevice($device);
         $location->setTimestamp(new DateTime('2024-07-16 00:00:00'));
+        $location->setInsertTimestamp(new DateTime('2024-07-16 00:00:00'));
         $location->setLocation(new Point(174, -40));
         $location->setAccuracy(100);
         $location->setSpeed(100);

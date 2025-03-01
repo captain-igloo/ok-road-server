@@ -23,7 +23,8 @@ class SpeedLimitRepository extends ServiceEntityRepository
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata(SpeedLimit::class, 's');
 
-        $geomFromText = "ST_GeomFromText('POINT(" . $point->getX() . ' ' . $point->getY() . ")', 4326)";
+        $geomFromText = "ST_Transform(ST_GeomFromText('POINT("
+            . $point->getX() . ' ' . $point->getY() . ")', 4326), 2193)";
 
         // don't select speed_limit.area, it's not needed and will chew up memory if the polygon has a lot of vertices.
         return $this->getEntityManager()
