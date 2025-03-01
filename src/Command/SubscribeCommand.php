@@ -66,15 +66,13 @@ class SubscribeCommand extends Command
                 $this->logger->error('Failed to decode: ' . $message);
                 return;
             }
-
             if (
                 !is_array($json)
                 || !array_key_exists('_type', $json)
-                || ($json['type'] !== 'lwt'
-                && (!array_key_exists('lat', $json)
+                || !array_key_exists('lat', $json)
                 || !is_numeric($json['lat'])
                 || !array_key_exists('lon', $json)
-                || !is_numeric($json['lon'])))
+                || !is_numeric($json['lon'])
             ) {
                 $this->logger->error('Invalid json: ' . $message);
                 return;
@@ -83,6 +81,7 @@ class SubscribeCommand extends Command
                 $point = new Point($json['lon'], $json['lat'], 4326);
                 $location = new Location();
                 $location->setDevice($device);
+                // $location->setSpeedLimit($this->speedLimitRepository->findByPoint($point));
                 $location->setSpeedLimit($this->getSpeedLimit($point));
                 $location->setTimestamp(new DateTime(date('Y-m-d H:i:s', $json['tst'])));
                 $location->setInsertTimestamp(new DateTime());
