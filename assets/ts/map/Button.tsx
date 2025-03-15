@@ -12,10 +12,18 @@ interface Props {
     className?: string;
     icon: IconProp;
     onClick: () => void;
+    title: string;
+    variant?: string;
 }
 
 export default function Button(props: Props) {
-    const { className, icon, onClick } = props;
+    const {
+        className,
+        icon,
+        onClick,
+        title,
+        variant,
+    } = props;
 
     const map = useMap();
     const [control, setControl] = React.useState<ButtonControl>();
@@ -26,6 +34,8 @@ export default function Button(props: Props) {
             icon,
             onClick,
             position: 'bottomleft',
+            title,
+            variant,
         });
         c.addTo(map);
         setControl(c);
@@ -37,6 +47,7 @@ export default function Button(props: Props) {
 
     if (control) {
         control.setClassName(className);
+        control.setVariant(variant);
         return control.getPortal();
     }
 

@@ -19,7 +19,7 @@ CREATE TABLE speed_limit (
     id serial NOT NULL PRIMARY KEY,
     speed_limit integer NOT NULL,
     description character varying NOT NULL,
-    area Geometry(MultiPolygon, 4326) NOT NULL
+    area Geometry(MultiPolygon, 2193) NOT NULL
 );
 
 CREATE INDEX speed_limit_area_idx ON speed_limit USING gist(area);

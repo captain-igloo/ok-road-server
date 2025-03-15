@@ -9,6 +9,8 @@ interface ButtonControlOptions extends ControlOptions {
     className?: string;
     icon: IconProp;
     onClick: () => void;
+    title: string;
+    variant?: string;
 }
 
 export default class ButtonControl extends Control {
@@ -22,11 +24,17 @@ export default class ButtonControl extends Control {
 
     private div?: HTMLDivElement;
 
+    private title: string;
+
+    private variant?: string;
+
     public constructor(options: ButtonControlOptions) {
         super(options);
         this.onClick = options.onClick;
         this.icon = options.icon;
         this.className = options.className;
+        this.title = options.title;
+        this.variant = options.variant;
     }
 
     private getDiv(): HTMLDivElement {
@@ -42,7 +50,8 @@ export default class ButtonControl extends Control {
                 onClick={() => {
                     this.onClick();
                 }}
-                variant="light"
+                title={this.title}
+                variant={this.variant || 'light'}
             >
                 <FontAwesomeIcon className={this.className} icon={this.icon} />
             </Button>,
@@ -52,6 +61,11 @@ export default class ButtonControl extends Control {
 
     public setClassName(className?: string) {
         this.className = className;
+        this.createPortal();
+    }
+
+    public setVariant(variant?: string) {
+        this.variant = variant;
         this.createPortal();
     }
 

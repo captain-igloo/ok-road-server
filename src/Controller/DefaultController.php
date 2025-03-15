@@ -13,8 +13,11 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 final class DefaultController extends AbstractController
 {
-    public function __construct()
-    {
+    public function __construct(
+        private string $speedLimitTilesUrl,
+        private array $mapCenter,
+        private int $mapZoom,
+    ) {
     }
 
     #[Route('/')]
@@ -37,7 +40,12 @@ final class DefaultController extends AbstractController
     {
         return $this->render('map.html.twig', [
             'configuration' => [
+                'map' => [
+                    'center' => $this->mapCenter,
+                    'zoom' => $this->mapZoom,
+                ],
                 'maxResults' => LocationRepository::MAX_RESULTS,
+                'speedLimitTilesUrl' => $this->speedLimitTilesUrl,
                 'user' => [
                     'fullName' => $user->getFullName(),
                     'username' => $user->getUsername(),

@@ -3,12 +3,8 @@ import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import App from './map/App';
-import {
-    fetchDevices,
-    fetchLocations,
-    setMaxResults,
-    setUser,
-} from './map/slice';
+import { setConfig } from './config/slice';
+import { fetchDevices, fetchLocations, setUser } from './map/slice';
 import { store } from './store';
 
 const element = document.getElementById('app');
@@ -25,7 +21,7 @@ if (element) {
     const dataParams = element.getAttribute('data-params');
     if (dataParams) {
         const configuration = JSON.parse(dataParams);
-        store.dispatch(setMaxResults(configuration.maxResults));
         store.dispatch(setUser(configuration.user));
+        store.dispatch(setConfig(configuration));
     }
 }

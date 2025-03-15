@@ -35,13 +35,19 @@ export interface MapState {
     fromDate: number;
     highlightedLocation?: number;
     last24Hours: boolean;
-    maxResults: number;
     notificationCount: number;
     notifications: { [key: string]: string };
     refreshInProgress: boolean;
     selectedDevice?: number;
     showRecent: boolean;
     toDate: number;
+    tooltip: {
+        position?: {
+            lat: number;
+            lng: number;
+        };
+        text: string[];
+    };
     user: User;
     value: number;
 }
@@ -53,13 +59,16 @@ const initialState: MapState = {
     fromDate: Date.now() - (60 * 60 * 24 * 1000),
     highlightedLocation: undefined,
     last24Hours: true,
-    maxResults: 0,
     notificationCount: 0,
     notifications: {},
     refreshInProgress: false,
     selectedDevice: undefined,
     showRecent: false,
     toDate: Date.now(),
+    tooltip: {
+        position: undefined,
+        text: [],
+    },
     user: {
         fullName: '',
         username: '',
@@ -121,8 +130,8 @@ export const fetchLocations = createAsyncThunk<{
                 dispatch(addNotification('Failed to fetch locations'));
             }
             const features = await response.json();
-            if (features.length >= getState().okRoad.maxResults) {
-                dispatch(addNotification(`Results have been limited to ${getState().okRoad.maxResults}`));
+            if (features.length >= getState().config.maxResults) {
+                dispatch(addNotification(`Results have been limited to ${getState().config.maxResults}`));
             }
             return features;
         }
@@ -140,9 +149,6 @@ export const mapSlice = createSlice({
         },
         highlightLocation: (state, action: PayloadAction<number | undefined>) => {
             state.highlightedLocation = action.payload;
-        },
-        setMaxResults: (state, action: PayloadAction<number>) => {
-            state.maxResults = action.payload;
         },
         setRefreshInProgress: (state, action: PayloadAction<boolean>) => {
             state.refreshInProgress = action.payload;
@@ -167,6 +173,9 @@ export const mapSlice = createSlice({
         },
         setToDate: (state, action: PayloadAction<number>) => {
             state.toDate = action.payload;
+        },
+        setTooltip: (state, action: PayloadAction<{position?: {lat: number; lng: number}; text: string[]}>) => {
+            state.tooltip = action.payload;
         },
         setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
@@ -266,7 +275,7 @@ export const setLast24Hours = (last24Hours: boolean) => (dispatch: AppDispatch) 
 export const {
     highlightLocation,
     removeNotification,
-    setMaxResults,
+    setTooltip,
     setUser,
 } = mapSlice.actions;
 
