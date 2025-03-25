@@ -17,7 +17,6 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export default function Friends() {
     const show = useSelector((state: RootState) => state.friends.show);
     const friends = useSelector((state: RootState) => state.friends.friends);
-    const addFriendError = useSelector((state: RootState) => state.friends.add_friend_error);
     const [username, setUsername] = React.useState('');
     const dispatch = useAppDispatch();
 
@@ -68,11 +67,6 @@ export default function Friends() {
                                 Add
                             </Button>
                         </InputGroup>
-                        {addFriendError && (
-                            <Form.Control.Feedback className="invalid-feedback">
-                                {addFriendError}
-                            </Form.Control.Feedback>
-                        )}
                         <Form.Text className="text-muted">
                             Enter the username of the person you want to share your location data
                             with.

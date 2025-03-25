@@ -21,17 +21,15 @@ export default function (props: Props) {
     React.useEffect(() => {
         const layer = L.vectorGrid.protobuf(props.speedLimitTilesUrl, {
             interactive: true,
-            getFeatureId: (feature: any) => {
-                return feature.properties.id;
-            },
+            getFeatureId: (feature: any) => feature.properties.id,
             vectorTileLayerStyles: {
-                'speed_limit': {
+                speed_limit: {
                     color: 'blue',
                     fill: true,
                     fillColor: 'rgba(0, 0, 255, 0.1)',
                     weight: 1,
-                }
-            }
+                },
+            },
         });
 
         layer.on('tileunload', (e) => {
@@ -42,10 +40,8 @@ export default function (props: Props) {
 
         const onMouseMove = (e: any) => {
             const point = map.project(e.latlng, map.getZoom());
-        
             const tileX = Math.floor(point.x / 256);
             const tileY = Math.floor(point.y / 256);
-    
             const descriptions: string[] = [];
 
             const tileId = `${tileX}:${tileY}:${map.getZoom()}`;
@@ -63,7 +59,6 @@ export default function (props: Props) {
                         polygon = new Polygon(feature.feature._parts);
                         polygonCache.current.get(tileId)?.set(id, polygon);
                     }
-                    
                     if (polygon.intersectsPoint({
                         x: point.x - (tileX * 256),
                         y: point.y - (tileY * 256),
@@ -73,7 +68,7 @@ export default function (props: Props) {
                 });
             }
 
-            dispatch(setTooltip({ position: {lat: e.latlng.lat, lng: e.latlng.lng}, text: descriptions }));
+            dispatch(setTooltip({ position: { lat: e.latlng.lat, lng: e.latlng.lng }, text: descriptions }));
         };
 
         map.on('mousemove', onMouseMove);

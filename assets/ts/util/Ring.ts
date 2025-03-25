@@ -46,7 +46,7 @@ export default class {
         return this.clockwise;
     }
 
-    public getRing(): any {
+    public getRing(): Point[] {
         return this.ring;
     }
 }

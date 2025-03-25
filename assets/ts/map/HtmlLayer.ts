@@ -1,15 +1,26 @@
 import {
     DomUtil,
-    LatLng,
     Layer,
     Map,
     Point,
 } from 'leaflet';
 
+interface Options {
+    className?: string;
+}
+
 export default class extends Layer {
+    private className?: string;
+
     private container?: HTMLDivElement;
 
     private map?: Map;
+
+    public constructor(options?: Options) {
+        super();
+
+        this.className = options?.className;
+    }
 
     public onAdd(map: Map) {
         this.map = map;
@@ -18,15 +29,10 @@ export default class extends Layer {
             const pane = map.getPane(this.options.pane);
 
             this.container = DomUtil.create('div');
-            this.container.style.background = 'white';
-            this.container.style.border = '1px solid gray';
-            this.container.style.fontSize = '10px';
-            this.container.style.padding = '3px';
-            this.container.style.width = 'max-content';
-
+            if (this.className !== undefined) {
+                this.container.className = this.className;
+            }
             pane?.appendChild(this.container);
-
-            map.on('zoomend viewreset', this.update, this);
         }
         return this;
     }
@@ -42,22 +48,15 @@ export default class extends Layer {
         }
     }
 
-    public setPosition(position?: {lat: number, lng: number}) {
+    public setPosition(position?: { lat: number, lng: number }) {
         if (position && this.container && this.map) {
             const point = this.map.latLngToLayerPoint(position);
             DomUtil.setPosition(this.container, new Point(point.x + 10, point.y + 10));
         }
     }
 
-    public onRemove(map: Map) {
+    public onRemove() {
         this.container?.remove();
-        map.off('zoomend viewreset', this.update, this);
         return this;
-    }
-
-    private update() {
-        if (this.map && this.container) {
-            DomUtil.setPosition(this.container, this.map.latLngToLayerPoint(new LatLng(-40, 174)));
-        }
     }
 }

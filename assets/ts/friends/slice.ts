@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+import { addNotification } from '../notifications/slice';
 import type { AppDispatch, RootState } from '../store';
 
 interface Friend {
@@ -11,13 +12,11 @@ interface Friend {
 }
 
 export interface FriendsState {
-    add_friend_error?: string;
     friends: Friend[];
     show: boolean;
 }
 
 const initialState: FriendsState = {
-    add_friend_error: undefined,
     friends: [],
     show: false,
 };
@@ -26,9 +25,6 @@ export const friendsSlice = createSlice({
     name: 'friends',
     initialState,
     reducers: {
-        setAddFriendError: (state, action: PayloadAction<string | undefined>) => {
-            state.add_friend_error = action.payload;
-        },
         showFriends: (state, action: PayloadAction<boolean>) => {
             state.show = action.payload;
         },
@@ -40,19 +36,20 @@ export const friendsSlice = createSlice({
     },
 });
 
-export const fetchFriends = createAsyncThunk<Friend[], void, { state: RootState }>(
+export const fetchFriends = createAsyncThunk<Friend[], void, { dispatch: AppDispatch; state: RootState; }>(
     'friends/fetchFriendsStatus',
-    async () => {
+    async (_, { dispatch }) => {
         const url = '/api/friends';
         const response = await fetch(url);
         if (!response.ok) {
+            dispatch(addNotification('Failed to get friends'));
             throw new Error(`Failed to fetch: ${url}`);
         }
         return response.json();
     },
 );
 
-export const addFriend = createAsyncThunk<Friend, string, { state: RootState }>(
+export const addFriend = createAsyncThunk<Friend, string, { dispatch: AppDispatch, state: RootState }>(
     'friends/addFriendStatus',
     async (username: string, { dispatch }) => {
         const url = '/api/friends';
@@ -71,16 +68,15 @@ export const addFriend = createAsyncThunk<Friend, string, { state: RootState }>(
             } else if (response.status === 409) {
                 message = `You are already friends with ${username}`;
             }
-            dispatch(friendsSlice.actions.setAddFriendError(message));
+            dispatch(addNotification(message));
             throw new Error(`Failed to fetch: ${url}`);
         }
-        dispatch(friendsSlice.actions.setAddFriendError());
         dispatch(fetchFriends());
         return response.json();
     },
 );
 
-export const deleteFriend = createAsyncThunk<void, number, { state: RootState }>(
+export const deleteFriend = createAsyncThunk<void, number, { dispatch: AppDispatch; state: RootState; }>(
     'friends/deleteFriendStatus',
     async (id: number, { dispatch }) => {
         const url = `/api/friends/${id}`;
@@ -88,6 +84,7 @@ export const deleteFriend = createAsyncThunk<void, number, { state: RootState }>
             method: 'delete',
         });
         if (!response.ok) {
+            dispatch(addNotification('Failed to delete friend'));
             throw new Error(`Failed to fetch: ${url}`);
         }
         dispatch(fetchFriends());

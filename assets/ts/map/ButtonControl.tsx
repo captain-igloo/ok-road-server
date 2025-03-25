@@ -9,7 +9,7 @@ interface ButtonControlOptions extends ControlOptions {
     className?: string;
     icon: IconProp;
     onClick: () => void;
-    title: string;
+    title?: string;
     variant?: string;
 }
 
@@ -24,7 +24,7 @@ export default class ButtonControl extends Control {
 
     private div?: HTMLDivElement;
 
-    private title: string;
+    private title?: string;
 
     private variant?: string;
 
@@ -47,9 +47,7 @@ export default class ButtonControl extends Control {
     private createPortal() {
         this.portal = createPortal(
             <Button
-                onClick={() => {
-                    this.onClick();
-                }}
+                onClick={this.onClick}
                 title={this.title}
                 variant={this.variant || 'light'}
             >
@@ -66,6 +64,21 @@ export default class ButtonControl extends Control {
 
     public setVariant(variant?: string) {
         this.variant = variant;
+        this.createPortal();
+    }
+
+    public setOnClick(onClick: () => void) {
+        this.onClick = onClick;
+        this.createPortal();
+    }
+
+    public setTitle(title?: string) {
+        this.title = title;
+        this.createPortal();
+    }
+
+    public setIcon(icon: IconProp) {
+        this.icon = icon;
         this.createPortal();
     }
 

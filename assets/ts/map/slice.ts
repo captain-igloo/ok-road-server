@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { LatLng, LatLngBounds } from 'leaflet';
 
+import { addNotification } from '../notifications/slice';
 import type { AppDispatch, RootState } from '../store';
 
 export interface Feature {
@@ -28,6 +29,14 @@ export interface User {
     username: string;
 }
 
+export interface Tooltip {
+    position?: {
+        lat: number;
+        lng: number;
+    };
+    text: string[];
+}
+
 export interface MapState {
     bounds?: [[number, number], [number, number]];
     devices: Device[];
@@ -40,14 +49,9 @@ export interface MapState {
     refreshInProgress: boolean;
     selectedDevice?: number;
     showRecent: boolean;
+    showSpeedLimitAreas: boolean;
     toDate: number;
-    tooltip: {
-        position?: {
-            lat: number;
-            lng: number;
-        };
-        text: string[];
-    };
+    tooltip: Tooltip;
     user: User;
     value: number;
 }
@@ -64,6 +68,7 @@ const initialState: MapState = {
     refreshInProgress: false,
     selectedDevice: undefined,
     showRecent: false,
+    showSpeedLimitAreas: false,
     toDate: Date.now(),
     tooltip: {
         position: undefined,
@@ -89,6 +94,7 @@ void,
         const response = await fetch(url);
         if (!response.ok) {
             dispatch(addNotification('Failed to fetch devices'));
+            throw new Error(`Failed to fetch: ${url}`);
         }
         return response.json();
     },
@@ -122,12 +128,14 @@ export const fetchLocations = createAsyncThunk<{
         const { selectedDevice } = getState().okRoad;
         if (selectedDevice) {
             dispatch(mapSlice.actions.setRefreshInProgress(true));
-            const response = await fetch(`/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`, {
+            const url = `/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`;
+            const response = await fetch(url, {
                 redirect: 'manual',
             });
             dispatch(mapSlice.actions.setRefreshInProgress(false));
             if (!response.ok) {
                 dispatch(addNotification('Failed to fetch locations'));
+                throw new Error(`Failed to fetch ${url}`);
             }
             const features = await response.json();
             if (features.length >= getState().config.maxResults) {
@@ -143,21 +151,11 @@ export const mapSlice = createSlice({
     name: 'map',
     initialState,
     reducers: {
-        addNotification: (state, action: PayloadAction<string>) => {
-            state.notificationCount += 1;
-            state.notifications[state.notificationCount] = action.payload;
-        },
         highlightLocation: (state, action: PayloadAction<number | undefined>) => {
             state.highlightedLocation = action.payload;
         },
         setRefreshInProgress: (state, action: PayloadAction<boolean>) => {
             state.refreshInProgress = action.payload;
-        },
-        removeNotification: (state, action: PayloadAction<number | undefined>) => {
-            const notificationId = action.payload === undefined
-                ? Object.keys(state.notifications)[0]
-                : action.payload;
-            delete state.notifications[notificationId];
         },
         selectDevice: (state, action: PayloadAction<number>) => {
             state.selectedDevice = action.payload;
@@ -171,10 +169,13 @@ export const mapSlice = createSlice({
         setShowRecent: (state, action: PayloadAction<boolean>) => {
             state.showRecent = action.payload;
         },
+        setShowSpeedLimitAreas: (state, action: PayloadAction<boolean>) => {
+            state.showSpeedLimitAreas = action.payload;
+        },
         setToDate: (state, action: PayloadAction<number>) => {
             state.toDate = action.payload;
         },
-        setTooltip: (state, action: PayloadAction<{position?: {lat: number; lng: number}; text: string[]}>) => {
+        setTooltip: (state, action: PayloadAction<{ position?: { lat: number; lng: number }; text: string[] }>) => {
             state.tooltip = action.payload;
         },
         setUser: (state, action: PayloadAction<User>) => {
@@ -224,13 +225,6 @@ export const mapSlice = createSlice({
     },
 });
 
-export const addNotification = (notification: string) => (dispatch: AppDispatch) => {
-    dispatch(mapSlice.actions.addNotification(notification));
-    setTimeout(() => {
-        dispatch(mapSlice.actions.removeNotification());
-    }, 3000);
-};
-
 let refreshTimeout: NodeJS.Timeout;
 
 export const scheduleRefresh = () => (dispatch: AppDispatch) => {
@@ -272,9 +266,15 @@ export const setLast24Hours = (last24Hours: boolean) => (dispatch: AppDispatch) 
     }
 };
 
+export const setShowSpeedLimitAreas = (showSpeedLimitAreas: boolean) => (dispatch: AppDispatch) => {
+    if (!showSpeedLimitAreas) {
+        dispatch(mapSlice.actions.setTooltip({ position: undefined, text: [] }));
+    }
+    dispatch(mapSlice.actions.setShowSpeedLimitAreas(showSpeedLimitAreas));
+};
+
 export const {
     highlightLocation,
-    removeNotification,
     setTooltip,
     setUser,
 } = mapSlice.actions;

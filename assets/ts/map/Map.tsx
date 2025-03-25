@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from '../store';
 import Button from './Button';
 import FitBounds from './FitBounds';
 import Markers from './Markers';
-import { fetchLocations } from './slice';
+import { fetchLocations, setShowSpeedLimitAreas } from './slice';
 import Tooltip from './Tooltip';
 import VectorGridLayer from './VectorGridLayer';
 
@@ -30,7 +30,7 @@ export default function Map(props: Props) {
     const speedLimitTilesUrl = useSelector((state: RootState) => state.config.speedLimitTilesUrl);
     const mapConfig = useSelector((state: RootState) => state.config.map);
     const tooltip = useSelector((state: RootState) => state.okRoad.tooltip);
-    const [showSpeedLimitAreas, setShowSpeedLimitAreas] = React.useState<boolean>(false);
+    const showSpeedLimitAreas = useSelector((state: RootState) => state.okRoad.showSpeedLimitAreas);
 
     let highlightedMarker;
 
@@ -49,6 +49,14 @@ export default function Map(props: Props) {
         );
     }
 
+    const onClickFetchLocations = React.useMemo(() => () => {
+        dispatch(fetchLocations());
+    }, []);
+
+    const onClickShowSpeedLimitAreas = React.useMemo(() => () => {
+        dispatch(setShowSpeedLimitAreas(!showSpeedLimitAreas));
+    }, [showSpeedLimitAreas]);
+
     return (
         <MapContainer center={[mapConfig.center.lat, mapConfig.center.lng]} className="map" zoom={mapConfig.zoom}>
             <TileLayer
@@ -65,16 +73,12 @@ export default function Map(props: Props) {
             <Button
                 className={refreshInProgress ? 'spin' : ''}
                 icon={faArrowRotateRight}
-                onClick={() => {
-                    dispatch(fetchLocations());
-                }}
+                onClick={onClickFetchLocations}
                 title="Refresh locations"
             />
             <Button
                 icon={faDrawPolygon}
-                onClick={() => {
-                    setShowSpeedLimitAreas(show => !show);
-                }}
+                onClick={onClickShowSpeedLimitAreas}
                 title="Show speed limit areas"
                 variant={showSpeedLimitAreas ? 'primary' : undefined}
             />

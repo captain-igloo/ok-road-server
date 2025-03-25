@@ -2,19 +2,20 @@ import * as React from 'react';
 import { useMap } from 'react-leaflet';
 
 import HtmlLayer from './HtmlLayer';
+import type { Tooltip } from './slice';
 
-export default function(props: any) {
+export default function (props: { tooltip: Tooltip }) {
     const { tooltip } = props;
     const map = useMap();
     const [htmlLayer, setHtmlLayer] = React.useState<HtmlLayer>();
 
     React.useEffect(() => {
-        const htmlLayer = new HtmlLayer();
-        htmlLayer.addTo(map);
-        setHtmlLayer(htmlLayer);
+        const newHtmlLayer = new HtmlLayer({ className: 'map-tooltip' });
+        newHtmlLayer.addTo(map);
+        setHtmlLayer(newHtmlLayer);
         return () => {
-            htmlLayer.remove();
-        }
+            newHtmlLayer.remove();
+        };
     }, []);
 
     React.useEffect(() => {

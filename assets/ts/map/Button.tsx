@@ -27,9 +27,10 @@ export default function Button(props: Props) {
 
     const map = useMap();
     const [control, setControl] = React.useState<ButtonControl>();
+    const [portal, setPortal] = React.useState<React.ReactNode>();
 
     React.useEffect(() => {
-        const c = new ButtonControl({
+        const newControl = new ButtonControl({
             className,
             icon,
             onClick,
@@ -37,19 +38,49 @@ export default function Button(props: Props) {
             title,
             variant,
         });
-        c.addTo(map);
-        setControl(c);
+        newControl.addTo(map);
+        setControl(newControl);
+        setPortal(newControl.getPortal());
 
         return () => {
-            c.remove();
+            newControl.remove();
         };
     }, []);
 
-    if (control) {
-        control.setClassName(className);
-        control.setVariant(variant);
-        return control.getPortal();
-    }
+    React.useEffect(() => {
+        if (control) {
+            control.setClassName(className);
+            setPortal(control.getPortal());
+        }
+    }, [className]);
 
-    return null;
+    React.useEffect(() => {
+        if (control) {
+            control.setVariant(variant);
+            setPortal(control.getPortal());
+        }
+    }, [variant]);
+
+    React.useEffect(() => {
+        if (control) {
+            control.setOnClick(onClick);
+            setPortal(control.getPortal());
+        }
+    }, [onClick]);
+
+    React.useEffect(() => {
+        if (control) {
+            control.setIcon(icon);
+            setPortal(control.getPortal());
+        }
+    }, [icon]);
+
+    React.useEffect(() => {
+        if (control) {
+            control.setTitle(title);
+            setPortal(control.getPortal());
+        }
+    }, [title]);
+
+    return portal;
 }
