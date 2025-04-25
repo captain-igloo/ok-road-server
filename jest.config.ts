@@ -2,7 +2,8 @@ export default {
   collectCoverage: true,
   coverageDirectory: './.ci/logs',
   roots: ['./assets/test'],
-  testEnvironment: 'jsdom',
+  testEnvironment: './assets/test/custom-environment.ts',
+  transformIgnorePatterns: ['/node_modules/(?!(@react-leaflet|fetch-mock|react-leaflet)/)'],
   verbose: true,
 }
 

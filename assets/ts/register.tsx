@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import Register from './register/Register';
-import { store } from './store';
+import { setupStore } from './store';
 
 const element = document.getElementById('register');
 if (element) {
@@ -11,7 +11,7 @@ if (element) {
     if (dataParams) {
         const root = ReactDOM.createRoot(element);
         root.render(
-            <Provider store={store}>
+            <Provider store={setupStore()}>
                 <Register form={JSON.parse(dataParams)} />
             </Provider>,
         );

@@ -31,4 +31,5 @@ services:
         arguments:
             $mapCenter: '%env(json:MAP_CENTER)%'
             $mapZoom: '%env(MAP_ZOOM)%'
+            $sentryDsn: '%env(SENTRY_DSN)%'
             $speedLimitTilesUrl: '%env(SPEED_LIMIT_TILES_URL)%'

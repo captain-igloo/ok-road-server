@@ -1,21 +1,24 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import configReducer from './config/slice';
 import friendsReducer from './friends/slice';
-import okRoadReducer from './map/slice';
+import mapReducer from './map/slice';
 import notificationsReducer from './notifications/slice';
 
-export const store = configureStore({
-    reducer: {
-        config: configReducer,
-        friends: friendsReducer,
-        notifications: notificationsReducer,
-        okRoad: okRoadReducer,
-    },
+const rootReducer = combineReducers({
+    config: configReducer,
+    friends: friendsReducer,
+    notifications: notificationsReducer,
+    map: mapReducer,
 });
 
-export type AppStore = typeof store;
+export const setupStore = (preloadedState?: Partial<RootState>) => configureStore({
+    reducer: rootReducer,
+    preloadedState,
+});
 
-export type RootState = ReturnType<AppStore['getState']>;
+export type AppStore = ReturnType<typeof setupStore>;
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppDispatch = AppStore['dispatch'];

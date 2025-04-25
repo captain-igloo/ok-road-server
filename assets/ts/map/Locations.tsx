@@ -14,14 +14,17 @@ function Location(props: { index: number; location: Feature }) {
     const { index, location } = props;
 
     let image = 'gray.svg';
-    let alt = 'No speed limit data';
+    let alt = 'Grey circle';
+    let title = 'No speed limit data';
     if (location.speedLimit !== undefined) {
         if (location.velocity > location.speedLimit.speedLimit) {
             image = 'red.svg';
-            alt = 'Above speed limit';
+            alt = 'Red circle';
+            title = 'Above speed limit';
         } else {
             image = 'green.svg';
-            alt = 'Within speed limit';
+            alt = 'Green circle';
+            title = 'Within speed limit';
         }
     }
 
@@ -42,7 +45,7 @@ function Location(props: { index: number; location: Feature }) {
             onMouseOver={onMouseOver}
         >
             <td>
-                <img alt={alt} height={20} src={`/img/${image}`} width={20} />
+                <img alt={alt} height={20} src={`/img/${image}`} title={title} width={20} />
             </td>
             <td>
                 {moment(new Date(location.timestamp * 1000)).format('MMM D, HH:mm')}
@@ -59,7 +62,7 @@ function Location(props: { index: number; location: Feature }) {
 }
 
 export default function Locations() {
-    const locations = useSelector((state: RootState) => state.okRoad.features);
+    const locations = useSelector((state: RootState) => state.map.features);
 
     return (
         <Card style={{ marginTop: '1px' }}>

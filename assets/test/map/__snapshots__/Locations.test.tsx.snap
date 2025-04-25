@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Locations component Locations renders properly 1`] = `
+<div>
+  <div
+    class="card"
+    style="margin-top: 1px;"
+  >
+    <div
+      class="card-header"
+    >
+      Results
+    </div>
+    <div
+      class="card-body"
+      style="padding: 0px;"
+    >
+      <table
+        class="table table-sm table-striped table-bordered table-hover"
+        style="margin-bottom: 0px;"
+      >
+        <tbody>
+          <tr>
+            <td>
+              <img
+                alt="Green circle"
+                height="20"
+                src="/img/green.svg"
+                title="Within speed limit"
+                width="20"
+              />
+            </td>
+            <td>
+              Apr 12, 14:17
+            </td>
+            <td>
+              <img
+                alt="50 km/h"
+                height="20"
+                src="/img/50.svg"
+                width="20"
+              />
+               
+              40
+               
+              km/h
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img
+                alt="Red circle"
+                height="20"
+                src="/img/red.svg"
+                title="Above speed limit"
+                width="20"
+              />
+            </td>
+            <td>
+              Apr 12, 14:17
+            </td>
+            <td>
+              <img
+                alt="50 km/h"
+                height="20"
+                src="/img/50.svg"
+                width="20"
+              />
+               
+              60
+               
+              km/h
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;

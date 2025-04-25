@@ -18,10 +18,10 @@ import { AppDispatch, RootState } from '../store';
 export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default function App() {
-    const bounds = useSelector((state: RootState) => state.okRoad.bounds);
-    const user = useSelector((state: RootState) => state.okRoad.user);
+    const bounds = useSelector((state: RootState) => state.map.bounds);
+    const user = useSelector((state: RootState) => state.map.user);
     const notifications = useSelector((state: RootState) => state.notifications.notifications);
-    const last24Hours = useSelector((state: RootState) => state.okRoad.last24Hours);
+    const last24Hours = useSelector((state: RootState) => state.map.last24Hours);
     const dispatch = useAppDispatch();
 
     if (last24Hours) {

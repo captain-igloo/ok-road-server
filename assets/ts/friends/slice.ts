@@ -87,7 +87,7 @@ export const deleteFriend = createAsyncThunk<void, number, { dispatch: AppDispat
             dispatch(addNotification('Failed to delete friend'));
             throw new Error(`Failed to fetch: ${url}`);
         }
-        dispatch(fetchFriends());
+        await dispatch(fetchFriends());
     },
 );
 

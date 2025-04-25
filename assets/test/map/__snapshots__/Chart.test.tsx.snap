@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chart component Chart renders properly 1`] = `
+<div>
+  <div
+    class="chart-container"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+</div>
+`;

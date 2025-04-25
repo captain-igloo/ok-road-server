@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import L, { LeafletMouseEvent } from 'leaflet';
 import * as React from 'react';
 import { useMap } from 'react-leaflet';
 import { useDispatch } from 'react-redux';
@@ -13,13 +13,14 @@ interface Props {
 
 const useAppDispatch: () => AppDispatch = useDispatch;
 
-export default function (props: Props) {
+export default function VectorGridLayer(props: Props) {
     const map = useMap();
     const dispatch = useAppDispatch();
     const polygonCache = React.useRef<Map<string, Map<string, Polygon>>>(new Map());
 
     React.useEffect(() => {
-        const layer = L.vectorGrid.protobuf(props.speedLimitTilesUrl, {
+        const { speedLimitTilesUrl } = props;
+        const layer = L.vectorGrid.protobuf(speedLimitTilesUrl, {
             interactive: true,
             getFeatureId: (feature: any) => feature.properties.id,
             vectorTileLayerStyles: {
@@ -38,7 +39,7 @@ export default function (props: Props) {
 
         layer.addTo(map);
 
-        const onMouseMove = (e: any) => {
+        const onMouseMove = (e: LeafletMouseEvent) => {
             const point = map.project(e.latlng, map.getZoom());
             const tileX = Math.floor(point.x / 256);
             const tileY = Math.floor(point.y / 256);
@@ -63,7 +64,9 @@ export default function (props: Props) {
                         x: point.x - (tileX * 256),
                         y: point.y - (tileY * 256),
                     })) {
-                        descriptions.push(`${feature.feature.properties.speed_limit}km/h ${feature.feature.properties.description}`);
+                        descriptions.push(
+                            `${feature.feature.properties.speed_limit}km/h ${feature.feature.properties.description}`,
+                        );
                     }
                 });
             }

@@ -24,13 +24,13 @@ export default function Map(props: Props) {
     const { bounds } = props;
 
     const dispatch = useAppDispatch();
-    const features = useSelector((state: RootState) => state.okRoad.features);
-    const refreshInProgress = useSelector((state: RootState) => state.okRoad.refreshInProgress);
-    const highlightedLocation = useSelector((state: RootState) => state.okRoad.highlightedLocation);
+    const features = useSelector((state: RootState) => state.map.features);
+    const refreshInProgress = useSelector((state: RootState) => state.map.refreshInProgress);
+    const highlightedLocation = useSelector((state: RootState) => state.map.highlightedLocation);
     const speedLimitTilesUrl = useSelector((state: RootState) => state.config.speedLimitTilesUrl);
     const mapConfig = useSelector((state: RootState) => state.config.map);
-    const tooltip = useSelector((state: RootState) => state.okRoad.tooltip);
-    const showSpeedLimitAreas = useSelector((state: RootState) => state.okRoad.showSpeedLimitAreas);
+    const tooltip = useSelector((state: RootState) => state.map.tooltip);
+    const showSpeedLimitAreas = useSelector((state: RootState) => state.map.showSpeedLimitAreas);
 
     let highlightedMarker;
 
@@ -69,7 +69,6 @@ export default function Map(props: Props) {
             <Markers />
             {highlightedMarker}
             <FitBounds bounds={bounds} />
-
             <Button
                 className={refreshInProgress ? 'spin' : ''}
                 icon={faArrowRotateRight}

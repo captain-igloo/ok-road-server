@@ -40,9 +40,9 @@ export const options = {
 const bucketCount = 60;
 
 export default function Chart() {
-    const features = useSelector((state: RootState) => state.okRoad.features);
-    const fromDate = useSelector((state: RootState) => state.okRoad.fromDate);
-    const toDate = useSelector((state: RootState) => state.okRoad.toDate);
+    const features = useSelector((state: RootState) => state.map.features);
+    const fromDate = useSelector((state: RootState) => state.map.fromDate);
+    const toDate = useSelector((state: RootState) => state.map.toDate);
 
     const values = Array(bucketCount).fill(0);
     const labels = [];

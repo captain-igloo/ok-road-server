@@ -9,7 +9,7 @@ import { RootState } from '../store';
 const formatDate = (date: Date) => moment(date).format('MMM Do YYYY h:mm:ss a');
 
 export default function Markers() {
-    const features = useSelector((state: RootState) => state.okRoad.features);
+    const features = useSelector((state: RootState) => state.map.features);
 
     let mostRecent: {
         index: number;
@@ -52,7 +52,7 @@ export default function Markers() {
             );
         }
 
-        const markerProps: any = {};
+        const markerProps: { icon?: Icon } = {};
         if (mostRecent === undefined || mostRecent.index !== i) {
             markerProps.icon = new Icon({
                 iconSize: [20, 20],
@@ -87,10 +87,5 @@ export default function Markers() {
             </Marker>,
         );
     }
-
-    return (
-        <>
-            {markers}
-        </>
-    );
+    return <>markers</>;
 }

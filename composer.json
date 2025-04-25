@@ -49,7 +49,8 @@
         "halaxa/json-machine": "^1.2",
         "jms/serializer-bundle": "*",        
         "longitude-one/doctrine-spatial": "^5.0",
-        "php-mqtt/client": "^2.1"
+        "php-mqtt/client": "^2.1",
+        "sentry/sentry-symfony": "*"
     },
     "config": {
         "allow-plugins": {

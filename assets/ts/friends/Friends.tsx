@@ -2,11 +2,13 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Modal from 'react-bootstrap/Modal';
-import Table from 'react-bootstrap/Table';
+import {
+    Button,
+    Form,
+    InputGroup,
+    Modal,
+    Table,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, RootState } from '../store';
@@ -54,6 +56,7 @@ export default function Friends() {
                     <Form.Group className="mb-3">
                         <InputGroup className="is-valid">
                             <Form.Control
+                                aria-label="Username"
                                 name="username"
                                 onChange={(event) => { setUsername(event.target.value); }}
                                 placeholder="Username"

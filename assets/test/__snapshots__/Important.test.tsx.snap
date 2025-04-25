@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Important component Important renders properly 1`] = `
+<div>
+  <div
+    class="alert__important"
+  >
+    <p
+      class="alert__important--title"
+    >
+      <img
+        alt=""
+        src="/img/important.svg"
+        width="16"
+      />
+       
+      Important
+    </p>
+    <p
+      class="alert__important--body"
+    >
+      Message!
+    </p>
+  </div>
+</div>
+`;

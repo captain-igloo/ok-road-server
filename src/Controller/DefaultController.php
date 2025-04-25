@@ -17,13 +17,16 @@ final class DefaultController extends AbstractController
         private string $speedLimitTilesUrl,
         private array $mapCenter,
         private int $mapZoom,
+        private string $sentryDsn,
     ) {
     }
 
     #[Route('/')]
     public function index(#[CurrentUser] ?User $user): Response
     {
-        $configuration = [];
+        $configuration = [
+            'sentryDsn' => $this->sentryDsn,
+        ];
         if ($user !== null) {
             $configuration['user'] = [
                 'fullName' => $user->getFullName(),
@@ -45,6 +48,7 @@ final class DefaultController extends AbstractController
                     'zoom' => $this->mapZoom,
                 ],
                 'maxResults' => LocationRepository::MAX_RESULTS,
+                'sentryDsn' => $this->sentryDsn,
                 'speedLimitTilesUrl' => $this->speedLimitTilesUrl,
                 'user' => [
                     'fullName' => $user->getFullName(),

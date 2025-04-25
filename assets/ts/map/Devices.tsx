@@ -10,9 +10,9 @@ import { selectDevice } from './slice';
 const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default function Devices() {
-    const devices = useSelector((state: RootState) => state.okRoad.devices);
-    const selectedDevice = useSelector((state: RootState) => state.okRoad.selectedDevice);
-    const user = useSelector((state: RootState) => state.okRoad.user);
+    const devices = useSelector((state: RootState) => state.map.devices);
+    const selectedDevice = useSelector((state: RootState) => state.map.selectedDevice);
+    const user = useSelector((state: RootState) => state.map.user);
 
     const options = devices.map((device) => {
         const username = user.username !== device.username ? `${device.username} - ` : '';
@@ -30,6 +30,7 @@ export default function Devices() {
             <Form.Label column sm={3}>Device:</Form.Label>
             <Col sm={9}>
                 <Form.Select
+                    aria-label="Device"
                     onChange={(e) => {
                         dispatch(selectDevice(parseInt(e.target.value, 10)));
                     }}

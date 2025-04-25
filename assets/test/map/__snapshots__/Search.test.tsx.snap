@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search component Search should render properly 1`] = `
+<div>
+  <div
+    class="card"
+  >
+    <div
+      class="card-header"
+    >
+      Search
+    </div>
+    <div
+      class="card-body"
+    >
+      <form
+        class=""
+      >
+        <div
+          class="mb-3 row"
+        >
+          <label
+            class="form-label col-form-label col-sm-3"
+          >
+            Device:
+          </label>
+          <div
+            class="col-sm-9"
+          >
+            <select
+              aria-label="Device"
+              class="form-select"
+            />
+          </div>
+        </div>
+        <div
+          class="mb-3 row"
+        >
+          <label
+            class="form-label col-form-label col-sm-3"
+          >
+            Last 24 hours:
+          </label>
+          <div
+            class="col-sm-9"
+            style="padding: .375rem 2.25rem .375rem .75rem;"
+          >
+            <div
+              class=""
+            >
+              <input
+                aria-label="Last 24 hours"
+                class="form-check-input"
+                type="checkbox"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="mb-3 row"
+        >
+          <label
+            class="form-label col-form-label col-sm-3"
+          >
+            From:
+          </label>
+          <div
+            class="col-sm-9"
+          >
+            <input
+              aria-label="From"
+              class="form-control"
+              type="datetime-local"
+              value="2025-04-16T00:00"
+            />
+          </div>
+        </div>
+        <div
+          class="mb-3 row"
+        >
+          <label
+            class="form-label col-form-label col-sm-3"
+          >
+            To:
+          </label>
+          <div
+            class="col-sm-9"
+          >
+            <input
+              aria-label="To"
+              class="form-control"
+              type="datetime-local"
+              value="2025-04-17T00:00"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

@@ -48,12 +48,10 @@ export interface MapState {
     notifications: { [key: string]: string };
     refreshInProgress: boolean;
     selectedDevice?: number;
-    showRecent: boolean;
     showSpeedLimitAreas: boolean;
     toDate: number;
     tooltip: Tooltip;
     user: User;
-    value: number;
 }
 
 const initialState: MapState = {
@@ -67,7 +65,6 @@ const initialState: MapState = {
     notifications: {},
     refreshInProgress: false,
     selectedDevice: undefined,
-    showRecent: false,
     showSpeedLimitAreas: false,
     toDate: Date.now(),
     tooltip: {
@@ -78,7 +75,6 @@ const initialState: MapState = {
         fullName: '',
         username: '',
     },
-    value: 0,
 };
 
 export const fetchDevices = createAsyncThunk<
@@ -116,19 +112,13 @@ export const fetchLocations = createAsyncThunk<{
 }[], void, { dispatch: AppDispatch; state: RootState }>(
     'map/fetchLocationsStatus',
     async (_, { dispatch, getState }) => {
-        let fromDate: number;
-        let toDate: number;
-        if (getState().okRoad.showRecent) {
-            fromDate = Date.now() - (60 * 60 * 24 * 1000);
-            toDate = Date.now();
-        } else {
-            fromDate = getState().okRoad.fromDate;
-            toDate = getState().okRoad.toDate;
-        }
-        const { selectedDevice } = getState().okRoad;
+        const { fromDate } = getState().map;
+        const { toDate } = getState().map;
+        const { selectedDevice } = getState().map;
         if (selectedDevice) {
             dispatch(mapSlice.actions.setRefreshInProgress(true));
-            const url = `/api/locations?device=${selectedDevice}&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`;
+            const url = `/api/locations?device=${selectedDevice}`
+                + `&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`;
             const response = await fetch(url, {
                 redirect: 'manual',
             });
@@ -165,9 +155,6 @@ export const mapSlice = createSlice({
         },
         setLast24Hours: (state, action: PayloadAction<boolean>) => {
             state.last24Hours = action.payload;
-        },
-        setShowRecent: (state, action: PayloadAction<boolean>) => {
-            state.showRecent = action.payload;
         },
         setShowSpeedLimitAreas: (state, action: PayloadAction<boolean>) => {
             state.showSpeedLimitAreas = action.payload;
@@ -244,11 +231,6 @@ export const setFromDate = (fromDate: number) => (dispatch: AppDispatch) => {
 
 export const setToDate = (toDate: number) => (dispatch: AppDispatch) => {
     dispatch(mapSlice.actions.setToDate(toDate));
-    dispatch(fetchLocations());
-};
-
-export const setShowRecent = (showRecent: boolean) => (dispatch: AppDispatch) => {
-    dispatch(mapSlice.actions.setShowRecent(showRecent));
     dispatch(fetchLocations());
 };
 

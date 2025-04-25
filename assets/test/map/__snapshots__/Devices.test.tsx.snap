@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Devices component Devices should render properly 1`] = `
+<div>
+  <div
+    class="mb-3 row"
+  >
+    <label
+      class="form-label col-form-label col-sm-3"
+    >
+      Device:
+    </label>
+    <div
+      class="col-sm-9"
+    >
+      <select
+        aria-label="Device"
+        class="form-select"
+      >
+        <option
+          value="1"
+        >
+          description
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+`;
