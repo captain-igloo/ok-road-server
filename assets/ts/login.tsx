@@ -40,6 +40,13 @@ if (element) {
                             <Form.Label>Password</Form.Label>
                             <Form.Control name="_password" required type="password" />
                         </Form.Group>
+                        <Form.Check
+                            className="mb-3"
+                            id="remember-me"
+                            label="Remember me"
+                            name="_remember_me"
+                            type="checkbox"
+                        />
                         <input name="_csrf_token" type="hidden" value={window.token} />
                         <Button variant="primary" type="submit">
                             Submit

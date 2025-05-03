@@ -3,6 +3,7 @@ import '../setup';
 import { describe, expect, test } from '@jest/globals';
 import { render } from '@testing-library/react';
 import * as React from 'react';
+import { MapContainer } from 'react-leaflet';
 import { Provider } from 'react-redux';
 
 import Markers from '../../ts/map/Markers';
@@ -23,10 +24,22 @@ describe('Markers component', () => {
                         },
                         timestamp: 1744424257,
                         velocity: 40,
+                    }, {
+                        coordinates: [174, -40],
+                        id: 1,
+                        insertTimestamp: 1744424257,
+                        speedLimit: {
+                            description: 'WELLINGTON CITY UTA',
+                            speedLimit: 50,
+                        },
+                        timestamp: 1744424257,
+                        velocity: 60,
                     }],
                 } as any,
             })}>
-                <Markers />
+                <MapContainer>
+                    <Markers />
+                </MapContainer>
             </Provider>
         );
         expect(container).toMatchSnapshot();
