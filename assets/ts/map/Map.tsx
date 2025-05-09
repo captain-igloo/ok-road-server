@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from '../store';
 import Button from './Button';
 import FitBounds from './FitBounds';
 import Markers from './Markers';
+import Scale from './Scale';
 import { fetchLocations, setShowSpeedLimitAreas } from './slice';
 import Tooltip from './Tooltip';
 import VectorGridLayer from './VectorGridLayer';
@@ -69,6 +70,7 @@ export default function Map(props: Props) {
             <Markers />
             {highlightedMarker}
             <FitBounds bounds={bounds} />
+            <Scale />
             <Button
                 className={refreshInProgress ? 'spin' : ''}
                 icon={faArrowRotateRight}

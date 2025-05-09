@@ -20,7 +20,14 @@ describe('Map component', () => {
     test('Map should render properly', () => {
         const addLayer = jest.fn();
         (useMap as any).mockImplementation(() => ({
+            _controlCorners: {
+                bottomright: {
+                    insertBefore: () => {},
+                },
+            },
             addLayer,
+            on: () => {},
+            whenReady: () => {},
         }));
         const { container } = render(
             <Provider store={setupStore()}>

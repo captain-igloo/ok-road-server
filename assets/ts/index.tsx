@@ -50,12 +50,12 @@ if (element) {
                     <li>
                         Install
                         {' '}
-                        <a href="https://owntracks.org">Owntracks</a>
+                        <a href="https://owntracks.org">OwnTracks</a>
                         {' '}
                         on the device you wish to monitor.
                     </li>
                     <li>
-                        Configure Owntracks to publish to OK Road:
+                        Configure OwnTracks to publish to OK Road:
                         <ul>
                             <li>Set Preferences / Connection / Endpoint / Host to "192.9.176.238".</li>
                             <li>Set Preferences / Connection / Endpoint / Port to "1883".</li>
@@ -64,10 +64,18 @@ if (element) {
                         </ul>
                     </li>
                     <li>
-                        Make sure that Owntracks has permission to use location services:
+                        Make sure that OwnTracks has permission to use location services:
                         <ul>
-                            <li>Set Settings / Location / Owntracks / Location access to "Allow all the time".</li>
-                            <li>Set Settings / Location / Owntracks / Use precise location to true.</li>
+                            <li>Set Settings / Location / OwnTracks / Location access to "Allow all the time".</li>
+                            <li>Set Settings / Location / OwnTracks / Use precise location to true.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Android can kill apps that have been running in the background for a period of time:
+                        <ul>
+                            <li>
+                                Set Settings / Apps / OwnTracks / Battery to "Unrestricted"
+                            </li>
                         </ul>
                     </li>
                 </ol>

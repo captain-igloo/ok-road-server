@@ -45,7 +45,9 @@ export default function VectorGridLayer(props: Props) {
             const tileY = Math.floor(point.y / 256);
             const descriptions: string[] = [];
 
-            const tileId = `${tileX}:${tileY}:${map.getZoom()}`;
+            const maxTileX = 2 ** map.getZoom();
+            const unwrappedTileX = tileX >= maxTileX ? tileX - maxTileX : tileX;
+            const tileId = `${unwrappedTileX}:${tileY}:${map.getZoom()}`;
             const features = (layer as any)._vectorTiles[tileId]?._features;
             if (features !== undefined) {
                 Object.keys(features).forEach((id) => {
