@@ -34,15 +34,17 @@ export interface Tooltip {
         lat: number;
         lng: number;
     };
-    text: string[];
+    text: {
+        [key: string]: string[];
+    };
 }
 
 export interface MapState {
     bounds?: [[number, number], [number, number]];
     devices: Device[];
-    features: Feature[];
+    features: {[key: string]: Feature};
     fromDate: number;
-    highlightedLocation?: number;
+    highlightedLocations: number[];
     last24Hours: boolean;
     notificationCount: number;
     notifications: { [key: string]: string };
@@ -57,9 +59,9 @@ export interface MapState {
 const initialState: MapState = {
     bounds: undefined,
     devices: [],
-    features: [],
+    features: {},
     fromDate: Date.now() - (60 * 60 * 24 * 1000),
-    highlightedLocation: undefined,
+    highlightedLocations: [],
     last24Hours: true,
     notificationCount: 0,
     notifications: {},
@@ -69,7 +71,7 @@ const initialState: MapState = {
     toDate: Date.now(),
     tooltip: {
         position: undefined,
-        text: [],
+        text: {},
     },
     user: {
         fullName: '',
@@ -85,8 +87,11 @@ void,
     state: RootState;
 }>(
     'map/fetchDevicesStatus',
-    async (_, { dispatch }) => {
-        const url = '/api/devices';
+    async (_, { dispatch, getState }) => {
+        let url = '/api/devices';
+        if (getState().config.demo) {
+            url += '?demo=true';
+        }
         const response = await fetch(url);
         if (!response.ok) {
             dispatch(addNotification('Failed to fetch devices'));
@@ -117,8 +122,11 @@ export const fetchLocations = createAsyncThunk<{
         const { selectedDevice } = getState().map;
         if (selectedDevice) {
             dispatch(mapSlice.actions.setRefreshInProgress(true));
-            const url = `/api/locations?device=${selectedDevice}`
+            let url = `/api/locations?device=${selectedDevice}`
                 + `&from=${(new Date(fromDate)).toISOString()}&to=${(new Date(toDate)).toISOString()}`;
+            if (getState().config.demo) {
+                url += '&demo=true';
+            }
             const response = await fetch(url, {
                 redirect: 'manual',
             });
@@ -141,8 +149,8 @@ export const mapSlice = createSlice({
     name: 'map',
     initialState,
     reducers: {
-        highlightLocation: (state, action: PayloadAction<number | undefined>) => {
-            state.highlightedLocation = action.payload;
+        highlightLocations: (state, action: PayloadAction<number[]>) => {
+            state.highlightedLocations = action.payload;
         },
         setRefreshInProgress: (state, action: PayloadAction<boolean>) => {
             state.refreshInProgress = action.payload;
@@ -162,8 +170,15 @@ export const mapSlice = createSlice({
         setToDate: (state, action: PayloadAction<number>) => {
             state.toDate = action.payload;
         },
-        setTooltip: (state, action: PayloadAction<{ position?: { lat: number; lng: number }; text: string[] }>) => {
-            state.tooltip = action.payload;
+        setTooltip: (state, action: PayloadAction<Partial<Tooltip>>) => {
+            if (action.payload.position !== undefined) {
+                state.tooltip.position = action.payload.position;
+            }
+            if (action.payload.text !== undefined) {
+                Object.keys(action.payload.text).forEach((key) => {
+                    state.tooltip.text[key] = (action.payload as any).text[key];
+                });
+            }
         },
         setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
@@ -178,7 +193,7 @@ export const mapSlice = createSlice({
         });
         builder.addCase(fetchLocations.fulfilled, (state, action) => {
             let bounds: LatLngBounds | undefined;
-            state.features = [];
+            state.features = {};
             action.payload.forEach((feature) => {
                 const point = new LatLng(feature.location.y, feature.location.x);
                 if (!bounds) {
@@ -193,14 +208,14 @@ export const mapSlice = createSlice({
                         speedLimit: feature.speed_limit.speed_limit,
                     };
                 }
-                state.features.push({
+                state.features[`_${feature.id}`] = {
                     coordinates: [feature.location.x, feature.location.y],
                     id: feature.id,
                     insertTimestamp: feature.insert_timestamp,
                     speedLimit,
                     timestamp: feature.timestamp,
                     velocity: feature.speed || 0,
-                });
+                };
             });
             if (bounds) {
                 state.bounds = [
@@ -249,14 +264,11 @@ export const setLast24Hours = (last24Hours: boolean) => (dispatch: AppDispatch) 
 };
 
 export const setShowSpeedLimitAreas = (showSpeedLimitAreas: boolean) => (dispatch: AppDispatch) => {
-    if (!showSpeedLimitAreas) {
-        dispatch(mapSlice.actions.setTooltip({ position: undefined, text: [] }));
-    }
     dispatch(mapSlice.actions.setShowSpeedLimitAreas(showSpeedLimitAreas));
 };
 
 export const {
-    highlightLocation,
+    highlightLocations,
     setTooltip,
     setUser,
 } = mapSlice.actions;

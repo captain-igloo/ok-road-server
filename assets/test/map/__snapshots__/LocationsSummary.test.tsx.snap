@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Locations component Locations renders properly 1`] = `
+exports[`LocationsSummary component LocationsSummary renders properly 1`] = `
 <div>
   <div
     class="card"

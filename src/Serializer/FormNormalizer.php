@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Serializer;
 
+use Override;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,6 +15,7 @@ final class FormNormalizer implements NormalizerInterface
     {
     }
 
+    #[Override]
     public function normalize($form, ?string $format = null, array $context = []): array
     {
         $normalized = [
@@ -49,11 +51,13 @@ final class FormNormalizer implements NormalizerInterface
         return $normalized;
     }
 
+    #[Override]
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof FormInterface;
     }
 
+    #[Override]
     public function getSupportedTypes(?string $format): array
     {
         return [

@@ -25,10 +25,10 @@ if (element) {
                 <App />
             </Provider>,
         );
+        store.dispatch(setConfig(configuration));
         store.dispatch(fetchDevices()).then(() => {
             store.dispatch(fetchLocations());
         });
         store.dispatch(setUser(configuration.user));
-        store.dispatch(setConfig(configuration));
     }
 }

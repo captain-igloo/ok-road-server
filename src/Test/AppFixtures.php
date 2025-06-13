@@ -10,10 +10,12 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Override;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 
 class AppFixtures extends Fixture
 {
+    #[Override]
     public function load(ObjectManager $manager): void
     {
         $this->initSequences($manager);

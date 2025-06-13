@@ -57,8 +57,8 @@ if (element) {
                     <li>
                         Configure OwnTracks to publish to OK Road:
                         <ul>
-                            <li>Set Preferences / Connection / Endpoint / Host to "192.9.176.238".</li>
-                            <li>Set Preferences / Connection / Endpoint / Port to "1883".</li>
+                            <li>Set Preferences / Connection / Endpoint / Host to &quot;192.9.176.238&quot;.</li>
+                            <li>Set Preferences / Connection / Endpoint / Port to &quot;1883&quot;.</li>
                             <li>Set Preferences / Connection / Credentials / Username to your username.</li>
                             <li>Set Preferences / Connection / Credentials / Password to your password.</li>
                         </ul>
@@ -66,7 +66,7 @@ if (element) {
                     <li>
                         Make sure that OwnTracks has permission to use location services:
                         <ul>
-                            <li>Set Settings / Location / OwnTracks / Location access to "Allow all the time".</li>
+                            <li>Set Settings / Location / OwnTracks / Location access to &quot;Allow all the time&quot;.</li>
                             <li>Set Settings / Location / OwnTracks / Use precise location to true.</li>
                         </ul>
                     </li>
@@ -74,7 +74,7 @@ if (element) {
                         Android can kill apps that have been running in the background for a period of time:
                         <ul>
                             <li>
-                                Set Settings / Apps / OwnTracks / Battery to "Unrestricted"
+                                Set Settings / Apps / OwnTracks / Battery to &quot;Unrestricted&quot;
                             </li>
                         </ul>
                     </li>

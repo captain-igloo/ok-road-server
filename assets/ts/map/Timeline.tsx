@@ -39,7 +39,7 @@ export const options = {
 
 const bucketCount = 60;
 
-export default function Chart() {
+export default function Timeline() {
     const features = useSelector((state: RootState) => state.map.features);
     const fromDate = useSelector((state: RootState) => state.map.fromDate);
     const toDate = useSelector((state: RootState) => state.map.toDate);
@@ -49,8 +49,8 @@ export default function Chart() {
     const bucketSize = (toDate - fromDate) / bucketCount;
 
     if (bucketSize > 0) {
-        features.forEach((feature) => {
-            const index = Math.floor(((feature.timestamp * 1000) - fromDate) / bucketSize);
+        Object.keys(features).forEach((id) => {
+            const index = Math.floor(((features[id].timestamp * 1000) - fromDate) / bucketSize);
             if (index >= 0 && index < bucketCount) {
                 values[index] += 1;
             }

@@ -6,6 +6,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\LocationRepository;
+use App\Repository\UserRepository;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -42,20 +44,19 @@ final class DefaultController extends AbstractController
     public function map(#[CurrentUser] User $user): Response
     {
         return $this->render('map.html.twig', [
-            'configuration' => [
-                'map' => [
-                    'center' => $this->mapCenter,
-                    'zoom' => $this->mapZoom,
-                ],
-                'maxResults' => LocationRepository::MAX_RESULTS,
-                'sentryDsn' => $this->sentryDsn,
-                'speedLimitTilesUrl' => $this->speedLimitTilesUrl,
-                'user' => [
-                    'fullName' => $user->getFullName(),
-                    'username' => $user->getUsername(),
-                ],
-            ]
+            'configuration' => $this->getConfig($user, false),
         ]);
+    }
+
+    #[Route('/demo')]
+    public function demo(UserRepository $userRepository): Response
+    {
+        if ($user = $userRepository->findDemoUser()) {
+            return $this->render('map.html.twig', [
+                'configuration' => $this->getConfig($user, true),
+            ]);
+        }
+        throw new RuntimeException();
     }
 
     #[Route('/img/{speedLimit}.svg')]
@@ -79,5 +80,23 @@ final class DefaultController extends AbstractController
         ]));
         $response->headers->set('Content-Type', 'image/svg+xml');
         return $response;
+    }
+
+    private function getConfig(User $user, bool $demo): array
+    {
+        return [
+            'demo' => $demo,
+            'map' => [
+                'center' => $this->mapCenter,
+                'zoom' => $this->mapZoom,
+            ],
+            'maxResults' => LocationRepository::MAX_RESULTS,
+            'sentryDsn' => $this->sentryDsn,
+            'speedLimitTilesUrl' => $this->speedLimitTilesUrl,
+            'user' => [
+                'fullName' => $user->getFullName(),
+                'username' => $user->getUsername(),
+            ],
+        ];
     }
 }

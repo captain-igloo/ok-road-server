@@ -1,12 +1,11 @@
 import { faArrowRotateRight } from '@fortawesome/free-solid-svg-icons/faArrowRotateRight';
 import { faDrawPolygon } from '@fortawesome/free-solid-svg-icons/faDrawPolygon';
 import { Icon } from 'leaflet';
-import 'leaflet.vectorgrid';
 import * as React from 'react';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { AppDispatch, RootState } from '../store';
+import { RootState, useAppDispatch } from '../store';
 import Button from './Button';
 import FitBounds from './FitBounds';
 import Markers from './Markers';
@@ -19,36 +18,37 @@ interface Props {
     bounds?: [[number, number], [number, number]];
 }
 
-export const useAppDispatch: () => AppDispatch = useDispatch;
-
 export default function Map(props: Props) {
     const { bounds } = props;
 
     const dispatch = useAppDispatch();
     const features = useSelector((state: RootState) => state.map.features);
     const refreshInProgress = useSelector((state: RootState) => state.map.refreshInProgress);
-    const highlightedLocation = useSelector((state: RootState) => state.map.highlightedLocation);
+    const highlightedLocations = useSelector((state: RootState) => state.map.highlightedLocations);
     const speedLimitTilesUrl = useSelector((state: RootState) => state.config.speedLimitTilesUrl);
     const mapConfig = useSelector((state: RootState) => state.config.map);
     const tooltip = useSelector((state: RootState) => state.map.tooltip);
     const showSpeedLimitAreas = useSelector((state: RootState) => state.map.showSpeedLimitAreas);
 
-    let highlightedMarker;
+    let highlightedMarkers: React.ReactNode[] = [];
 
-    if (highlightedLocation !== undefined && highlightedLocation in features) {
-        const feature = features[highlightedLocation];
-        highlightedMarker = (
-            <Marker
-                icon={new Icon({
-                    iconSize: [20, 20],
-                    iconUrl: '/img/blue.svg',
-                })}
-                key="highlighted-location"
-                position={[feature.coordinates[1], feature.coordinates[0]]}
-                zIndexOffset={1000}
-            />
-        );
-    }
+    highlightedLocations.forEach((highlightedLocation) => {
+        const featureIndex = `_${highlightedLocation}`;
+        if (featureIndex in features) {
+            const feature = features[featureIndex];
+            highlightedMarkers.push(
+                <Marker
+                    icon={new Icon({
+                        iconSize: [20, 20],
+                        iconUrl: '/img/blue.svg',
+                    })}
+                    key={`highlighted-location-${feature.id}`}
+                    position={[feature.coordinates[1], feature.coordinates[0]]}
+                    zIndexOffset={1000}
+                />
+            );
+        }
+    });
 
     const onClickFetchLocations = React.useMemo(() => () => {
         dispatch(fetchLocations());
@@ -67,8 +67,8 @@ export default function Map(props: Props) {
             />
             { showSpeedLimitAreas && speedLimitTilesUrl && <VectorGridLayer speedLimitTilesUrl={speedLimitTilesUrl} /> }
             <Tooltip tooltip={tooltip} />
-            <Markers />
-            {highlightedMarker}
+            <Markers features={features} position={tooltip.position} />
+            {highlightedMarkers}
             <FitBounds bounds={bounds} />
             <Scale />
             <Button

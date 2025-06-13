@@ -4,24 +4,23 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import Chart from './Chart';
-import Locations from './Locations';
+import Timeline from './Timeline';
+import LocationsSummary from './LocationsSummary';
 import Map from './Map';
 import { scheduleRefresh } from './slice';
 import Search from './Search';
 import { removeNotification } from '../notifications/slice';
 import Header from '../Header';
-import { AppDispatch, RootState } from '../store';
-
-export const useAppDispatch: () => AppDispatch = useDispatch;
+import { RootState, useAppDispatch } from '../store';
 
 export default function App() {
     const bounds = useSelector((state: RootState) => state.map.bounds);
     const user = useSelector((state: RootState) => state.map.user);
     const notifications = useSelector((state: RootState) => state.notifications.notifications);
     const last24Hours = useSelector((state: RootState) => state.map.last24Hours);
+    const demo = useSelector((state: RootState) => state.config.demo);
     const dispatch = useAppDispatch();
 
     if (last24Hours) {
@@ -53,16 +52,16 @@ export default function App() {
 
     return (
         <>
-            <Header showMap={false} user={user} />
+            <Header showDemo={!demo} showMap={false} user={user} />
             <Container className="main-container" fluid>
                 <Row className="main-container--row">
                     <Col className="left-container" md={6} sm={12} xl={4}>
                         <Search />
-                        <Locations />
+                        <LocationsSummary />
                     </Col>
                     <Col className="right-container" md={6} sm={12} xl={8}>
                         <Map bounds={bounds} />
-                        <Chart />
+                        <Timeline />
                     </Col>
                 </Row>
             </Container>

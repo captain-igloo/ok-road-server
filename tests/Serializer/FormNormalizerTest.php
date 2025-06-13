@@ -7,6 +7,7 @@ namespace Tests\Serializer;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Serializer\FormNormalizer;
+use Override;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormError;
@@ -30,7 +31,7 @@ final class FormNormalizerTest extends TypeTestCase
         $username->setData('username');
         $username->addError(new FormError('username error'));
         $form->addError(new FormError('form error'));
-        $normalized = $normalizer->normalize($form);
+        $normalizer->normalize($form);
         $this->assertEquals(
             '{"fields":{"username":{"value":"username","errors":["username error"]}},"token":"token","errors":["form error"]}',
             json_encode($normalizer->normalize($form)),
@@ -49,9 +50,9 @@ final class FormNormalizerTest extends TypeTestCase
         $this->assertEquals([FormInterface::class => true], $normalizer->getSupportedTypes(null));
     }
 
+    #[Override]
     protected function getExtensions(): array
     {
-        $validator = Validation::createValidator();
         $validator = Validation::createValidatorBuilder()
             ->enableAttributeMapping()
             ->getValidator();

@@ -15,6 +15,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
+use Override;
 use PhpMqtt\Client\ConnectionSettings;
 use PhpMqtt\Client\MqttClient;
 use Psr\Log\LoggerInterface;
@@ -38,6 +39,7 @@ class SubscribeCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $mqtt = new MqttClient('mosquitto', 1883);

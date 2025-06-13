@@ -27,9 +27,10 @@ final class ApiController extends AbstractFOSRestController
         return $this->handleView($this->view($locations, 200));
     }
 
+    /** @param Device[] $devices */
     #[Route('/api/devices')]
-    public function fetchDevices(#[CurrentUser] User $user): Response
+    public function fetchDevices(array $devices): Response
     {
-        return $this->handleView($this->view($this->deviceRepository->findByUser($user)));
+        return $this->handleView($this->view($devices));
     }
 }

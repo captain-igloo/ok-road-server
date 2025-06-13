@@ -9,6 +9,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
@@ -20,6 +21,7 @@ abstract class WebTestCase extends BaseWebTestCase
 
     private ?ORMExecutor $fixtureExecutor = null;
 
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();

@@ -3,7 +3,7 @@ import '../setup';
 import { describe, expect, test } from '@jest/globals';
 import { render } from '@testing-library/react';
 import * as React from 'react';
-import { MapContainer } from 'react-leaflet';
+import { MapContainer, useMap } from 'react-leaflet';
 import { Provider } from 'react-redux';
 
 import Markers from '../../ts/map/Markers';
@@ -11,6 +11,10 @@ import { setupStore } from '../../ts/store';
 
 describe('Markers component', () => {
     test('Markers should render properly', () => {
+        (useMap as any).mockImplementation(() => ({
+            addLayer: () => {},
+            removeLayer: () => {},
+        }));
         const { container } = render(
             <Provider store={setupStore({
                 map: {
@@ -38,10 +42,11 @@ describe('Markers component', () => {
                 } as any,
             })}>
                 <MapContainer>
-                    <Markers />
+                    <Markers features={{}} />
                 </MapContainer>
             </Provider>
         );
         expect(container).toMatchSnapshot();
+        (useMap as any).mockRestore();
     });
 });

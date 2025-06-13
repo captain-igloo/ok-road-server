@@ -3,6 +3,7 @@ import * as React from 'react';
 import UserMenu from './UserMenu';
 
 interface Props {
+    showDemo?: boolean;
     showMap?: boolean;
     showRegister?: boolean;
     showSignIn?: boolean;
@@ -13,6 +14,7 @@ interface Props {
 
 export default function Header(props: Props) {
     const {
+        showDemo,
         showMap,
         showRegister,
         showSignIn,
@@ -29,6 +31,7 @@ export default function Header(props: Props) {
                 OK Road New Zealand
             </div>
             <UserMenu
+                showDemo={showDemo}
                 showMap={showMap}
                 showRegister={showRegister}
                 showSignIn={showSignIn}

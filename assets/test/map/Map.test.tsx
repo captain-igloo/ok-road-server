@@ -27,6 +27,7 @@ describe('Map component', () => {
             },
             addLayer,
             on: () => {},
+            removeLayer: () => {},
             whenReady: () => {},
         }));
         const { container } = render(
@@ -35,5 +36,6 @@ describe('Map component', () => {
             </Provider>,
         );
         expect(container).toMatchSnapshot();
+        (useMap as any).mockRestore();
     });
 });

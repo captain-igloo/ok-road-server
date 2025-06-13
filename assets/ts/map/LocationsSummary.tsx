@@ -2,16 +2,14 @@ import moment from 'moment';
 import * as React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import SpeedLimitImage from '../misc/SpeedLimitImage';
-import { AppDispatch, RootState } from '../store';
-import { Feature, highlightLocation } from './slice';
+import { RootState, useAppDispatch } from '../store';
+import { Feature, highlightLocations } from './slice';
 
-const useAppDispatch: () => AppDispatch = useDispatch;
-
-function Location(props: { index: number; location: Feature }) {
-    const { index, location } = props;
+function Location(props: { location: Feature }) {
+    const { location } = props;
 
     let image = 'gray.svg';
     let alt = 'Grey circle';
@@ -31,10 +29,10 @@ function Location(props: { index: number; location: Feature }) {
     const dispatch = useAppDispatch();
 
     const onMouseOver = React.useCallback(() => {
-        dispatch(highlightLocation(index));
-    }, [index]);
+        dispatch(highlightLocations([location.id]));
+    }, [location]);
     const onMouseOut = React.useCallback(() => {
-        dispatch(highlightLocation());
+        dispatch(highlightLocations([]));
     }, []);
 
     return (
@@ -70,8 +68,8 @@ export default function Locations() {
             <Card.Body style={{ padding: 0 }}>
                 <Table bordered hover size="sm" striped style={{ marginBottom: '0' }}>
                     <tbody>
-                        {locations.slice(0, 10).map((location, index) => (
-                            <Location index={index} key={location.id} location={location} />
+                        {Object.keys(locations).slice(0, 10).map((id) => (
+                            <Location key={locations[id].id} location={locations[id]} />
                         ))}
                     </tbody>
                 </Table>

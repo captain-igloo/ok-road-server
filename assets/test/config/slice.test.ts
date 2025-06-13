@@ -9,6 +9,7 @@ describe('config slice', () => {
     test('setConfig should set config', () => {
         const store = setupStore();
         const config = {
+            demo: false,
             map: {
                 center: {
                     lat: -41,

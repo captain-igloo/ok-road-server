@@ -4,13 +4,11 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { AppDispatch, RootState } from '../store';
+import { RootState, useAppDispatch } from '../store';
 import Devices from './Devices';
 import { setFromDate, setLast24Hours, setToDate } from './slice';
-
-export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default function Search() {
     const fromDate = useSelector((state: RootState) => state.map.fromDate);

@@ -5,11 +5,11 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 
-import Chart from '../../ts/map/Chart';
+import Timeline from '../../ts/map/Timeline';
 import { setupStore } from '../../ts/store';
 
-describe('Chart component', () => {
-    test('Chart renders properly', () => {
+describe('Timeline component', () => {
+    test('Timeline renders properly', () => {
         const { container } = render(
             <Provider store={setupStore({
                 map: {
@@ -27,7 +27,7 @@ describe('Chart component', () => {
                     toDate: new Date('2025-04-17 00:00:00').getTime(),
                 } as any,
             })}>
-                <Chart />
+                <Timeline />
             </Provider>
         );
         expect(container).toMatchSnapshot();

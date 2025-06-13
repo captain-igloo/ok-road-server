@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface ConfigState {
+    demo: boolean;
     map: {
         center: {
             lat: number;
@@ -14,6 +15,7 @@ export interface ConfigState {
 }
 
 const initialState: ConfigState = {
+    demo: false,
     map: {
         center: {
             lat: -41,
@@ -30,6 +32,7 @@ export const configSlice = createSlice({
     initialState,
     reducers: {
         setConfig: (state, action: PayloadAction<ConfigState>) => {
+            state.demo = action.payload.demo;
             state.map = action.payload.map;
             state.maxResults = action.payload.maxResults;
             state.speedLimitTilesUrl = action.payload.speedLimitTilesUrl;

@@ -5,7 +5,7 @@ import { fireEvent, render } from '@testing-library/react';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 
-import Locations from '../../ts/map/Locations';
+import LocationsSummary from '../../ts/map/LocationsSummary';
 import { setupStore } from '../../ts/store';
 
 const initialState = {
@@ -33,11 +33,11 @@ const initialState = {
     },
 };
 
-describe('Locations component', () => {
-    test('Locations renders properly', () => {
+describe('LocationsSummary component', () => {
+    test('LocationsSummary renders properly', () => {
         const { container } = render(
             <Provider store={setupStore(initialState as any)}>
-                <Locations />
+                <LocationsSummary />
             </Provider>
         );
         expect(container).toMatchSnapshot();
@@ -47,21 +47,21 @@ describe('Locations component', () => {
         const store = setupStore(initialState as any);
         const { getByTitle } = render(
             <Provider store={store}>
-                <Locations />
+                <LocationsSummary />
             </Provider>
         );
         fireEvent.mouseOver(getByTitle('Within speed limit'));
-        expect(store.getState().map.highlightedLocation).toBe(0);        
+        expect(store.getState().map.highlightedLocations).toStrictEqual([1]);
     });
 
     test('Mouse out should unhighlight', () => {
         const store = setupStore(initialState as any);
         const { getByTitle } = render(
             <Provider store={store}>
-                <Locations />
+                <LocationsSummary />
             </Provider>
         );
         fireEvent.mouseOut(getByTitle('Within speed limit'));
-        expect(store.getState().map.highlightedLocation).toBe(undefined);        
+        expect(store.getState().map.highlightedLocations).toStrictEqual([]);
     });
 });

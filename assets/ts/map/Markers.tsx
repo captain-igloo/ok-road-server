@@ -1,91 +1,121 @@
-import { Icon } from 'leaflet';
+import type { GeoJSON } from 'geojson';
+import geojsonvt from 'geojson-vt';
+import { LatLng } from 'leaflet';
 import moment from 'moment';
 import * as React from 'react';
-import { Marker, Popup } from 'react-leaflet';
-import { useSelector } from 'react-redux';
+import * as ReactLeaflet from 'react-leaflet';
 
-import { RootState } from '../store';
+import { useAppDispatch } from '../store';
+import CanvasLayer from './CanvasLayer';
+import {
+    GEOJSONVT_EXTENT,
+    MARKER_RADIUS,
+    TILE_HEIGHT,
+    TILE_WIDTH,
+} from './constants';
+import { Feature, highlightLocations, setTooltip } from './slice';
 
-const formatDate = (date: Date) => moment(date).format('MMM Do YYYY h:mm:ss a');
+interface Props {
+    features: {[key: string]: Feature};
+    position?: { lat: number; lng: number };
+}
 
-export default function Markers() {
-    const features = useSelector((state: RootState) => state.map.features);
+const convertToGeoJson = (features: {[key: string]: Feature}): GeoJSON => ({
+    type: 'FeatureCollection',
+    features: Object.keys(features).map((index) => ({
+        geometry: {
+            coordinates: features[index].coordinates,
+            type: 'Point',
+        },
+        properties: {
+            id: features[index].id,
+            speedLimit: features[index].speedLimit?.speedLimit,
+            timestamp: features[index].timestamp,
+            velocity: features[index].velocity,
+        },
+        type: 'Feature',
+    })),
+});
 
-    let mostRecent: {
-        index: number;
-        timestamp: number;
-    } | undefined;
-    features.forEach((feature, index) => {
-        if (mostRecent === undefined || feature.timestamp > mostRecent.timestamp) {
-            mostRecent = {
-                index,
-                timestamp: feature.timestamp,
-            };
-        }
-    });
+export default function Markers(props: Props) {
+    const { features, position } = props;
+    const [tileIndex, setTileIndex] = React.useState<ReturnType<typeof geojsonvt>>();
+    const [canvasLayer, setCanvasLayer] = React.useState<CanvasLayer>();
+    const map = ReactLeaflet.useMap();
+    const dispatch = useAppDispatch();
 
-    const markers = [];
-    for (let i = features.length - 1; i >= 0; i -= 1) {
-        const feature = features[i];
-        let speedLimit;
-        let image = 'gray.svg';
-        if (feature.speedLimit !== undefined) {
-            if (feature.velocity > feature.speedLimit.speedLimit) {
-                image = 'red.svg';
-            } else {
-                image = 'green.svg';
+    React.useEffect(() => {
+        console.log('* * * ');
+        const canvasLayer = new CanvasLayer();
+        canvasLayer.addTo(map);
+        setCanvasLayer(canvasLayer);
+
+        return () => {
+            map.removeLayer(canvasLayer);
+        };
+    }, [map]);
+
+    React.useEffect(() => {
+        if (position && tileIndex) {
+            const highlightPoint = map.project(new LatLng(position.lat, position.lng), map.getZoom());
+            const tileX = Math.floor(highlightPoint.x / TILE_WIDTH);
+            const tileY = Math.floor(highlightPoint.y / TILE_HEIGHT);
+            const maxTileX = 2 ** map.getZoom();
+            const unwrappedTileX = tileX >= maxTileX ? tileX - maxTileX : tileX;
+            const features = tileIndex.getTile(map.getZoom(), unwrappedTileX, tileY)?.features;
+
+            const descriptions: string[] = [];
+            const tileScale = GEOJSONVT_EXTENT / TILE_WIDTH;
+
+            const featureIdsToHighlight: number[] = [];
+            if (features) {
+                features.forEach((feature) => {
+                    if (feature.type === 1) {
+                        feature.geometry.forEach((point) => {
+                            if (
+                                Math.abs(highlightPoint.x - ((tileX * TILE_WIDTH) + (point[0] / tileScale))) <= MARKER_RADIUS
+                                && Math.abs(highlightPoint.y - ((tileY * TILE_HEIGHT) + (point[1] / tileScale))) <= MARKER_RADIUS
+                            ) {
+                                const timestamp = feature.tags?.timestamp;
+                                const velocity = feature.tags?.velocity;
+                                if (timestamp !== undefined && velocity !== undefined) {
+                                    let description = `Speed: ${velocity} km/h`;
+                                    const speedLimit = feature.tags?.speedLimit;
+                                    if (speedLimit !== undefined) {
+                                        description += `; Speed Limit: ${speedLimit} km/h`;
+                                    }
+                                    description += `; ${moment(new Date(timestamp * 1000)).format('MMM D YYYY H:mm')}`;
+                                    descriptions.push(description);
+                                }
+                                const f = props.features[`_${feature.tags?.id}`];
+                                if (f) {
+                                    featureIdsToHighlight.push(f.id);
+                                }
+                            }
+                        });
+                    }
+                });
             }
-            speedLimit = (
-                <>
-                    <p>
-                        <strong>Speed Limit:</strong>
-                        {' '}
-                        {feature.speedLimit.speedLimit}
-                        km/h
-                    </p>
-                    <p>
-                        <strong>Speed Limit Area:</strong>
-                        {' '}
-                        {feature.speedLimit.description}
-                    </p>
-                </>
-            );
+            dispatch(highlightLocations(featureIdsToHighlight));
+            dispatch(setTooltip({
+                text: {
+                    Locations: descriptions,
+                },
+            }));
         }
+    }, [position, tileIndex]);
 
-        const markerProps: { icon?: Icon } = {};
-        if (mostRecent === undefined || mostRecent.index !== i) {
-            markerProps.icon = new Icon({
-                iconSize: [20, 20],
-                iconUrl: `/img/${image}`,
-            });
+    React.useEffect(() => {
+        const tileIndex = geojsonvt(convertToGeoJson(features), {
+            buffer: MARKER_RADIUS,
+            extent: GEOJSONVT_EXTENT,
+            maxZoom: 20,
+        });
+        setTileIndex(tileIndex);
+        if (canvasLayer) {
+            canvasLayer.setTileIndex(tileIndex);
         }
-        markers.push(
-            <Marker
-                {...markerProps}
-                key={feature.id}
-                position={[feature.coordinates[1], feature.coordinates[0]]}
-            >
-                <Popup>
-                    <p>
-                        <strong>Date:</strong>
-                        {' '}
-                        {formatDate(new Date(feature.timestamp * 1000))}
-                    </p>
-                    <p>
-                        <strong>Message received:</strong>
-                        {' '}
-                        {formatDate(new Date(feature.insertTimestamp * 1000))}
-                    </p>
-                    <p>
-                        <strong>Speed:</strong>
-                        {' '}
-                        {feature.velocity}
-                        km/h
-                    </p>
-                    {speedLimit}
-                </Popup>
-            </Marker>,
-        );
-    }
-    return <>{markers}</>
+    }, [canvasLayer, features]);
+
+    return null;
 }

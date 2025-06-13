@@ -1,12 +1,8 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import * as React from 'react';
 import { useMap } from 'react-leaflet';
-import { useDispatch } from 'react-redux';
 
-import { AppDispatch } from '../store';
 import ButtonControl from './ButtonControl';
-
-export const useAppDispatch: () => AppDispatch = useDispatch;
 
 interface Props {
     className?: string;

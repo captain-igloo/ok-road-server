@@ -9,12 +9,10 @@ import {
     Modal,
     Table,
 } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { AppDispatch, RootState } from '../store';
+import { RootState, useAppDispatch } from '../store';
 import { addFriend, deleteFriend, showFriends } from './slice';
-
-export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default function Friends() {
     const show = useSelector((state: RootState) => state.friends.show);

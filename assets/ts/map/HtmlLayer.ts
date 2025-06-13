@@ -37,14 +37,24 @@ export default class extends Layer {
         return this;
     }
 
-    public setHtml(html: string[]) {
+    public setHtml(html: { [key: string]: string[] }) {
         if (this.container) {
-            if (html.length > 0) {
-                this.container.innerHTML = html.join('<br />');
-                this.container.style.display = 'block';
-            } else {
-                this.container.style.display = 'none';
+            let found = false;
+            if (Object.keys(html).length > 0) {
+                let innerHtml = '';
+                Object.keys(html).forEach((key) => {
+                    if (html[key].length > 0) {
+                        if (found) {
+                            innerHtml += '<br />';
+                        }
+                        innerHtml += `<strong>${key}</strong><br />`;
+                        innerHtml += html[key].join('<br />');
+                        found = true;
+                    }
+                });
+                this.container.innerHTML = innerHtml;
             }
+            this.container.style.display = found ? 'block' : 'none';
         }
     }
 

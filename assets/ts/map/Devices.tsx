@@ -2,12 +2,10 @@ import * as React from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { AppDispatch, RootState } from '../store';
+import { RootState, useAppDispatch } from '../store';
 import { selectDevice } from './slice';
-
-const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default function Devices() {
     const devices = useSelector((state: RootState) => state.map.devices);

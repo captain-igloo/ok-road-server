@@ -9,6 +9,7 @@ use App\Entity\Location;
 use App\Entity\User;
 use App\Repository\DeviceRepository;
 use App\Repository\LocationRepository;
+use App\Repository\UserRepository;
 use App\Rest\LocationsResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -27,7 +28,12 @@ final class LocationsResolverTest extends TestCase
         $location = new Location();
         $locationRepository->method('findLocations')
             ->willReturn([$location]);
-        $locationsResolver = new LocationsResolver($this->getSecurity(), $deviceRepository, $locationRepository);
+        $locationsResolver = new LocationsResolver(
+            $this->getSecurity(),
+            $deviceRepository,
+            $locationRepository,
+            $this->createMock(UserRepository::class),
+        );
         $argumentMetadata = new ArgumentMetadata('locations', null, false, false, null);
         $request = new Request([
             'device' => 1,
@@ -43,6 +49,7 @@ final class LocationsResolverTest extends TestCase
             $this->getSecurity(),
             $this->createMock(DeviceRepository::class),
             $this->createMock(LocationRepository::class),
+            $this->createMock(UserRepository::class),
         );
         $this->expectException(BadRequestHttpException::class);
         $locationsResolver->resolve(new Request(), new ArgumentMetadata('locations', null, false, false, null));
@@ -54,6 +61,7 @@ final class LocationsResolverTest extends TestCase
             $this->getSecurity(),
             $this->createMock(DeviceRepository::class),
             $this->createMock(LocationRepository::class),
+            $this->createMock(UserRepository::class),
         );
         $this->assertEquals(
             [],

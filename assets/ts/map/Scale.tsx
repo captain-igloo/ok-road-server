@@ -4,7 +4,7 @@ import { useMap } from 'react-leaflet';
 
 export default function Scale() {
     const map = useMap();
-    
+
     React.useEffect(() => {
         L.control.scale({
             imperial: false,
