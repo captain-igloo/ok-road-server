@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import Timeline from './Timeline';
 import LocationsSummary from './LocationsSummary';
 import Map from './Map';
-import { scheduleRefresh } from './slice';
 import Search from './Search';
 import { removeNotification } from '../notifications/slice';
 import Header from '../Header';
@@ -19,13 +18,8 @@ export default function App() {
     const bounds = useSelector((state: RootState) => state.map.bounds);
     const user = useSelector((state: RootState) => state.map.user);
     const notifications = useSelector((state: RootState) => state.notifications.notifications);
-    const last24Hours = useSelector((state: RootState) => state.map.last24Hours);
     const demo = useSelector((state: RootState) => state.config.demo);
     const dispatch = useAppDispatch();
-
-    if (last24Hours) {
-        dispatch(scheduleRefresh());
-    }
 
     let toastContainer;
     if (Object.keys(notifications).length > 0) {

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import debounce from 'debounce';
 import { LatLng, LatLngBounds } from 'leaflet';
 
 import { addNotification } from '../notifications/slice';
@@ -45,7 +46,6 @@ export interface MapState {
     features: {[key: string]: Feature};
     fromDate: number;
     highlightedLocations: number[];
-    last24Hours: boolean;
     notificationCount: number;
     notifications: { [key: string]: string };
     refreshInProgress: boolean;
@@ -60,15 +60,14 @@ const initialState: MapState = {
     bounds: undefined,
     devices: [],
     features: {},
-    fromDate: Date.now() - (60 * 60 * 24 * 1000),
+    fromDate: 0,
     highlightedLocations: [],
-    last24Hours: true,
     notificationCount: 0,
     notifications: {},
     refreshInProgress: false,
     selectedDevice: undefined,
     showSpeedLimitAreas: false,
-    toDate: Date.now(),
+    toDate: 0,
     tooltip: {
         position: undefined,
         text: {},
@@ -161,9 +160,6 @@ export const mapSlice = createSlice({
         setFromDate: (state, action: PayloadAction<number>) => {
             state.fromDate = action.payload;
         },
-        setLast24Hours: (state, action: PayloadAction<boolean>) => {
-            state.last24Hours = action.payload;
-        },
         setShowSpeedLimitAreas: (state, action: PayloadAction<boolean>) => {
             state.showSpeedLimitAreas = action.payload;
         },
@@ -194,6 +190,7 @@ export const mapSlice = createSlice({
         builder.addCase(fetchLocations.fulfilled, (state, action) => {
             let bounds: LatLngBounds | undefined;
             state.features = {};
+            console.log('action.payload', action);
             action.payload.forEach((feature) => {
                 const point = new LatLng(feature.location.y, feature.location.x);
                 if (!bounds) {
@@ -227,13 +224,17 @@ export const mapSlice = createSlice({
     },
 });
 
+const debouncedFetchLocations = debounce((dispatch: AppDispatch) => {
+    dispatch(fetchLocations());
+}, 200);
+
+export const scheduleFetchLocations = () => debouncedFetchLocations;
+
 let refreshTimeout: NodeJS.Timeout;
 
 export const scheduleRefresh = () => (dispatch: AppDispatch) => {
     clearTimeout(refreshTimeout);
     refreshTimeout = setTimeout(() => {
-        dispatch(mapSlice.actions.setFromDate(Date.now() - (60 * 60 * 24 * 1000)));
-        dispatch(mapSlice.actions.setToDate(Date.now()));
         dispatch(fetchLocations());
         dispatch(scheduleRefresh());
     }, 300000);
@@ -241,26 +242,33 @@ export const scheduleRefresh = () => (dispatch: AppDispatch) => {
 
 export const setFromDate = (fromDate: number) => (dispatch: AppDispatch) => {
     dispatch(mapSlice.actions.setFromDate(fromDate));
-    dispatch(fetchLocations());
+    dispatch(scheduleFetchLocations());
 };
 
 export const setToDate = (toDate: number) => (dispatch: AppDispatch) => {
     dispatch(mapSlice.actions.setToDate(toDate));
-    dispatch(fetchLocations());
+    dispatch(scheduleFetchLocations());
+};
+
+const setDates = (date: Date) => (dispatch: AppDispatch) => {
+    date.setHours(0, 0, 0, 0);
+    dispatch(setFromDate(date.getTime()));
+    date.setHours(23, 59, 59, 0);
+    dispatch(setToDate(date.getTime()));
+}
+
+
+export const decrementDate = () => (dispatch: AppDispatch, getState: any) => {
+    dispatch(setDates(new Date(getState().map.fromDate - 86400000)));
+};
+
+export const incrementDate = () => (dispatch: AppDispatch, getState: any) => {
+    dispatch(setDates(new Date(getState().map.fromDate + 86400000)));
 };
 
 export const selectDevice = (deviceId: number) => (dispatch: AppDispatch) => {
     dispatch(mapSlice.actions.selectDevice(deviceId));
     dispatch(fetchLocations());
-};
-
-export const setLast24Hours = (last24Hours: boolean) => (dispatch: AppDispatch) => {
-    dispatch(mapSlice.actions.setLast24Hours(last24Hours));
-    if (last24Hours) {
-        dispatch(scheduleRefresh());
-    } else {
-        clearTimeout(refreshTimeout);
-    }
 };
 
 export const setShowSpeedLimitAreas = (showSpeedLimitAreas: boolean) => (dispatch: AppDispatch) => {

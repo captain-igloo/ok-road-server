@@ -5,7 +5,13 @@ import { Provider } from 'react-redux';
 
 import App from './map/App';
 import { setConfig } from './config/slice';
-import { fetchDevices, fetchLocations, setUser } from './map/slice';
+import {
+    fetchDevices,
+    fetchLocations,
+    setFromDate,
+    setToDate,
+    setUser,
+} from './map/slice';
 import { setupStore } from './store';
 
 const element = document.getElementById('app');
@@ -30,5 +36,10 @@ if (element) {
             store.dispatch(fetchLocations());
         });
         store.dispatch(setUser(configuration.user));
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        store.dispatch(setFromDate(today.getTime()));
+        today.setHours(23, 59, 59, 0);
+        store.dispatch(setToDate(today.getTime()));
     }
 }

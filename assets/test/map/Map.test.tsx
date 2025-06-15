@@ -16,20 +16,21 @@ import { setupStore } from '../../ts/store';
 
 jest.mock('../../ts/map/ButtonControl');
 
+const map = {
+    _controlCorners: {
+        bottomright: {
+            insertBefore: () => {},
+        },
+    },
+    addLayer: () => {},
+    on: () => {},
+    removeLayer: () => {},
+    whenReady: () => {},
+};
+
 describe('Map component', () => {
     test('Map should render properly', () => {
-        const addLayer = jest.fn();
-        (useMap as any).mockImplementation(() => ({
-            _controlCorners: {
-                bottomright: {
-                    insertBefore: () => {},
-                },
-            },
-            addLayer,
-            on: () => {},
-            removeLayer: () => {},
-            whenReady: () => {},
-        }));
+        (useMap as any).mockImplementation(() => map);
         const { container } = render(
             <Provider store={setupStore()}>
                 <Map />

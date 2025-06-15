@@ -44,4 +44,10 @@ final class DefaultControllerTest extends WebTestCase
             $this->client->getResponse()->getContent(),
         );
     }
+
+    public function testDemo(): void
+    {
+        $this->client->request('GET', '/demo');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
 }

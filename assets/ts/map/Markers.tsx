@@ -45,11 +45,9 @@ export default function Markers(props: Props) {
     const dispatch = useAppDispatch();
 
     React.useEffect(() => {
-        console.log('* * * ');
         const canvasLayer = new CanvasLayer();
         canvasLayer.addTo(map);
         setCanvasLayer(canvasLayer);
-
         return () => {
             map.removeLayer(canvasLayer);
         };
@@ -107,7 +105,7 @@ export default function Markers(props: Props) {
 
     React.useEffect(() => {
         const tileIndex = geojsonvt(convertToGeoJson(features), {
-            buffer: MARKER_RADIUS,
+            buffer: (GEOJSONVT_EXTENT / TILE_HEIGHT) * MARKER_RADIUS,
             extent: GEOJSONVT_EXTENT,
             maxZoom: 20,
         });

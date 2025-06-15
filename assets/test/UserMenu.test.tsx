@@ -40,7 +40,7 @@ describe('UserMenu component', () => {
         await act(async () => {
             await fireEvent.click(getByText('Friends'));
         });
-        expect(showFriends).toBeCalledWith(true);
+        expect(showFriends).toHaveBeenCalledWith(true);
         showFriends.mockRestore();
     });
 });

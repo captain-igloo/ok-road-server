@@ -41,10 +41,18 @@ class AppFixtures extends Fixture
         $user3->setPassword('secret');
         $user3->setRoles([]);
 
+        $user4 = new User();
+        $user4->setUsername('demo');
+        $user4->setEmail('demo@example.com');
+        $user4->setFullName('Demo User');
+        $user4->setPassword('secret');
+        $user4->setRoles([]);
+
         $user1->addFriend($user2);
         $manager->persist($user1);
         $manager->persist($user2);
         $manager->persist($user3);
+        $manager->persist($user4);
 
         $device = new Device();
         $device->setUser($user1);

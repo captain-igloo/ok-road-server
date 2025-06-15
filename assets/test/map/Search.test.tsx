@@ -28,23 +28,11 @@ describe('Search component', () => {
         expect(container).toMatchSnapshot();
     });
 
-    test('Click "Last 24 hours" should unset last24Hours', () => {
-        const store = setupStore();
-        const { getByLabelText } = render(
-            <Provider store={store}>
-                <Search />
-            </Provider>,
-        );
-        fireEvent.click(getByLabelText('Last 24 hours'));
-        expect(store.getState().map.last24Hours).toBe(false);
-    });
-
     test('Change from date should set fromDate', () => {
         const store = setupStore({
             map: {
                 devices: [],
                 fromDate: Date.now(),
-                last24Hours: false,
             } as any,
         });
         const { getByLabelText } = render(
@@ -60,7 +48,6 @@ describe('Search component', () => {
         const store = setupStore({
             map: {
                 devices: [],
-                last24Hours: false,
                 toDate: Date.now(),
             } as any,
         });

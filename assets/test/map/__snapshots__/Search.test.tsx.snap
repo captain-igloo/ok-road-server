@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Search component Search should render properly 1`] = `
 <div>
@@ -39,29 +39,6 @@ exports[`Search component Search should render properly 1`] = `
           <label
             class="form-label col-form-label col-sm-3"
           >
-            Last 24 hours:
-          </label>
-          <div
-            class="col-sm-9"
-            style="padding: .375rem 2.25rem .375rem .75rem;"
-          >
-            <div
-              class=""
-            >
-              <input
-                aria-label="Last 24 hours"
-                class="form-check-input"
-                type="checkbox"
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          class="mb-3 row"
-        >
-          <label
-            class="form-label col-form-label col-sm-3"
-          >
             From:
           </label>
           <div
@@ -92,6 +69,72 @@ exports[`Search component Search should render properly 1`] = `
               type="datetime-local"
               value="2025-04-17T00:00"
             />
+          </div>
+        </div>
+        <div
+          class="mb-3 row"
+        >
+          <div
+            class="col-sm-3"
+          />
+          <div
+            class="col-sm-9"
+          >
+            <div
+              class="btn-group"
+              role="group"
+            >
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-left-long "
+                  data-icon="left-long"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="display-small"
+                >
+                    Previous
+                </span>
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-right-long "
+                  data-icon="right-long"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M334.5 414c8.8 3.8 19 2 26-4.6l144-136c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22l0 72L32 192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l288 0 0 72c0 9.6 5.7 18.2 14.5 22z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span
+                  class="display-small"
+                >
+                    Next
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </form>

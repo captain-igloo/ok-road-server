@@ -19,21 +19,21 @@ describe('Button component', () => {
     test('Mount button should add control to map', () => {
         render(<Button icon={faDrawPolygon} onClick={() => {}} title="title" />);
         const buttonControl = (ButtonControl as any).mock.instances[0];
-        expect(buttonControl.addTo).toBeCalled();
+        expect(buttonControl.addTo).toHaveBeenCalled();
     });
 
     test('Change className should call setClassName()', () => {
         const { rerender } = render(<Button icon={faDrawPolygon} onClick={() => {}} title="title" />);
         rerender(<Button className="test" icon={faDrawPolygon} onClick={() => {}} title="title" />);
         const buttonControl = (ButtonControl as any).mock.instances[0];
-        expect(buttonControl.setClassName).toBeCalledWith('test');
+        expect(buttonControl.setClassName).toHaveBeenCalledWith('test');
     });
 
     test('Change variant should call setVariant()', () => {
         const { rerender } = render(<Button icon={faDrawPolygon} onClick={() => {}} title="title" />);
         rerender(<Button icon={faDrawPolygon} onClick={() => {}} title="title" variant="primary" />);
         const buttonControl = (ButtonControl as any).mock.instances[0];
-        expect(buttonControl.setVariant).toBeCalledWith('primary');
+        expect(buttonControl.setVariant).toHaveBeenCalledWith('primary');
     });
 
     test('Change onClick should call setOnClick()', () => {
@@ -41,20 +41,20 @@ describe('Button component', () => {
         const { rerender } = render(<Button icon={faDrawPolygon} onClick={() => {}} title="title" />);
         rerender(<Button icon={faDrawPolygon} onClick={onClick} title="title" />);
         const buttonControl = (ButtonControl as any).mock.instances[0];
-        expect(buttonControl.setOnClick).toBeCalledWith(onClick);
+        expect(buttonControl.setOnClick).toHaveBeenCalledWith(onClick);
     });
 
     test('Change icon should call setIcon()', () => {
         const { rerender } = render(<Button icon={faDrawPolygon} onClick={() => {}} title="title" />);
         rerender(<Button icon={faGlobe} onClick={() => {}} title="title" />);
         const buttonControl = (ButtonControl as any).mock.instances[0];
-        expect(buttonControl.setIcon).toBeCalledWith(faGlobe);
+        expect(buttonControl.setIcon).toHaveBeenCalledWith(faGlobe);
     });
 
     test('Change title should call setTitle()', () => {
         const { rerender } = render(<Button icon={faDrawPolygon} onClick={() => {}} title="title" />);
         rerender(<Button icon={faDrawPolygon} onClick={() => {}} title="new title" />);
         const buttonControl = (ButtonControl as any).mock.instances[0];
-        expect(buttonControl.setTitle).toBeCalledWith('new title');
+        expect(buttonControl.setTitle).toHaveBeenCalledWith('new title');
     });
 });

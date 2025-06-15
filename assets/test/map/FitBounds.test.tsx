@@ -23,7 +23,7 @@ describe('FitBounds component', () => {
                 <FitBounds bounds={[[-41, 174], [-40, 175]]} />
             </MapContainer>
         );
-        expect(fitBounds).toBeCalled();
+        expect(fitBounds).toHaveBeenCalled();
         (useMap as any).mockRestore();
     });
 });

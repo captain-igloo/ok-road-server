@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 final class LocationsResolver implements ValueResolverInterface
@@ -53,7 +54,7 @@ final class LocationsResolver implements ValueResolverInterface
         return [];
     }
 
-    private function getDevice(int $deviceId, bool $isDemo): ?Device
+    private function getDevice(int $deviceId, bool $isDemo): Device
     {
         if ($isDemo) {
             if (
@@ -68,6 +69,6 @@ final class LocationsResolver implements ValueResolverInterface
         ) {
             return $device;
         }
-        return null;
+        throw new NotFoundHttpException();
     }
 }

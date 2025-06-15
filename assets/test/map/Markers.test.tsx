@@ -9,12 +9,14 @@ import { Provider } from 'react-redux';
 import Markers from '../../ts/map/Markers';
 import { setupStore } from '../../ts/store';
 
+const map = {
+    addLayer: () => {},
+    removeLayer: () => {},
+};
+
 describe('Markers component', () => {
     test('Markers should render properly', () => {
-        (useMap as any).mockImplementation(() => ({
-            addLayer: () => {},
-            removeLayer: () => {},
-        }));
+        (useMap as any).mockImplementation(() => map);
         const { container } = render(
             <Provider store={setupStore({
                 map: {
