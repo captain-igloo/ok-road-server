@@ -44,7 +44,8 @@ class LocationRepository extends ServiceEntityRepository
     public function findDemoLocations(Device $device, DateTimeInterface $from, DateTimeInterface $to): array
     {
         $demoEndDate = new DateTimeImmutable('2025-01-10 00:00:00');
-        $now = new DateTimeImmutable(date('Y-m-d 00:00:00'));
+        // demo data is in New Zealand time.
+        $now = new DateTimeImmutable(date('Y-m-d 00:00:00', time() + 43200));
         $diff = $now->getTimeStamp() - $demoEndDate->getTimestamp();
         $shiftedFrom = new DateTimeImmutable(sprintf('@%d', $from->getTimestamp() - $diff));
         $shiftedTo = new DateTimeImmutable(sprintf('@%d', $to->getTimestamp() - $diff));

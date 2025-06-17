@@ -190,7 +190,6 @@ export const mapSlice = createSlice({
         builder.addCase(fetchLocations.fulfilled, (state, action) => {
             let bounds: LatLngBounds | undefined;
             state.features = {};
-            console.log('action.payload', action);
             action.payload.forEach((feature) => {
                 const point = new LatLng(feature.location.y, feature.location.x);
                 if (!bounds) {
