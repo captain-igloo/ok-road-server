@@ -38,7 +38,7 @@ export default function Register(props: Props) {
 
     return (
         <>
-            <Header showRegister={false} />
+            <Header showDemo showMap={false} showRegister={false} showSignIn />
             <Card className="register-container">
                 <Card.Header>Register</Card.Header>
                 <Card.Body>

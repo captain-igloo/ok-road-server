@@ -6,7 +6,7 @@ import Header from '../ts/Header';
 
 describe('Header component', () => {
     test('Header renders properly', () => {
-        const { container } = render(<Header showMap />);
+        const { container } = render(<Header showDemo showMap showRegister showSignIn />);
         expect(container).toMatchSnapshot();
     });
 });

@@ -29,9 +29,7 @@ export default function Map(props: Props) {
     const mapConfig = useSelector((state: RootState) => state.config.map);
     const tooltip = useSelector((state: RootState) => state.map.tooltip);
     const showSpeedLimitAreas = useSelector((state: RootState) => state.map.showSpeedLimitAreas);
-
-    let highlightedMarkers: React.ReactNode[] = [];
-
+    const highlightedMarkers: React.ReactNode[] = [];
     highlightedLocations.forEach((highlightedLocation) => {
         const featureIndex = `_${highlightedLocation}`;
         if (featureIndex in features) {
@@ -45,7 +43,7 @@ export default function Map(props: Props) {
                     key={`highlighted-location-${feature.id}`}
                     position={[feature.coordinates[1], feature.coordinates[0]]}
                     zIndexOffset={1000}
-                />
+                />,
             );
         }
     });

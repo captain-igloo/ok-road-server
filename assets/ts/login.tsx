@@ -26,7 +26,7 @@ if (element) {
 
     root.render(
         <>
-            <Header showSignIn={false} />
+            <Header showDemo showMap={false} showRegister showSignIn={false} />
             <Card className="login-container">
                 <Card.Header>Sign In</Card.Header>
                 <Card.Body>

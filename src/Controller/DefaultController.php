@@ -49,14 +49,11 @@ final class DefaultController extends AbstractController
     }
 
     #[Route('/demo')]
-    public function demo(UserRepository $userRepository): Response
+    public function demo(#[CurrentUser] ?User $user): Response
     {
-        if ($user = $userRepository->findDemoUser()) {
-            return $this->render('map.html.twig', [
-                'configuration' => $this->getConfig($user, true),
-            ]);
-        }
-        throw new RuntimeException();
+        return $this->render('map.html.twig', [
+            'configuration' => $this->getConfig($user, true),
+        ]);
     }
 
     #[Route('/img/{speedLimit}.svg')]
@@ -82,9 +79,9 @@ final class DefaultController extends AbstractController
         return $response;
     }
 
-    private function getConfig(User $user, bool $demo): array
+    private function getConfig(?User $user, bool $demo): array
     {
-        return [
+        $config = [
             'demo' => $demo,
             'map' => [
                 'center' => $this->mapCenter,
@@ -93,10 +90,13 @@ final class DefaultController extends AbstractController
             'maxResults' => LocationRepository::MAX_RESULTS,
             'sentryDsn' => $this->sentryDsn,
             'speedLimitTilesUrl' => $this->speedLimitTilesUrl,
-            'user' => [
+        ];
+        if ($user !== null) {
+            $config['user'] = [
                 'fullName' => $user->getFullName(),
                 'username' => $user->getUsername(),
-            ],
-        ];
+            ];
+        }
+        return $config;
     }
 }

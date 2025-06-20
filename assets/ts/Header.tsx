@@ -3,12 +3,13 @@ import * as React from 'react';
 import UserMenu from './UserMenu';
 
 interface Props {
-    showDemo?: boolean;
-    showMap?: boolean;
-    showRegister?: boolean;
-    showSignIn?: boolean;
+    showDemo: boolean;
+    showMap: boolean;
+    showRegister: boolean;
+    showSignIn: boolean;
     user?: {
         fullName: string;
+        username: string;
     };
 }
 

@@ -16,10 +16,10 @@ import { showFriends } from './friends/slice';
 import { useAppDispatch } from './store';
 
 interface Props {
-    showDemo?: boolean;
-    showMap?: boolean;
-    showRegister?: boolean;
-    showSignIn?: boolean;
+    showDemo: boolean;
+    showMap: boolean;
+    showRegister: boolean;
+    showSignIn: boolean;
     user?: {
         fullName: string;
     };
@@ -35,7 +35,7 @@ export default function UserMenu(props: Props) {
     } = props;
 
     let demoButton;
-    if (showDemo !== false) {
+    if (showDemo) {
         demoButton = (
             <Button href="/demo" variant="outline">
                 <FontAwesomeIcon icon={faPersonChalkboard} />
@@ -49,7 +49,7 @@ export default function UserMenu(props: Props) {
 
     if (user === undefined) {
         let registerButton;
-        if (showRegister !== false) {
+        if (showRegister) {
             registerButton = (
                 <Button href="/register" variant="outline">
                     <FontAwesomeIcon icon={faUserPlus} />
@@ -84,7 +84,7 @@ export default function UserMenu(props: Props) {
     }
 
     let mapButton;
-    if (showMap !== false) {
+    if (showMap) {
         mapButton = (
             <Button href="/map" variant="outline">
                 <FontAwesomeIcon icon={faGlobe} />
@@ -98,11 +98,10 @@ export default function UserMenu(props: Props) {
 
     const dispatch = useAppDispatch();
 
-    if (showDemo !== false) {
-        return (
+    let userMenu;
+    if (showDemo) {
+        userMenu = (
             <>
-                {demoButton}
-                {mapButton}
                 <Dropdown>
                     <Dropdown.Toggle variant="outline">
                         <FontAwesomeIcon icon={faUser} />
@@ -128,5 +127,11 @@ export default function UserMenu(props: Props) {
             </>
         );
     }
-    return null;
+    return (
+        <>
+            {demoButton}
+            {mapButton}
+            {userMenu}
+        </>
+    );
 }

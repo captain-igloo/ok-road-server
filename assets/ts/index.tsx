@@ -23,7 +23,7 @@ if (element) {
     const root = ReactDOM.createRoot(element);
     root.render(
         <Provider store={setupStore()}>
-            <Header user={configuration.user} />
+            <Header showDemo showMap showRegister showSignIn user={configuration.user} />
             <Container style={{ paddingTop: '5px' }}>
                 <h1>Monitor Young Drivers</h1>
                 <p>
@@ -66,7 +66,10 @@ if (element) {
                     <li>
                         Make sure that OwnTracks has permission to use location services:
                         <ul>
-                            <li>Set Settings / Location / OwnTracks / Location access to &quot;Allow all the time&quot;.</li>
+                            <li>
+                                Set Settings / Location / OwnTracks / Location access to &quot;Allow all the
+                                time&quot;.
+                            </li>
                             <li>Set Settings / Location / OwnTracks / Use precise location to true.</li>
                         </ul>
                     </li>

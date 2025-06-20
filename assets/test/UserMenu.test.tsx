@@ -14,14 +14,14 @@ import UserMenu from '../ts/UserMenu';
 
 describe('UserMenu component', () => {
     test('UserMenu renders properly (not logged in)', () => {
-        const { container } = render(<UserMenu />);
+        const { container } = render(<UserMenu showDemo showMap showRegister showSignIn />);
         expect(container).toMatchSnapshot();
     });
 
     test('UserMenu renders properly (logged in)', () => {
         const { container } = render(
             <Provider store={setupStore()}>
-                <UserMenu user={{fullName: 'Test User'}}/>
+                <UserMenu showDemo showMap showRegister showSignIn user={{fullName: 'Test User'}}/>
             </Provider>
         );
         expect(container).toMatchSnapshot();
@@ -31,7 +31,7 @@ describe('UserMenu component', () => {
         const showFriends = jest.spyOn(friendsSlice, 'showFriends');
         const { getByText } = render(
             <Provider store={setupStore()}>
-                <UserMenu user={{fullName: 'Test User'}}/>
+                <UserMenu showDemo showMap showRegister showSignIn user={{fullName: 'Test User'}}/>
             </Provider>
         );
         await act(async () => {

@@ -46,7 +46,7 @@ export default function App() {
 
     return (
         <>
-            <Header showDemo={!demo} showMap={false} user={user} />
+            <Header showDemo={!demo} showMap={!!demo} showRegister={!!demo} showSignIn={!!demo} user={user} />
             <Container className="main-container" fluid>
                 <Row className="main-container--row">
                     <Col className="left-container" md={6} sm={12} xl={4}>

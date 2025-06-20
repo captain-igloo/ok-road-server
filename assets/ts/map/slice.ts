@@ -43,7 +43,7 @@ export interface Tooltip {
 export interface MapState {
     bounds?: [[number, number], [number, number]];
     devices: Device[];
-    features: {[key: string]: Feature};
+    features: { [key: string]: Feature };
     fromDate: number;
     highlightedLocations: number[];
     notificationCount: number;
@@ -53,7 +53,7 @@ export interface MapState {
     showSpeedLimitAreas: boolean;
     toDate: number;
     tooltip: Tooltip;
-    user: User;
+    user?: User;
 }
 
 const initialState: MapState = {
@@ -72,10 +72,7 @@ const initialState: MapState = {
         position: undefined,
         text: {},
     },
-    user: {
-        fullName: '',
-        username: '',
-    },
+    user: undefined,
 };
 
 export const fetchDevices = createAsyncThunk<
@@ -254,8 +251,7 @@ const setDates = (date: Date) => (dispatch: AppDispatch) => {
     dispatch(setFromDate(date.getTime()));
     date.setHours(23, 59, 59, 0);
     dispatch(setToDate(date.getTime()));
-}
-
+};
 
 export const decrementDate = () => (dispatch: AppDispatch, getState: any) => {
     dispatch(setDates(new Date(getState().map.fromDate - 86400000)));

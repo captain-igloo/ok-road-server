@@ -16,11 +16,11 @@ import {
 import { Feature, highlightLocations, setTooltip } from './slice';
 
 interface Props {
-    features: {[key: string]: Feature};
+    features: { [key: string]: Feature };
     position?: { lat: number; lng: number };
 }
 
-const convertToGeoJson = (features: {[key: string]: Feature}): GeoJSON => ({
+const convertToGeoJson = (features: { [key: string]: Feature }): GeoJSON => ({
     type: 'FeatureCollection',
     features: Object.keys(features).map((index) => ({
         geometry: {
@@ -36,6 +36,15 @@ const convertToGeoJson = (features: {[key: string]: Feature}): GeoJSON => ({
         type: 'Feature',
     })),
 });
+
+const tileScale = GEOJSONVT_EXTENT / TILE_WIDTH;
+const scaledMarkerRadius = MARKER_RADIUS * tileScale;
+
+const pointIntersectsMarker = (
+    hightlightPoint: { x: number; y: number },
+    point: [number, number],
+) => Math.abs(hightlightPoint.x - point[0]) <= scaledMarkerRadius
+    && Math.abs(hightlightPoint.y - point[1]) <= scaledMarkerRadius;
 
 export default function Markers(props: Props) {
     const { features, position } = props;
@@ -58,22 +67,21 @@ export default function Markers(props: Props) {
             const highlightPoint = map.project(new LatLng(position.lat, position.lng), map.getZoom());
             const tileX = Math.floor(highlightPoint.x / TILE_WIDTH);
             const tileY = Math.floor(highlightPoint.y / TILE_HEIGHT);
+            const highlightPointTile = {
+                x: (highlightPoint.x % tileX) * tileScale,
+                y: (highlightPoint.y % tileY) * tileScale,
+            };
             const maxTileX = 2 ** map.getZoom();
             const unwrappedTileX = tileX >= maxTileX ? tileX - maxTileX : tileX;
             const features = tileIndex.getTile(map.getZoom(), unwrappedTileX, tileY)?.features;
 
             const descriptions: string[] = [];
-            const tileScale = GEOJSONVT_EXTENT / TILE_WIDTH;
-
             const featureIdsToHighlight: number[] = [];
             if (features) {
                 features.forEach((feature) => {
                     if (feature.type === 1) {
                         feature.geometry.forEach((point) => {
-                            if (
-                                Math.abs(highlightPoint.x - ((tileX * TILE_WIDTH) + (point[0] / tileScale))) <= MARKER_RADIUS
-                                && Math.abs(highlightPoint.y - ((tileY * TILE_HEIGHT) + (point[1] / tileScale))) <= MARKER_RADIUS
-                            ) {
+                            if (pointIntersectsMarker(highlightPointTile, point)) {
                                 const timestamp = feature.tags?.timestamp;
                                 const velocity = feature.tags?.velocity;
                                 if (timestamp !== undefined && velocity !== undefined) {
@@ -82,7 +90,7 @@ export default function Markers(props: Props) {
                                     if (speedLimit !== undefined) {
                                         description += `; Speed Limit: ${speedLimit} km/h`;
                                     }
-                                    description += `; ${moment(new Date(timestamp * 1000)).format('MMM D YYYY H:mm')}`;
+                                    description += `; ${moment(new Date(timestamp * 1000)).format('MMM D YYYY HH:mm')}`;
                                     descriptions.push(description);
                                 }
                                 const f = props.features[`_${feature.tags?.id}`];

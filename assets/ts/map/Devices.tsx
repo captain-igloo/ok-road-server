@@ -13,7 +13,9 @@ export default function Devices() {
     const user = useSelector((state: RootState) => state.map.user);
 
     const options = devices.map((device) => {
-        const username = user.username !== device.username ? `${device.username} - ` : '';
+        const username = (user !== undefined && user.username !== device.username)
+            ? `${device.username} - `
+            : '';
         const description = `${username}${device.description}`;
         return (
             <option key={device.id} value={device.id}>
