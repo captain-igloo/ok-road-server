@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="/css/okroad.css" />     
+<link rel="stylesheet" href="/css/okroad.css?v={{ version }}" />
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 {% endblock %}
 
 {% block title %}Register{% endblock %}
 
 {% block javascripts %}
-<script src="/js/shared.bundle.js" defer></script>
-<script src="/js/register.bundle.js" defer></script>
+<script src="/js/shared.bundle.js?v={{ version }}" defer></script>
+<script src="/js/register.bundle.js?v={{ version }}" defer></script>
 {% endblock %}
 
 {% block body %}

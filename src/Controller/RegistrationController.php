@@ -22,6 +22,7 @@ class RegistrationController extends AbstractController
         private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
         private NormalizerInterface $normalizer,
+        private string $version,
     ) {
     }
 
@@ -55,6 +56,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'form' => $this->normalizer->normalize($form),
+            'version' => $this->version,
         ]);
     }
 }

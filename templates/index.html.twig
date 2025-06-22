@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="/css/okroad.css" />
+<link rel="stylesheet" href="/css/okroad.css?v={{ configuration.version }}" />
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 {% endblock %}
 
 {% block javascripts %}
-<script src="/js/shared.bundle.js" defer></script>
-<script src="/js/index.bundle.js" defer></script>
+<script src="/js/shared.bundle.js?v={{ configuration.version }}" defer></script>
+<script src="/js/index.bundle.js?v={{ configuration.version }}" defer></script>
 {% endblock %}
 
 {% block body %}

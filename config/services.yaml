@@ -33,3 +33,12 @@ services:
             $mapZoom: '%env(MAP_ZOOM)%'
             $sentryDsn: '%env(SENTRY_DSN)%'
             $speedLimitTilesUrl: '%env(SPEED_LIMIT_TILES_URL)%'
+            $version: '%env(VERSION)%'
+
+    App\Controller\SecurityController:
+        arguments:
+            $version: '%env(VERSION)%'
+
+    App\Controller\RegistrationController:
+        arguments:
+            $version: '%env(VERSION)%'

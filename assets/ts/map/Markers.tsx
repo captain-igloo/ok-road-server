@@ -68,8 +68,8 @@ export default function Markers(props: Props) {
             const tileX = Math.floor(highlightPoint.x / TILE_WIDTH);
             const tileY = Math.floor(highlightPoint.y / TILE_HEIGHT);
             const highlightPointTile = {
-                x: (highlightPoint.x % tileX) * tileScale,
-                y: (highlightPoint.y % tileY) * tileScale,
+                x: (highlightPoint.x - (tileX * TILE_WIDTH)) * tileScale,
+                y: (highlightPoint.y - (tileY * TILE_HEIGHT)) * tileScale,
             };
             const maxTileX = 2 ** map.getZoom();
             const unwrappedTileX = tileX >= maxTileX ? tileX - maxTileX : tileX;

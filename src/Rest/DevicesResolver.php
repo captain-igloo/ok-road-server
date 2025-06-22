@@ -12,7 +12,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 final class DevicesResolver implements ValueResolverInterface
 {
@@ -32,7 +32,7 @@ final class DevicesResolver implements ValueResolverInterface
             if ($user !== null) {
                 return [$this->deviceRepository->findByUser($user)];
             }
-            throw new UnauthorizedHttpException();
+            throw new AccessDeniedHttpException();
         }
         return [];
     }

@@ -20,6 +20,7 @@ final class DefaultController extends AbstractController
         private array $mapCenter,
         private int $mapZoom,
         private string $sentryDsn,
+        private string $version,
     ) {
     }
 
@@ -28,6 +29,7 @@ final class DefaultController extends AbstractController
     {
         $configuration = [
             'sentryDsn' => $this->sentryDsn,
+            'version' => $this->version,
         ];
         if ($user !== null) {
             $configuration['user'] = [
@@ -90,6 +92,7 @@ final class DefaultController extends AbstractController
             'maxResults' => LocationRepository::MAX_RESULTS,
             'sentryDsn' => $this->sentryDsn,
             'speedLimitTilesUrl' => $this->speedLimitTilesUrl,
+            'version' => $this->version,
         ];
         if ($user !== null) {
             $config['user'] = [

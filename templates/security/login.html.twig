@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="/css/okroad.css" />     
+<link rel="stylesheet" href="/css/okroad.css?v={{ version }}" />
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 {% endblock %}
 
@@ -12,8 +12,8 @@ var token = '{{ csrf_token('authenticate') }}';
 var error = '{{ error.messageKey|trans(error.messageData, 'security') }}';
 {% endif %}
 </script>
-<script src="/js/shared.bundle.js" defer></script>
-<script src="/js/login.bundle.js" defer></script>
+<script src="/js/shared.bundle.js?v={{ version }}" defer></script>
+<script src="/js/login.bundle.js?v={{ version }}" defer></script>
 {% endblock %}
 
 {% block body %}
