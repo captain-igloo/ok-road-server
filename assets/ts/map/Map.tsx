@@ -13,6 +13,7 @@ import Scale from './Scale';
 import { fetchLocations, setShowSpeedLimitAreas } from './slice';
 import Tooltip from './Tooltip';
 import VectorGridLayer from './VectorGridLayer';
+import MostRecentMarker from './MostRecentMarker';
 
 interface Props {
     bounds?: [[number, number], [number, number]];
@@ -67,6 +68,7 @@ export default function Map(props: Props) {
             <Tooltip tooltip={tooltip} />
             <Markers features={features} position={tooltip.position} />
             {highlightedMarkers}
+            <MostRecentMarker features={features} />
             <FitBounds bounds={bounds} />
             <Scale />
             <Button

@@ -90,16 +90,14 @@ exports[`Search component Search should render properly 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-left-long "
+                  class="svg-inline--fa fa-left-long"
                   data-icon="left-long"
                   data-prefix="fas"
-                  focusable="false"
                   role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
                 >
                   <path
-                    d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z"
+                    d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9S192 115.1 192 128l0 64 336 0c26.5 0 48 21.5 48 48l0 32c0 26.5-21.5 48-48 48l-336 0 0 64c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z"
                     fill="currentColor"
                   />
                 </svg>
@@ -115,16 +113,14 @@ exports[`Search component Search should render properly 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-right-long "
+                  class="svg-inline--fa fa-right-long"
                   data-icon="right-long"
                   data-prefix="fas"
-                  focusable="false"
                   role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
                 >
                   <path
-                    d="M334.5 414c8.8 3.8 19 2 26-4.6l144-136c4.8-4.5 7.5-10.8 7.5-17.4s-2.7-12.9-7.5-17.4l-144-136c-7-6.6-17.2-8.4-26-4.6s-14.5 12.5-14.5 22l0 72L32 192c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l288 0 0 72c0 9.6 5.7 18.2 14.5 22z"
+                    d="M566.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-128 128c-9.2 9.2-22.9 11.9-34.9 6.9S384 396.9 384 384l0-64-336 0c-26.5 0-48-21.5-48-48l0-32c0-26.5 21.5-48 48-48l336 0 0-64c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l128 128z"
                     fill="currentColor"
                   />
                 </svg>

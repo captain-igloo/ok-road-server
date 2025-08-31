@@ -2,7 +2,13 @@ import '../setup';
 
 import { faDrawPolygon } from '@fortawesome/free-solid-svg-icons/faDrawPolygon';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
-import { afterEach, describe, expect, jest, test } from '@jest/globals';
+import {
+    afterEach,
+    describe,
+    expect,
+    jest,
+    test,
+} from '@jest/globals';
 import { render } from '@testing-library/react';
 import * as React from 'react';
 
