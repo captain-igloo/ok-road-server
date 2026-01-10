@@ -57,7 +57,7 @@ if (element) {
                     <li>
                         Configure OwnTracks to publish to OK Road:
                         <ul>
-                            <li>Set Preferences / Connection / Endpoint / Host to &quot;192.9.176.238&quot;.</li>
+                            <li>Set Preferences / Connection / Endpoint / Host to &quot;okroad.nz&quot;.</li>
                             <li>Set Preferences / Connection / Endpoint / Port to &quot;1883&quot;.</li>
                             <li>Set Preferences / Connection / Credentials / Username to your username.</li>
                             <li>Set Preferences / Connection / Credentials / Password to your password.</li>

@@ -1,19 +1,19 @@
-FROM php:8.3-fpm AS build
+FROM node:24 AS build
 
 COPY . /app
 
-ENV NVM_DIR=/root/.nvm
+WORKDIR /app
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash \
-    && . "$NVM_DIR/nvm.sh" \
-    && nvm install v20 \
-    && cd /app \
-    && npm ci \
+RUN npm ci \
     && npm run build
 
-FROM nginx:1.25
+FROM nginx:1.29
 
 COPY .docker/nginx/nginx.conf /etc/nginx/conf.d/
+COPY .docker/nginx/fullchain.pem /etc/letsencrypt/live/okroad.nz/
+COPY .docker/nginx/privkey.pem /etc/letsencrypt/live/okroad.nz/
+COPY .docker/nginx/options-ssl-nginx.conf /etc/letsencrypt/
+COPY .docker/nginx/ssl-dhparams.pem /etc/letsencrypt/
 COPY --from=build /app/public /app/public
 
 RUN rm /etc/nginx/conf.d/default.conf
