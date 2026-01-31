@@ -220,11 +220,9 @@ export const mapSlice = createSlice({
     },
 });
 
-const debouncedFetchLocations = debounce((dispatch: AppDispatch) => {
+export const scheduleFetchLocations = () => debounce((dispatch: AppDispatch) => {
     dispatch(fetchLocations());
-}, 200);
-
-export const scheduleFetchLocations = () => debouncedFetchLocations;
+}, 200);;
 
 let refreshTimeout: NodeJS.Timeout;
 

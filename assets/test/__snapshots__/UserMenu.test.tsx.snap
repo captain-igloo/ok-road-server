@@ -58,7 +58,7 @@ exports[`UserMenu component UserMenu renders properly (logged in) 1`] = `
     <button
       aria-expanded="false"
       class="dropdown-toggle btn btn-outline"
-      id="react-aria-«ra»"
+      id="react-aria-_r_a_"
       type="button"
     >
       <svg
