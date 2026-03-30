@@ -1681,16 +1681,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "3.32.6",
+            "version": "3.32.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "b02a6c00d8335ef68c163bf7c9e39f396dc5853f"
+                "reference": "d725ebd288688bb24f47ee467b1299b0fc6d04f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/b02a6c00d8335ef68c163bf7c9e39f396dc5853f",
-                "reference": "b02a6c00d8335ef68c163bf7c9e39f396dc5853f",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/d725ebd288688bb24f47ee467b1299b0fc6d04f8",
+                "reference": "d725ebd288688bb24f47ee467b1299b0fc6d04f8",
                 "shasum": ""
             },
             "require": {
@@ -1766,7 +1766,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/serializer/issues",
-                "source": "https://github.com/schmittjoh/serializer/tree/3.32.6"
+                "source": "https://github.com/schmittjoh/serializer/tree/3.32.7"
             },
             "funding": [
                 {
@@ -1778,7 +1778,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-28T12:37:32+00:00"
+            "time": "2026-03-11T20:11:17+00:00"
         },
         {
             "name": "jms/serializer-bundle",
@@ -2297,16 +2297,16 @@
         },
         {
             "name": "php-mqtt/client",
-            "version": "v2.3.1",
+            "version": "v2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-mqtt/client.git",
-                "reference": "002134028bf0279e411e2419cde6b18983605780"
+                "reference": "97df2f592599f72fb7975eb504333a8df3841ea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-mqtt/client/zipball/002134028bf0279e411e2419cde6b18983605780",
-                "reference": "002134028bf0279e411e2419cde6b18983605780",
+                "url": "https://api.github.com/repos/php-mqtt/client/zipball/97df2f592599f72fb7975eb504333a8df3841ea9",
+                "reference": "97df2f592599f72fb7975eb504333a8df3841ea9",
                 "shasum": ""
             },
             "require": {
@@ -2348,9 +2348,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-mqtt/client/issues",
-                "source": "https://github.com/php-mqtt/client/tree/v2.3.1"
+                "source": "https://github.com/php-mqtt/client/tree/v2.3.2"
             },
-            "time": "2025-12-09T19:37:16+00:00"
+            "time": "2026-03-28T12:01:13+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -2407,16 +2407,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.6.6",
+            "version": "5.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "5cee1d3dfc2d2aa6599834520911d246f656bcb8"
+                "reference": "31a105931bc8ffa3a123383829772e832fd8d903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/5cee1d3dfc2d2aa6599834520911d246f656bcb8",
-                "reference": "5cee1d3dfc2d2aa6599834520911d246f656bcb8",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/31a105931bc8ffa3a123383829772e832fd8d903",
+                "reference": "31a105931bc8ffa3a123383829772e832fd8d903",
                 "shasum": ""
             },
             "require": {
@@ -2465,9 +2465,9 @@
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.6.6"
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.6.7"
             },
-            "time": "2025-12-22T21:13:58+00:00"
+            "time": "2026-03-18T20:47:46+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -3034,16 +3034,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "4.22.0",
+            "version": "4.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "ce6ab95a7021f976a27b4628a4072e481c8acf60"
+                "reference": "eccf30d8abcf55189a1dc0eb3d946a61d42fb4df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/ce6ab95a7021f976a27b4628a4072e481c8acf60",
-                "reference": "ce6ab95a7021f976a27b4628a4072e481c8acf60",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/eccf30d8abcf55189a1dc0eb3d946a61d42fb4df",
+                "reference": "eccf30d8abcf55189a1dc0eb3d946a61d42fb4df",
                 "shasum": ""
             },
             "require": {
@@ -3065,12 +3065,14 @@
                 "guzzlehttp/psr7": "^1.8.4|^2.1.1",
                 "monolog/monolog": "^1.6|^2.0|^3.0",
                 "nyholm/psr7": "^1.8",
+                "open-telemetry/api": "^1.0",
+                "open-telemetry/exporter-otlp": "^1.0",
+                "open-telemetry/sdk": "^1.0",
                 "phpbench/phpbench": "^1.0",
                 "phpstan/phpstan": "^1.3",
                 "phpunit/phpunit": "^8.5.52|^9.6.34",
                 "spiral/roadrunner-http": "^3.6",
-                "spiral/roadrunner-worker": "^3.6",
-                "vimeo/psalm": "^4.17"
+                "spiral/roadrunner-worker": "^3.6"
             },
             "suggest": {
                 "monolog/monolog": "Allow sending log messages to Sentry by using the included Monolog handler."
@@ -3109,7 +3111,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/4.22.0"
+                "source": "https://github.com/getsentry/sentry-php/tree/4.23.1"
             },
             "funding": [
                 {
@@ -3121,7 +3123,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2026-03-16T13:03:46+00:00"
+            "time": "2026-03-27T18:26:46+00:00"
         },
         {
             "name": "sentry/sentry-symfony",
@@ -7871,16 +7873,16 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v2.33.0",
+            "version": "v2.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
-                "reference": "581fe67a2a85c10ce315aeba15425d5a7002526d"
+                "reference": "d610a2e021cf63f955838b4bfe40da7e4cafe850"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/581fe67a2a85c10ce315aeba15425d5a7002526d",
-                "reference": "581fe67a2a85c10ce315aeba15425d5a7002526d",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/d610a2e021cf63f955838b4bfe40da7e4cafe850",
+                "reference": "d610a2e021cf63f955838b4bfe40da7e4cafe850",
                 "shasum": ""
             },
             "require": {
@@ -7920,7 +7922,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.33.0"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.34.0"
             },
             "funding": [
                 {
@@ -7940,7 +7942,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-15T07:57:29+00:00"
+            "time": "2026-03-21T22:29:11+00:00"
         },
         {
             "name": "symfony/stopwatch",
@@ -8571,16 +8573,16 @@
         },
         {
             "name": "symfony/ux-turbo",
-            "version": "v2.33.0",
+            "version": "v2.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-turbo.git",
-                "reference": "493436bc109f87663ca45c3bac8678b62a5d861f"
+                "reference": "87511f621db238302a3bb819958a72feda27fc45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-turbo/zipball/493436bc109f87663ca45c3bac8678b62a5d861f",
-                "reference": "493436bc109f87663ca45c3bac8678b62a5d861f",
+                "url": "https://api.github.com/repos/symfony/ux-turbo/zipball/87511f621db238302a3bb819958a72feda27fc45",
+                "reference": "87511f621db238302a3bb819958a72feda27fc45",
                 "shasum": ""
             },
             "require": {
@@ -8650,7 +8652,7 @@
                 "turbo-stream"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-turbo/tree/v2.33.0"
+                "source": "https://github.com/symfony/ux-turbo/tree/v2.34.0"
             },
             "funding": [
                 {
@@ -8670,7 +8672,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-15T07:57:29+00:00"
+            "time": "2026-03-21T22:29:11+00:00"
         },
         {
             "name": "symfony/validator",
@@ -13395,19 +13397,20 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.66.0",
+            "version": "v1.67.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "b5b4afa2a570b926682e9f34615a6766dd560ff4"
+                "reference": "6ce8b313845f16bcf385ee3cb31d8b24e30d5516"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/b5b4afa2a570b926682e9f34615a6766dd560ff4",
-                "reference": "b5b4afa2a570b926682e9f34615a6766dd560ff4",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/6ce8b313845f16bcf385ee3cb31d8b24e30d5516",
+                "reference": "6ce8b313845f16bcf385ee3cb31d8b24e30d5516",
                 "shasum": ""
             },
             "require": {
+                "composer-runtime-api": "^2.1",
                 "doctrine/inflector": "^2.0",
                 "nikic/php-parser": "^5.0",
                 "php": ">=8.1",
@@ -13469,7 +13472,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/v1.66.0"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.67.0"
             },
             "funding": [
                 {
@@ -13489,7 +13492,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-09T08:55:54+00:00"
+            "time": "2026-03-18T13:39:06+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
@@ -13718,16 +13721,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "6.16.0",
+            "version": "6.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "7cf3e8b988edd75e0766963b0b9e671b220f5785"
+                "reference": "f1f5de594dc76faf8784e02d3dc4716c91c6f6ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/7cf3e8b988edd75e0766963b0b9e671b220f5785",
-                "reference": "7cf3e8b988edd75e0766963b0b9e671b220f5785",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/f1f5de594dc76faf8784e02d3dc4716c91c6f6ac",
+                "reference": "f1f5de594dc76faf8784e02d3dc4716c91c6f6ac",
                 "shasum": ""
             },
             "require": {
@@ -13832,7 +13835,7 @@
                 "issues": "https://github.com/vimeo/psalm/issues",
                 "source": "https://github.com/vimeo/psalm"
             },
-            "time": "2026-03-17T11:15:56+00:00"
+            "time": "2026-03-19T10:56:09+00:00"
         }
     ],
     "aliases": [],
