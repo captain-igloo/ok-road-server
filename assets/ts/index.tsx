@@ -70,14 +70,23 @@ if (element) {
                                 Set Settings / Location / OwnTracks / Location access to &quot;Allow all the
                                 time&quot;.
                             </li>
-                            <li>Set Settings / Location / OwnTracks / Use precise location to true.</li>
+                            <li>Set Settings / Location / OwnTracks / Use precise location.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Configure frequency of location updates.  The following settings are our recommendations:
+                        <ul>
+                            <li>Set Preferences / Advanced / Minimal location displacement to 100 metres.</li>
+                            <li>Set Preferences / Advanced / Location interval to 60 seconds.</li>
+                            <li>Set Preferences / Advanced / Location interval (Move mode) to 30 seconds.</li>
+                            <li>Set Preferences / Advanced / Limit max locator frequency.</li>
                         </ul>
                     </li>
                     <li>
                         Android can kill apps that have been running in the background for a period of time:
                         <ul>
                             <li>
-                                Set Settings / Apps / OwnTracks / Battery to &quot;Unrestricted&quot;
+                                Set Settings / Apps / OwnTracks / Battery to &quot;Unrestricted&quot;.
                             </li>
                         </ul>
                     </li>

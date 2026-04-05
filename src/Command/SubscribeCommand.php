@@ -28,6 +28,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SubscribeCommand extends Command
 {
     public function __construct(
+        private string $mosquittoHost,
+        private int $mosquittoPort,
         private string $username,
         private string $password,
         private EntityManagerInterface $entityManager,
@@ -42,7 +44,21 @@ class SubscribeCommand extends Command
     #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $mqtt = new MqttClient('mosquitto', 1883);
+        while (true) {
+            try {
+                $this->loop();
+            } catch (Exception $e) {
+                $this->logger->error('MQTT client error: ' . $e->getMessage(), [
+                    'exception' => $e,
+                ]);
+            }
+        }
+        return 0;
+    }
+
+    private function loop(): void
+    {
+        $mqtt = new MqttClient($this->mosquittoHost, $this->mosquittoPort);
 
         $connectionSettings = (new ConnectionSettings())
             ->setUsername($this->username)
@@ -100,8 +116,6 @@ class SubscribeCommand extends Command
             }
         }, 0);
         $mqtt->loop(true);
-
-        return 0;
     }
 
     private function getSpeedLimit(Point $point): ?SpeedLimit

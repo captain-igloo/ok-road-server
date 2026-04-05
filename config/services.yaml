@@ -24,6 +24,8 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Command\SubscribeCommand:
         arguments:
+            $mosquittoHost: '%env(MOSQUITTO_HOST)%'
+            $mosquittoPort: '%env(MOSQUITTO_PORT)%'
             $username: '%env(ADMIN_USERNAME)%'
             $password: '%env(ADMIN_PASSWORD)%'
 
