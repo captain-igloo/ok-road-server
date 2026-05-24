@@ -46,7 +46,7 @@ class DeviceRepository extends ServiceEntityRepository
                 $rsm
             );
         $query->setParameter('deviceId', $deviceId);
-        $query->setParameter('userId', $user->getId());
+        $query->setParameter('userId', $user->id);
         return $query->getOneOrNullResult();
     }
 
@@ -66,7 +66,7 @@ class DeviceRepository extends ServiceEntityRepository
                 $rsm
             );
         $query->setParameter('name', $name);
-        $query->setParameter('userId', $user->getId());
+        $query->setParameter('userId', $user->id);
         return $query->getOneOrNullResult();
     }
 
@@ -95,7 +95,7 @@ class DeviceRepository extends ServiceEntityRepository
                     f.user_id = :userId',
                 $rsm
             );
-        $query->setParameter('userId', $user->getId());
+        $query->setParameter('userId', $user->id);
         return $query->getResult();
     }
 }

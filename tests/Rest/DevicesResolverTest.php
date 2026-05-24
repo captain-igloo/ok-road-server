@@ -20,13 +20,13 @@ final class DevicesResolverTest extends TestCase
     public function testResolve(): void
     {
         $device = new Device();
-        $deviceRepository = $this->createMock(DeviceRepository::class);
+        $deviceRepository = $this->createStub(DeviceRepository::class);
         $deviceRepository->method('findByUser')
             ->willReturn([$device]);
         $devicesResolver = new DevicesResolver(
             $this->getSecurity(),
             $deviceRepository,
-            $this->createMock(UserRepository::class),
+            $this->createStub(UserRepository::class),
         );
         $argumentMetadata = new ArgumentMetadata('devices', null, false, false, null);
         $this->assertEquals($device, $devicesResolver->resolve(new Request(), $argumentMetadata)[0][0]);
@@ -35,13 +35,13 @@ final class DevicesResolverTest extends TestCase
     public function testNoUserShouldThrow(): void
     {
         $device = new Device();
-        $deviceRepository = $this->createMock(DeviceRepository::class);
+        $deviceRepository = $this->createStub(DeviceRepository::class);
         $deviceRepository->method('findByUser')
             ->willReturn([$device]);
         $devicesResolver = new DevicesResolver(
-            $this->createMock(Security::class),
+            $this->createStub(Security::class),
             $deviceRepository,
-            $this->createMock(UserRepository::class),
+            $this->createStub(UserRepository::class),
         );
         $argumentMetadata = new ArgumentMetadata('devices', null, false, false, null);
         $this->expectException(AccessDeniedHttpException::class);
@@ -50,7 +50,7 @@ final class DevicesResolverTest extends TestCase
 
     private function getSecurity(): Security
     {
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('getUser')
             ->willReturn(new User());
         return $security;

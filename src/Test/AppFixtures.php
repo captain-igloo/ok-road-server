@@ -21,32 +21,32 @@ class AppFixtures extends Fixture
         $this->initSequences($manager);
 
         $user1 = new User();
-        $user1->setUsername('test1');
-        $user1->setEmail('test1@example.com');
-        $user1->setFullName('Test User1');
-        $user1->setPassword('secret');
-        $user1->setRoles([]);
+        $user1->username = 'test1';
+        $user1->email = 'test1@example.com';
+        $user1->fullName = 'Test User1';
+        $user1->password = 'secret';
+        $user1->roles = [];
 
         $user2 = new User();
-        $user2->setUsername('test2');
-        $user2->setEmail('test2@example.com');
-        $user2->setFullName('Test User2');
-        $user2->setPassword('secret');
-        $user2->setRoles([]);
+        $user2->username = 'test2';
+        $user2->email = 'test2@example.com';
+        $user2->fullName = 'Test User2';
+        $user2->password = 'secret';
+        $user2->roles = [];
 
         $user3 = new User();
-        $user3->setUsername('test3');
-        $user3->setEmail('test3@example.com');
-        $user3->setFullName('Test User3');
-        $user3->setPassword('secret');
-        $user3->setRoles([]);
+        $user3->username = 'test3';
+        $user3->email = 'test3@example.com';
+        $user3->fullName = 'Test User3';
+        $user3->password = 'secret';
+        $user3->roles = [];
 
         $user4 = new User();
-        $user4->setUsername('demo');
-        $user4->setEmail('demo@example.com');
-        $user4->setFullName('Demo User');
-        $user4->setPassword('secret');
-        $user4->setRoles([]);
+        $user4->username = 'demo';
+        $user4->email = 'demo@example.com';
+        $user4->fullName = 'Demo User';
+        $user4->password = 'secret';
+        $user4->roles = [];
 
         $user1->addFriend($user2);
         $manager->persist($user1);
@@ -55,18 +55,18 @@ class AppFixtures extends Fixture
         $manager->persist($user4);
 
         $device = new Device();
-        $device->setUser($user1);
-        $device->setName('my-device');
-        $device->setDescription('My Device');
+        $device->user = $user1;
+        $device->name = 'my-device';
+        $device->description = 'My Device';
         $manager->persist($device);
 
         $location = new Location();
-        $location->setDevice($device);
-        $location->setTimestamp(new DateTime('2024-07-16 00:00:00'));
-        $location->setInsertTimestamp(new DateTime('2024-07-16 00:00:00'));
-        $location->setLocation(new Point(174, -40));
-        $location->setAccuracy(100);
-        $location->setSpeed(100);
+        $location->device = $device;
+        $location->timestamp = new DateTime('2024-07-16 00:00:00');
+        $location->insertTimestamp = new DateTime('2024-07-16 00:00:00');
+        $location->location = new Point(174, -40);
+        $location->accuracy = 100;
+        $location->speed = 100;
         $manager->persist($location);
 
         $manager->flush();

@@ -33,8 +33,8 @@ final class DefaultController extends AbstractController
         ];
         if ($user !== null) {
             $configuration['user'] = [
-                'fullName' => $user->getFullName(),
-                'username' => $user->getUsername(),
+                'fullName' => $user->fullName,
+                'username' => $user->username,
             ];
         }
         return $this->render('index.html.twig', [
@@ -96,8 +96,8 @@ final class DefaultController extends AbstractController
         ];
         if ($user !== null) {
             $config['user'] = [
-                'fullName' => $user->getFullName(),
-                'username' => $user->getUsername(),
+                'fullName' => $user->fullName,
+                'username' => $user->username,
             ];
         }
         return $config;

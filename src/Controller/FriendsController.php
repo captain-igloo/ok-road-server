@@ -26,13 +26,13 @@ final class FriendsController extends AbstractFOSRestController
     #[Route('/api/friends', methods: ['GET'])]
     public function fetchFriends(#[CurrentUser] User $currentUser): Response
     {
-        return $this->handleView($this->view($currentUser->getFriends(), 200));
+        return $this->handleView($this->view($currentUser->friends, 200));
     }
 
     #[Route('/api/friends/{id}', methods: ['GET'])]
     public function fetchFriend(#[CurrentUser] User $currentUser, User $friend): Response
     {
-        if ($currentUser->getFriends()->contains($friend)) {
+        if ($currentUser->friends->contains($friend)) {
             return $this->handleView($this->view($friend, 200));
         }
         throw new NotFoundHttpException();
@@ -47,7 +47,7 @@ final class FriendsController extends AbstractFOSRestController
                 'username' => $params['username'],
             ]);
             if ($otherUser !== null) {
-                if ($currentUser->getFriends()->contains($otherUser)) {
+                if ($currentUser->friends->contains($otherUser)) {
                     throw new ConflictHttpException();
                 }
                 if ($otherUser === $currentUser) {
@@ -58,7 +58,7 @@ final class FriendsController extends AbstractFOSRestController
                 $this->entityManager->persist($currentUser);
                 $this->entityManager->flush();
                 return $this->handleView($this->view($otherUser, 201, [
-                    'Location' => '/api/friends/' . $otherUser->getId(),
+                    'Location' => '/api/friends/' . $otherUser->id,
                 ]));
             }
             throw new NotFoundHttpException();

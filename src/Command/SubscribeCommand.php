@@ -98,16 +98,16 @@ class SubscribeCommand extends Command
             try {
                 $point = new Point($json['lon'], $json['lat'], 4326);
                 $location = new Location();
-                $location->setDevice($device);
-                $location->setSpeedLimit($this->getSpeedLimit($point));
-                $location->setTimestamp(new DateTime(date('Y-m-d H:i:s', $json['tst'])));
-                $location->setInsertTimestamp(new DateTime());
-                $location->setLocation($point);
+                $location->device = $device;
+                $location->speedLimit = $this->getSpeedLimit($point);
+                $location->timestamp = new DateTime(date('Y-m-d H:i:s', $json['tst']));
+                $location->insertTimestamp = new DateTime();
+                $location->location = $point;
                 if (array_key_exists('acc', $json)) {
-                    $location->setAccuracy($json['acc']);
+                    $location->accuracy = $json['acc'];
                 }
                 if (array_key_exists('vel', $json)) {
-                    $location->setSpeed($json['vel']);
+                    $location->speed = $json['vel'];
                 }
                 $this->entityManager->persist($location);
                 $this->entityManager->flush();
@@ -138,9 +138,9 @@ class SubscribeCommand extends Command
             return $device;
         }
         $device = new Device();
-        $device->setUser($user);
-        $device->setName($deviceName);
-        $device->setDescription($deviceName);
+        $device->user = $user;
+        $device->name = $deviceName;
+        $device->description = $deviceName;
         $this->entityManager->persist($device);
         $this->entityManager->flush();
         return $device;

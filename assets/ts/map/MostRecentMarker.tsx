@@ -31,6 +31,6 @@ export default function MostRecentMarker(props: Props) {
             />
         );
     }
-    
+
     return null;
 }

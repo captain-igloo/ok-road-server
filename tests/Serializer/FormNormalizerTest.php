@@ -21,7 +21,7 @@ final class FormNormalizerTest extends TypeTestCase
 {
     public function testNormalize(): void
     {
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
         $token = new CsrfToken('id', 'token');
         $csrfTokenManager->method('getToken')
             ->willReturn($token);
@@ -40,13 +40,13 @@ final class FormNormalizerTest extends TypeTestCase
 
     public function testSupportsNormalization(): void
     {
-        $normalizer = new FormNormalizer($this->createMock(CsrfTokenManagerInterface::class));
-        $this->assertTrue($normalizer->supportsNormalization($this->createMock(FormInterface::class)));
+        $normalizer = new FormNormalizer($this->createStub(CsrfTokenManagerInterface::class));
+        $this->assertTrue($normalizer->supportsNormalization($this->createStub(FormInterface::class)));
     }
 
     public function testGetSupportedTypes(): void
     {
-        $normalizer = new FormNormalizer($this->createMock(CsrfTokenManagerInterface::class));
+        $normalizer = new FormNormalizer($this->createStub(CsrfTokenManagerInterface::class));
         $this->assertEquals([FormInterface::class => true], $normalizer->getSupportedTypes(null));
     }
 

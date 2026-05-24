@@ -50,8 +50,8 @@ class LocationRepository extends ServiceEntityRepository
         $shiftedFrom = new DateTimeImmutable(sprintf('@%d', $from->getTimestamp() - $diff));
         $shiftedTo = new DateTimeImmutable(sprintf('@%d', $to->getTimestamp() - $diff));
         return array_map(function ($location) use ($diff) {
-            $location->setTimestamp(
-                new DateTimeImmutable(sprintf('@%d', $location->getTimestamp()->getTimestamp() + $diff)),
+            $location->timestamp = new DateTimeImmutable(
+                sprintf('@%d', $location->timestamp->getTimestamp() + $diff),
             );
             return $location;
         }, $this->findLocations($device, $shiftedFrom, $shiftedTo));

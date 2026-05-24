@@ -22,10 +22,10 @@ final class LocationsResolverTest extends TestCase
 {
     public function testResolve(): void
     {
-        $deviceRepository = $this->createMock(DeviceRepository::class);
+        $deviceRepository = $this->createStub(DeviceRepository::class);
         $deviceRepository->method('findById')
             ->willReturn(new Device());
-        $locationRepository = $this->createMock(LocationRepository::class);
+        $locationRepository = $this->createStub(LocationRepository::class);
         $location = new Location();
         $locationRepository->method('findLocations')
             ->willReturn([$location]);
@@ -33,7 +33,7 @@ final class LocationsResolverTest extends TestCase
             $this->getSecurity(),
             $deviceRepository,
             $locationRepository,
-            $this->createMock(UserRepository::class),
+            $this->createStub(UserRepository::class),
         );
         $argumentMetadata = new ArgumentMetadata('locations', null, false, false, null);
         $request = new Request([
@@ -46,14 +46,14 @@ final class LocationsResolverTest extends TestCase
 
     public function testResolveDemo(): void
     {
-        $deviceRepository = $this->createMock(DeviceRepository::class);
+        $deviceRepository = $this->createStub(DeviceRepository::class);
         $deviceRepository->method('findById')
             ->willReturn(new Device());
-        $locationRepository = $this->createMock(LocationRepository::class);
+        $locationRepository = $this->createStub(LocationRepository::class);
         $location = new Location();
         $locationRepository->method('findDemoLocations')
             ->willReturn([$location]);
-        $userRepository = $this->createMock(UserRepository::class);
+        $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('findDemoUser')
             ->willReturn(new User());
         $locationsResolver = new LocationsResolver(
@@ -76,9 +76,9 @@ final class LocationsResolverTest extends TestCase
     {
         $locationsResolver = new LocationsResolver(
             $this->getSecurity(),
-            $this->createMock(DeviceRepository::class),
-            $this->createMock(LocationRepository::class),
-            $this->createMock(UserRepository::class),
+            $this->createStub(DeviceRepository::class),
+            $this->createStub(LocationRepository::class),
+            $this->createStub(UserRepository::class),
         );
         $argumentMetadata = new ArgumentMetadata('locations', null, false, false, null);
         $request = new Request(['device' => 1]);
@@ -90,9 +90,9 @@ final class LocationsResolverTest extends TestCase
     {
         $locationsResolver = new LocationsResolver(
             $this->getSecurity(),
-            $this->createMock(DeviceRepository::class),
-            $this->createMock(LocationRepository::class),
-            $this->createMock(UserRepository::class),
+            $this->createStub(DeviceRepository::class),
+            $this->createStub(LocationRepository::class),
+            $this->createStub(UserRepository::class),
         );
         $this->expectException(BadRequestHttpException::class);
         $locationsResolver->resolve(new Request(), new ArgumentMetadata('locations', null, false, false, null));
@@ -102,9 +102,9 @@ final class LocationsResolverTest extends TestCase
     {
         $locationsResolver = new LocationsResolver(
             $this->getSecurity(),
-            $this->createMock(DeviceRepository::class),
-            $this->createMock(LocationRepository::class),
-            $this->createMock(UserRepository::class),
+            $this->createStub(DeviceRepository::class),
+            $this->createStub(LocationRepository::class),
+            $this->createStub(UserRepository::class),
         );
         $this->assertEquals(
             [],
@@ -114,7 +114,7 @@ final class LocationsResolverTest extends TestCase
 
     private function getSecurity(): Security
     {
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('getUser')
             ->willReturn(new User());
         return $security;

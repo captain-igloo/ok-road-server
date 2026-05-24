@@ -1,4 +1,4 @@
-FROM nginx:1.29
+FROM nginx:1.31
 
 COPY .docker/nginx/nginx.conf /etc/nginx/conf.d/
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -21,38 +23,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    private ?string $username = null;
+    public ?string $username = null;
 
     #[Exclude]
     #[ORM\Column]
-    private ?string $email = null;
+    public ?string $email = null;
 
     #[ORM\Column]
-    private ?string $fullName = null;
+    public ?string $fullName = null;
 
     /**
      * @var list<string> The user roles
      */
     #[Exclude]
     #[ORM\Column]
-    private array $roles = [];
+    public array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[Exclude]
     #[ORM\Column]
-    private ?string $password = null;
+    public ?string $password = null;
 
     /**
      * @var Collection<int, Device>
      */
     #[Exclude]
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'user')]
-    private Collection $devices;
+    public Collection $devices;
 
     /**
      * @var Collection<int, self>
@@ -61,37 +63,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'users')]
     #[ORM\JoinTable(name: 'friend')]
     #[ORM\JoinColumn(name: 'friend_id')]
-    private Collection $friends;
+    public Collection $friends;
 
     /**
      * @var Collection<int, self>
      */
     #[Exclude]
     #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'friends')]
-    private Collection $users;
+    public Collection $users;
 
     public function __construct()
     {
         $this->devices = new ArrayCollection();
         $this->friends = new ArrayCollection();
         $this->users = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): static
-    {
-        $this->username = $username;
-
-        return $this;
     }
 
     /**
@@ -103,30 +88,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->username;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getFullName(): ?string
-    {
-        return $this->fullName;
-    }
-
-    public function setFullName(string $fullName): static
-    {
-        $this->fullName = $fullName;
-
-        return $this;
     }
 
     /**
@@ -145,29 +106,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
      * @see PasswordAuthenticatedUserInterface
      */
     #[Override]
     public function getPassword(): string
     {
         return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
     }
 
     /**
@@ -180,19 +124,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection<int, Device>
-     */
-    public function getDevices(): Collection
-    {
-        return $this->devices;
-    }
-
     public function addDevice(Device $device): static
     {
         if (!$this->devices->contains($device)) {
             $this->devices->add($device);
-            $device->setUser($this);
+            $device->user = $this;
         }
 
         return $this;
@@ -202,20 +138,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->devices->removeElement($device)) {
             // set the owning side to null (unless already changed)
-            if ($device->getUser() === $this) {
-                $device->setUser(null);
+            if ($device->user === $this) {
+                $device->user = null;
             }
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, self>
-     */
-    public function getFriends(): Collection
-    {
-        return $this->friends;
     }
 
     public function addFriend(self $friend): static
@@ -232,14 +160,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->friends->removeElement($friend);
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, self>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
     }
 
     public function addUser(self $user): static
