@@ -1,8 +1,10 @@
 {
     "compilerOptions": {
-        "esModuleInterop": true,
         "jsx": "react",
-        "strict": true
+        "module": "preserve",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "target": "esnext"
     },
     "include": ["assets/ts/**/*"]
 }
