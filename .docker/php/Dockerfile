@@ -19,7 +19,6 @@ COPY public /app/public
 COPY src /app/src
 COPY templates /app/templates
 
-COPY --from=build /app/node_modules/bootstrap/dist/css/bootstrap.min.css /app/public/css/bootstrap.min.css
 COPY --from=build /app/vendor /app/vendor
 
 RUN mkdir -p /app/var/cache \
