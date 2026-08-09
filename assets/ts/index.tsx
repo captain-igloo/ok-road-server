@@ -25,12 +25,12 @@ if (element) {
         <Provider store={setupStore()}>
             <Header showDemo showMap showRegister showSignIn user={configuration.user} />
             <Container style={{ paddingTop: '5px' }}>
-                <h1>Monitor Young Drivers</h1>
+                <h1>Speed Monitoring</h1>
                 <p>
-                    Install an app on their device and keep track of:
+                    Install an app on an android device and keep track of:
                 </p>
                 <ul>
-                    <li>Where they are</li>
+                    <li>The person's location</li>
                     <li>How fast they are driving</li>
                     <li>Their speed in relation to the speed limit</li>
                 </ul>
